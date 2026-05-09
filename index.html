@@ -9,6 +9,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <style>
+        /* ============ БАЗОВЫЕ СТИЛИ ============ */
         * {
             margin: 0;
             padding: 0;
@@ -16,181 +17,415 @@
         }
         
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            color: white;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
             overflow: hidden;
         }
         
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        .app {
+            max-width: 400px;
+            margin: 0 auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        
+        /* ============ ВЕРХНЯЯ ПАНЕЛЬ ============ */
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .league-badge {
             text-align: center;
-            max-width: 350px;
-            width: 90%;
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .cat-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 20px auto;
-            cursor: pointer;
-            transition: transform 0.1s;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        .cat-container:active {
-            transform: scale(0.95);
-        }
-        
-        .cat {
-            font-size: 150px;
-            user-select: none;
-            -webkit-user-select: none;
-            pointer-events: none;
-        }
-        
-        .click-effect {
-            position: absolute;
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 14px;
             color: #FFD700;
-            pointer-events: none;
-            animation: floatUp 0.8s ease-out;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
         
-        @keyframes floatUp {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
+        .level-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #aaa;
         }
         
         .level-bar {
             width: 100%;
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            margin: 15px 0;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
             overflow: hidden;
         }
         
         .level-progress {
             height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A);
-            transition: width 0.3s;
-            border-radius: 5px;
+            background: linear-gradient(90deg, #FFD700, #FFA500, #FF6347);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
         
-        .friends-button {
-            background: #25D366;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 16px;
+        /* ============ ОСНОВНОЙ КОНТЕНТ ============ */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        /* Баланс */
+        .balance-display {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .balance-amount {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Счетчик энергии */
+        .energy-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .energy-bar {
+            width: 120px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        /* Круглая кнопка с котом */
+        .cat-button {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 4px solid rgba(255, 255, 255, 0.2);
             cursor: pointer;
-            margin-top: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            transition: all 0.1s ease;
+            position: relative;
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.5), 0 0 60px rgba(118, 75, 162, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .cat-button:active {
+            transform: scale(0.9);
+            box-shadow: 0 0 50px rgba(102, 126, 234, 0.8), 0 0 80px rgba(118, 75, 162, 0.5);
+            animation: none;
+        }
+        
+        .cat-button:active .cat-emoji {
+            transform: scale(1.2);
+        }
+        
+        .cat-emoji {
+            font-size: 100px;
+            transition: transform 0.1s ease;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 30px rgba(102, 126, 234, 0.5), 0 0 60px rgba(118, 75, 162, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(102, 126, 234, 0.7), 0 0 80px rgba(118, 75, 162, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 30px rgba(102, 126, 234, 0.5), 0 0 60px rgba(118, 75, 162, 0.3);
+            }
+        }
+        
+        /* Эффекты клика */
+        .click-effect {
+            position: fixed;
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFD700;
+            pointer-events: none;
+            z-index: 100;
+            animation: floatUp 0.8s ease-out;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+        
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(1.5);
+            }
+        }
+        
+        /* ============ НИЖНЕЕ МЕНЮ ============ */
+        .bottom-nav {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 15px;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #888;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .nav-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-tab .icon {
+            font-size: 22px;
+        }
+        
+        /* ============ КОНТЕНТ ВКЛАДОК ============ */
+        .tab-content {
+            flex: 1;
+            display: none;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+        
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Стили для списка друзей */
+        .friends-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .friend-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .friend-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .friend-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .friend-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .friend-level {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .invite-button {
             width: 100%;
-            transition: background 0.3s;
-            -webkit-tap-highlight-color: transparent;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
         }
         
-        .friends-button:hover {
-            background: #128C7E;
-        }
-        
-        .friends-button:active {
+        .invite-button:active {
             transform: scale(0.98);
         }
         
-        .level-up {
-            animation: levelUp 0.5s ease-out;
+        .no-friends {
+            text-align: center;
+            color: #888;
+            padding: 20px;
+            font-size: 14px;
         }
         
-        @keyframes levelUp {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        /* Стили для заданий */
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         
+        .task-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .task-title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .task-reward {
+            color: #FFD700;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .task-description {
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        
+        .task-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .task-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .task-progress-text {
+            font-size: 11px;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+        
+        .task-button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+        
+        .task-button.can-claim {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+        }
+        
+        .task-button.completed {
+            background: rgba(255, 255, 255, 0.1);
+            color: #888;
+        }
+        
+        .task-button.in-progress {
+            background: rgba(255, 255, 255, 0.05);
+            color: #aaa;
+        }
+        
+        /* Сообщение об ошибке */
         .error-message {
             text-align: center;
-            padding: 20px;
-            background: white;
-            border-radius: 20px;
-            max-width: 350px;
-            width: 90%;
+            padding: 40px 20px;
         }
         
         .error-message h2 {
-            color: #e74c3c;
+            color: #FF6347;
             margin-bottom: 10px;
         }
         
         .error-message p {
-            color: #666;
+            color: #aaa;
             line-height: 1.5;
         }
     </style>
 </head>
 <body>
-    <div id="app">
-        <!-- Основной контент -->
-        <div id="gameContent" class="container" style="display: none;">
-            <div class="stats">
-                <div class="stat-item">
-                    <span>🐟</span>
-                    <span id="balance">0</span>
-                </div>
-                <div class="stat-item">
-                    <span>⭐</span>
-                    <span id="level">1</span>
-                </div>
-            </div>
-            
-            <div class="level-bar">
-                <div class="level-progress" id="progressBar" style="width: 0%"></div>
-            </div>
-            
-            <div class="cat-container" id="catContainer">
-                <div class="cat" id="cat">🐱</div>
-            </div>
-            
-            <button class="friends-button" id="friendsButton">
-                👥 Друзья: <span id="friendsCount">0</span>
-            </button>
-        </div>
-        
+    <div id="app" class="app">
         <!-- Сообщение об ошибке -->
         <div id="errorContent" class="error-message" style="display: none;">
             <h2>❌ Ошибка</h2>
@@ -199,20 +434,85 @@
                 Нажмите кнопку "Играть" в чате с ботом
             </p>
         </div>
+        
+        <!-- Игровой контент -->
+        <div id="gameContent" style="display: none; width: 100%; height: 100%; display: none; flex-direction: column;">
+            <!-- Верхняя панель -->
+            <div class="header">
+                <div class="league-badge" id="leagueBadge">🐱 Бродяга</div>
+                <div class="level-info">
+                    <span>Уровень <span id="levelDisplay">1</span></span>
+                    <span id="levelProgress">0%</span>
+                </div>
+                <div class="level-bar">
+                    <div class="level-progress" id="levelProgressBar" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <!-- Контент вкладки Exchange -->
+            <div class="tab-content active" id="exchangeTab">
+                <div class="main-content">
+                    <div class="balance-display">
+                        💰 <span class="balance-amount" id="balanceDisplay">0</span> монет
+                    </div>
+                    
+                    <div class="energy-display">
+                        ⚡ <span id="energyDisplay">0</span>/<span id="maxEnergyDisplay">1000</span>
+                        <div class="energy-bar">
+                            <div class="energy-fill" id="energyFill" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="cat-button" id="catButton">
+                        <span class="cat-emoji">🐱</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Контент вкладки Friends -->
+            <div class="tab-content" id="friendsTab">
+                <div id="friendsList" class="friends-list">
+                    <div class="no-friends">Загрузка...</div>
+                </div>
+                <button class="invite-button" id="inviteButton">
+                    🔗 Пригласить друга (+5000 монет)
+                </button>
+            </div>
+            
+            <!-- Контент вкладки Tasks -->
+            <div class="tab-content" id="tasksTab">
+                <div id="tasksList" class="tasks-list">
+                    <div class="no-friends">Загрузка заданий...</div>
+                </div>
+            </div>
+            
+            <!-- Нижнее меню -->
+            <div class="bottom-nav">
+                <button class="nav-tab active" data-tab="exchange">
+                    <span class="icon">🏠</span>
+                    Exchange
+                </button>
+                <button class="nav-tab" data-tab="friends">
+                    <span class="icon">👥</span>
+                    Friends
+                </button>
+                <button class="nav-tab" data-tab="tasks">
+                    <span class="icon">📋</span>
+                    Tasks
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
         // ============ ИНИЦИАЛИЗАЦИЯ TELEGRAM WEB APP ============
         const tg = window.Telegram.WebApp;
-        
-        // Сообщаем Telegram, что приложение готово
         tg.ready();
-        
-        // Разворачиваем на весь экран
         tg.expand();
         
-        // Устанавливаем цвет заголовка (опционально)
-        tg.setHeaderColor('#764ba2');
+        // Устанавливаем темную тему
+        tg.setHeaderColor('#1a1a2e');
+        tg.setBackgroundColor('#1a1a2e');
         
         // ============ ПОЛУЧЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ ============
         let userId = null;
@@ -220,15 +520,13 @@
         
         // Проверяем, запущено ли приложение внутри Telegram
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            // Получаем user_id из initData (самый надежный способ)
             userId = tg.initDataUnsafe.user.id;
             isInTelegram = true;
             console.log('✅ Запущено в Telegram, user_id:', userId);
         } else {
-            // Пробуем получить из URL как запасной вариант
+            // Пробуем получить из URL
             const urlParams = new URLSearchParams(window.location.search);
             const urlUserId = urlParams.get('user_id');
-            
             if (urlUserId) {
                 userId = parseInt(urlUserId);
                 isInTelegram = true;
@@ -239,12 +537,14 @@
         // ============ СОСТОЯНИЕ ИГРЫ ============
         let gameState = {
             balance: 0,
+            energy: 1000,
+            maxEnergy: 1000,
             level: 1,
             clicks: 0,
-            referrals: 0
+            referrals: 0,
+            league: '🐱 Бродяга'
         };
         
-        // API базовый URL
         const API_URL = window.location.origin;
         
         // ============ ФУНКЦИИ API ============
@@ -259,197 +559,363 @@
                     const data = await response.json();
                     gameState = {
                         balance: data.balance || 0,
+                        energy: data.energy || 1000,
+                        maxEnergy: data.max_energy || 1000,
                         level: data.level || 1,
                         clicks: data.clicks || 0,
-                        referrals: data.referrals_count || 0
+                        referrals: data.referrals_count || 0,
+                        league: data.league || '🐱 Бродяга'
                     };
                     updateUI();
                     console.log('📊 Данные загружены:', gameState);
-                } else {
-                    console.error('Ошибка загрузки данных. Статус:', response.status);
                 }
             } catch (error) {
                 console.error('Ошибка загрузки данных:', error);
             }
         }
         
-        // Отправка кликов на сервер
-        async function syncClicks() {
-            if (!userId) return;
+        // Обработка кликов
+        async function handleClick() {
+            if (!userId || gameState.energy < 1) return;
             
             try {
                 const response = await fetch(`${API_URL}/api/click`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         user_id: parseInt(userId),
-                        clicks: gameState.clicks
+                        clicks_count: 1
                     })
                 });
                 
                 if (response.ok) {
                     const data = await response.json();
-                    gameState.balance = data.balance;
-                    gameState.level = data.level;
-                    gameState.clicks = data.clicks;
-                    updateUI();
+                    if (data.success) {
+                        gameState.balance = data.balance;
+                        gameState.energy = data.energy;
+                        gameState.level = data.level;
+                        gameState.clicks = data.clicks;
+                        gameState.league = data.league;
+                        return true;
+                    }
+                }
+                return false;
+            } catch (error) {
+                console.error('Ошибка синхронизации клика:', error);
+                return false;
+            }
+        }
+        
+        // Загрузка списка друзей
+        async function loadReferrals() {
+            if (!userId) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/api/referrals/${userId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    renderFriendsList(data.referrals);
                 }
             } catch (error) {
-                console.error('Ошибка синхронизации:', error);
+                console.error('Ошибка загрузки друзей:', error);
+            }
+        }
+        
+        // Загрузка заданий
+        async function loadTasks() {
+            if (!userId) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/api/tasks/${userId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    renderTasksList(data.tasks);
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки заданий:', error);
+            }
+        }
+        
+        // Выполнение задания
+        async function completeTask(taskId) {
+            if (!userId) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/api/tasks/${userId}/complete/${taskId}`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        gameState.balance = data.balance;
+                        updateUI();
+                        
+                        if (tg.showPopup) {
+                            tg.showPopup({
+                                title: '🎉 Задание выполнено!',
+                                message: data.message,
+                                buttons: [{id: 'ok', type: 'default', text: 'OK'}]
+                            });
+                        }
+                    } else {
+                        if (tg.showPopup) {
+                            tg.showPopup({
+                                title: '❌ Ошибка',
+                                message: data.message,
+                                buttons: [{id: 'ok', type: 'default', text: 'OK'}]
+                            });
+                        }
+                    }
+                }
+                
+                await loadTasks(); // Перезагружаем задания
+            } catch (error) {
+                console.error('Ошибка выполнения задания:', error);
             }
         }
         
         // ============ ФУНКЦИИ UI ============
         
-        // Обновление интерфейса
+        // Обновление основного интерфейса
         function updateUI() {
-            document.getElementById('balance').textContent = gameState.balance.toLocaleString();
-            document.getElementById('level').textContent = gameState.level;
-            document.getElementById('friendsCount').textContent = gameState.referrals;
+            // Баланс
+            document.getElementById('balanceDisplay').textContent = gameState.balance.toLocaleString();
             
-            // Прогресс до следующего уровня
-            const currentLevel = gameState.level;
-            const progressInLevel = gameState.balance % (currentLevel * 1000);
-            const progress = (progressInLevel / (currentLevel * 1000)) * 100;
-            document.getElementById('progressBar').style.width = Math.min(progress, 100) + '%';
+            // Энергия
+            document.getElementById('energyDisplay').textContent = gameState.energy;
+            document.getElementById('maxEnergyDisplay').textContent = gameState.maxEnergy;
+            const energyPercent = (gameState.energy / gameState.maxEnergy) * 100;
+            document.getElementById('energyFill').style.width = energyPercent + '%';
+            
+            // Уровень
+            document.getElementById('levelDisplay').textContent = gameState.level;
+            document.getElementById('leagueBadge').textContent = gameState.league;
+            
+            // Прогресс уровня (баланс внутри текущего уровня)
+            const currentLevelThreshold = gameState.level * 1000;
+            const progressInLevel = gameState.balance % currentLevelThreshold;
+            const progressPercent = (progressInLevel / currentLevelThreshold) * 100;
+            document.getElementById('levelProgress').textContent = Math.floor(progressPercent) + '%';
+            document.getElementById('levelProgressBar').style.width = progressPercent + '%';
+            
+            // Обновляем счетчик в кнопке друзей
+            document.getElementById('friendsCount').textContent = gameState.referrals;
         }
         
-        // Создание эффекта при клике
+        // Создание эффекта "+1" при клике
         function createClickEffect(x, y, amount) {
             const effect = document.createElement('div');
             effect.className = 'click-effect';
             effect.textContent = '+' + amount;
             effect.style.left = x + 'px';
             effect.style.top = y + 'px';
-            document.querySelector('.cat-container').appendChild(effect);
+            document.body.appendChild(effect);
             
             setTimeout(() => {
                 effect.remove();
             }, 800);
         }
         
+        // Отрисовка списка друзей
+        function renderFriendsList(referrals) {
+            const container = document.getElementById('friendsList');
+            
+            if (!referrals || referrals.length === 0) {
+                container.innerHTML = `
+                    <div class="no-friends">
+                        <div style="font-size: 48px; margin-bottom: 10px;">👥</div>
+                        <div>У вас пока нет друзей</div>
+                        <div style="font-size: 12px; margin-top: 5px; color: #666;">
+                            Пригласите друга и получите 5000 монет!
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = referrals.map(friend => `
+                <div class="friend-item">
+                    <div class="friend-info">
+                        <div class="friend-avatar">🐱</div>
+                        <div>
+                            <div class="friend-name">${friend.first_name || 'Игрок'}</div>
+                            <div class="friend-level">Уровень: ${friend.level || 1}</div>
+                        </div>
+                    </div>
+                    <div style="color: #FFD700; font-size: 14px;">+5000 💰</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('friendsCount').textContent = referrals.length;
+        }
+        
+        // Отрисовка списка заданий
+        function renderTasksList(tasks) {
+            const container = document.getElementById('tasksList');
+            
+            if (!tasks || tasks.length === 0) {
+                container.innerHTML = '<div class="no-friends">Нет доступных заданий</div>';
+                return;
+            }
+            
+            container.innerHTML = tasks.map(task => {
+                let buttonClass = 'task-button';
+                let buttonText = 'Выполняется...';
+                let disabled = true;
+                
+                if (task.completed) {
+                    buttonClass += ' completed';
+                    buttonText = '✅ Выполнено';
+                    disabled = true;
+                } else if (task.progress >= task.target) {
+                    buttonClass += ' can-claim';
+                    buttonText = '🎁 Получить награду';
+                    disabled = false;
+                } else {
+                    buttonClass += ' in-progress';
+                    buttonText = `${task.progress}/${task.target}`;
+                    disabled = true;
+                }
+                
+                return `
+                    <div class="task-item">
+                        <div class="task-header">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-reward">+${task.reward} 💰</div>
+                        </div>
+                        <div class="task-description">${task.description}</div>
+                        <div class="task-progress-bar">
+                            <div class="task-progress-fill" style="width: ${task.progress_percent}%"></div>
+                        </div>
+                        <div class="task-progress-text">${task.progress}/${task.target}</div>
+                        <button class="${buttonClass}" 
+                                onclick="${!task.completed && task.progress >= task.target ? `completeTask(${task.id})` : ''}"
+                                ${disabled ? 'disabled' : ''}>
+                            ${buttonText}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+        
         // ============ ОБРАБОТЧИКИ СОБЫТИЙ ============
         
-        // Обработчик клика по коту
-        document.getElementById('catContainer').addEventListener('click', async function(e) {
-            const oldLevel = gameState.level;
-            
-            // Увеличиваем счетчики
-            gameState.clicks++;
-            const levelBonus = Math.floor(gameState.level * 0.5);
-            const earned = 1 + levelBonus;
-            gameState.balance += earned;
-            
-            // Проверка повышения уровня
-            if (gameState.balance >= gameState.level * 1000) {
-                gameState.level++;
-                
-                // Анимация повышения уровня
-                const catElement = document.getElementById('cat');
-                catElement.classList.add('level-up');
-                setTimeout(() => {
-                    catElement.classList.remove('level-up');
-                }, 500);
-                
-                // Виброотклик при повышении уровня (если доступно)
-                if (tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred('success');
+        // Клик по коту
+        document.getElementById('catButton').addEventListener('click', async function(e) {
+            if (gameState.energy < 1) {
+                if (tg.showPopup) {
+                    tg.showPopup({
+                        title: '😴 Нет энергии',
+                        message: 'Подождите, энергия восстанавливается со временем',
+                        buttons: [{id: 'ok', type: 'default', text: 'OK'}]
+                    });
                 }
-            } else {
-                // Легкий виброотклик при обычном клике
+                return;
+            }
+            
+            const success = await handleClick();
+            if (success) {
+                updateUI();
+                
+                // Создаем эффект "+1"
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX;
+                const y = e.clientY;
+                const levelBonus = Math.floor(gameState.level * 0.5);
+                createClickEffect(x - 20, y - 20, 1 + levelBonus);
+                
+                // Виброотклик
                 if (tg.HapticFeedback) {
                     tg.HapticFeedback.impactOccurred('light');
                 }
             }
-            
-            // Создаем визуальный эффект
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            createClickEffect(x, y, earned);
-            
-            updateUI();
-            
-            // Синхронизируем с сервером каждые 10 кликов
-            if (gameState.clicks % 10 === 0) {
-                await syncClicks();
+        });
+        
+        // Навигация по вкладкам
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+                
+                // Обновляем активную вкладку
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Показываем контент
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(tabName + 'Tab').classList.add('active');
+                
+                // Загружаем данные для вкладки
+                if (tabName === 'friends') {
+                    loadReferrals();
+                } else if (tabName === 'tasks') {
+                    loadTasks();
+                }
+            });
+        });
+        
+        // Кнопка приглашения
+        document.getElementById('inviteButton').addEventListener('click', function() {
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/ваш_бот?start=${userId}&text=🐱%20Играй%20в%20Кот-Кликера%20со%20мной!`);
+            } else {
+                const link = `https://t.me/ваш_бот?start=${userId}`;
+                if (tg.showPopup) {
+                    tg.showPopup({
+                        title: '🔗 Ваша реферальная ссылка',
+                        message: link,
+                        buttons: [
+                            {id: 'copy', type: 'default', text: 'Скопировать'},
+                            {id: 'close', type: 'cancel', text: 'Закрыть'}
+                        ]
+                    });
+                }
             }
         });
         
-        // Обработчик кнопки друзей
-        document.getElementById('friendsButton').addEventListener('click', function() {
-            if (tg.showPopup) {
-                tg.showPopup({
-                    title: '👥 Реферальная система',
-                    message: `Вы пригласили: ${gameState.referrals} друзей\n\n` +
-                             `🎁 За каждого друга вы получаете 5000 рыбок\n` +
-                             `🎉 Ваш друг получает 2000 рыбок\n\n` +
-                             `💰 Всего заработано: ${gameState.referrals * 5000} рыбок`,
-                    buttons: [
-                        {id: 'ok', type: 'default', text: 'ОК'}
-                    ]
-                });
-            } else {
-                alert('👥 У вас ' + gameState.referrals + ' друзей\n\nПриглашайте друзей и получайте бонусы!');
+        // Обновление энергии каждые 3 секунды
+        setInterval(() => {
+            if (gameState.energy < gameState.maxEnergy) {
+                gameState.energy = Math.min(gameState.maxEnergy, gameState.energy + 3);
+                updateUI();
             }
-        });
+        }, 3000);
         
         // ============ ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ============
         
         function initApp() {
             if (isInTelegram && userId) {
-                // Показываем игровой контент
-                document.getElementById('gameContent').style.display = 'block';
+                document.getElementById('gameContent').style.display = 'flex';
                 document.getElementById('errorContent').style.display = 'none';
                 
-                // Загружаем данные пользователя
+                // Загружаем данные
                 loadUserData();
                 
-                // Настраиваем кнопку "Назад" в Telegram
-                tg.BackButton.show();
-                tg.BackButton.onClick(() => {
-                    tg.close();
-                });
+                // Периодическое обновление энергии
+                setInterval(() => {
+                    loadUserData();
+                }, 10000); // Каждые 10 секунд
                 
-                // Сохраняем прогресс при закрытии
-                window.addEventListener('beforeunload', async () => {
-                    await syncClicks();
-                });
-                
-                // Сохраняем прогресс при сворачивании
-                document.addEventListener('visibilitychange', async () => {
-                    if (document.hidden) {
-                        await syncClicks();
+                // Сохраняем при закрытии
+                window.addEventListener('beforeunload', () => {
+                    if (gameState.energy < gameState.maxEnergy) {
+                        loadUserData();
                     }
                 });
                 
-                console.log('🎮 Игра инициализирована для пользователя:', userId);
+                console.log('🎮 Игра инициализирована');
             } else {
-                // Показываем сообщение об ошибке
                 document.getElementById('gameContent').style.display = 'none';
                 document.getElementById('errorContent').style.display = 'block';
                 console.log('❌ Приложение запущено не в Telegram');
             }
         }
         
-        // Запускаем приложение после полной загрузки страницы
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initApp);
         } else {
             initApp();
         }
-        
-        // ============ ДЛЯ ТЕСТИРОВАНИЯ В БРАУЗЕРЕ ============
-        // Раскомментируйте для тестирования без Telegram
-        /*
-        if (!isInTelegram) {
-            userId = 123456789; // Замените на ID тестового пользователя
-            isInTelegram = true;
-            initApp();
-        }
-        */
     </script>
 </body>
 </html>
