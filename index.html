@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>🐱 Кот-Кликер</title>
+    <title>🐱 $PURR Clicker</title>
     
     <!-- Подключение Telegram Web App JS -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -18,7 +18,7 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: #000000;
             min-height: 100vh;
             color: white;
             user-select: none;
@@ -34,15 +34,50 @@
             display: flex;
             flex-direction: column;
             padding: 10px;
+            background: linear-gradient(180deg, #000000 0%, #1a0033 50%, #0d001a 100%);
+        }
+        
+        /* ============ HEADER С ТИТУЛОМ ============ */
+        .app-header {
+            text-align: center;
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .listing-badge {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            animation: glow 2s infinite;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 165, 0, 0.4); }
+        }
+        
+        .passive-income {
+            font-size: 13px;
+            color: #00ff88;
+            margin: 5px 0;
+            font-weight: 600;
         }
         
         /* ============ ВЕРХНЯЯ ПАНЕЛЬ ============ */
-        .header {
+        .stats-panel {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-            backdrop-filter: blur(10px);
+            padding: 12px;
+            margin-bottom: 10px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
@@ -54,14 +89,13 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
         
         .level-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-size: 12px;
             color: #aaa;
         }
@@ -79,7 +113,70 @@
             background: linear-gradient(90deg, #FFD700, #FFA500, #FF6347);
             border-radius: 10px;
             transition: width 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+        
+        /* ============ БАЛАНС И ЭНЕРГИЯ ============ */
+        .balance-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+        
+        .balance-display {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+        }
+        
+        .energy-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .energy-display {
+            font-size: 13px;
+            color: #aaa;
+            white-space: nowrap;
+        }
+        
+        .energy-bar {
+            width: 80px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+        }
+        
+        .boost-button {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: none;
+            color: #000;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        
+        .boost-button:active {
+            transform: scale(0.95);
         }
         
         /* ============ ОСНОВНОЙ КОНТЕНТ ============ */
@@ -92,100 +189,98 @@
             gap: 20px;
         }
         
-        /* Баланс */
-        .balance-display {
-            font-size: 28px;
-            font-weight: bold;
-            text-align: center;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        /* Круглая кнопка с котом - Hamster Style */
+        .cat-button-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
         }
         
-        .balance-amount {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Счетчик энергии */
-        .energy-display {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #aaa;
-        }
-        
-        .energy-bar {
-            width: 120px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .energy-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-        
-        /* Круглая кнопка с котом */
-        .cat-button {
-            width: 200px;
-            height: 200px;
+        .cat-button-glow {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: 4px solid rgba(255, 255, 255, 0.2);
+            background: conic-gradient(from 0deg, #FFD700, #FFA500, #FF6347, #FFD700);
+            animation: rotateGlow 3s linear infinite;
+            filter: blur(15px);
+            opacity: 0.7;
+        }
+        
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .cat-button {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #2a004d, #0d001a);
+            border: 4px solid rgba(255, 215, 0, 0.5);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.1s ease;
-            position: relative;
-            box-shadow: 0 0 30px rgba(102, 126, 234, 0.5), 0 0 60px rgba(118, 75, 162, 0.3);
-            animation: pulse 2s infinite;
+            z-index: 1;
+            box-shadow: 
+                0 0 30px rgba(255, 215, 0, 0.3),
+                inset 0 0 30px rgba(255, 215, 0, 0.1);
         }
         
         .cat-button:active {
             transform: scale(0.9);
-            box-shadow: 0 0 50px rgba(102, 126, 234, 0.8), 0 0 80px rgba(118, 75, 162, 0.5);
-            animation: none;
-        }
-        
-        .cat-button:active .cat-emoji {
-            transform: scale(1.2);
+            border-color: #FFD700;
+            box-shadow: 
+                0 0 50px rgba(255, 215, 0, 0.6),
+                0 0 100px rgba(255, 165, 0, 0.4),
+                inset 0 0 50px rgba(255, 215, 0, 0.2);
         }
         
         .cat-emoji {
-            font-size: 100px;
+            font-size: 120px;
             transition: transform 0.1s ease;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
         }
         
-        @keyframes pulse {
+        .cat-button:active .cat-emoji {
+            transform: scale(1.1);
+        }
+        
+        /* Эффекты частиц при клике */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+            animation: particleBurst 0.8s ease-out;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        @keyframes particleBurst {
             0% {
-                box-shadow: 0 0 30px rgba(102, 126, 234, 0.5), 0 0 60px rgba(118, 75, 162, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 50px rgba(102, 126, 234, 0.7), 0 0 80px rgba(118, 75, 162, 0.5);
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
             }
             100% {
-                box-shadow: 0 0 30px rgba(102, 126, 234, 0.5), 0 0 60px rgba(118, 75, 162, 0.3);
+                opacity: 0;
+                transform: translate(var(--dx), var(--dy)) scale(0);
             }
         }
         
-        /* Эффекты клика */
-        .click-effect {
+        .click-text {
             position: fixed;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
             color: #FFD700;
             pointer-events: none;
-            z-index: 100;
-            animation: floatUp 0.8s ease-out;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            z-index: 101;
+            animation: floatUp 1s ease-out;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
         }
         
         @keyframes floatUp {
@@ -195,7 +290,7 @@
             }
             100% {
                 opacity: 0;
-                transform: translateY(-100px) scale(1.5);
+                transform: translateY(-120px) scale(1.5);
             }
         }
         
@@ -207,7 +302,6 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
             padding: 10px;
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             margin-top: 15px;
         }
@@ -219,7 +313,7 @@
             color: #888;
             padding: 12px;
             border-radius: 10px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -294,6 +388,11 @@
         .friend-level {
             font-size: 12px;
             color: #aaa;
+        }
+        
+        .friend-pnl {
+            font-size: 11px;
+            color: #00ff88;
         }
         
         .invite-button {
@@ -436,9 +535,17 @@
         </div>
         
         <!-- Игровой контент -->
-        <div id="gameContent" style="display: none; width: 100%; height: 100%; display: none; flex-direction: column;">
-            <!-- Верхняя панель -->
-            <div class="header">
+        <div id="gameContent" style="display: none; width: 100%; height: 100%; flex-direction: column;">
+            <!-- Listing Badge -->
+            <div class="app-header">
+                <div class="listing-badge">🚀 Listing Soon: $PURR</div>
+                <div class="passive-income">
+                    💎 Пассивный доход: <span id="pnlDisplay">0</span> $PURR/час
+                </div>
+            </div>
+            
+            <!-- Статистика -->
+            <div class="stats-panel">
                 <div class="league-badge" id="leagueBadge">🐱 Бродяга</div>
                 <div class="level-info">
                     <span>Уровень <span id="levelDisplay">1</span></span>
@@ -449,37 +556,40 @@
                 </div>
             </div>
             
-            <!-- Контент вкладки Exchange -->
-            <div class="tab-content active" id="exchangeTab">
-                <div class="main-content">
-                    <div class="balance-display">
-                        💰 <span class="balance-amount" id="balanceDisplay">0</span> монет
+            <!-- Баланс и энергия -->
+            <div class="balance-row">
+                <span class="balance-display" id="balanceDisplay">0 $PURR</span>
+                <div class="energy-section">
+                    <span class="energy-display">⚡ <span id="energyDisplay">0</span>/<span id="maxEnergyDisplay">1000</span></span>
+                    <div class="energy-bar">
+                        <div class="energy-fill" id="energyFill" style="width: 100%"></div>
                     </div>
-                    
-                    <div class="energy-display">
-                        ⚡ <span id="energyDisplay">0</span>/<span id="maxEnergyDisplay">1000</span>
-                        <div class="energy-bar">
-                            <div class="energy-fill" id="energyFill" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    
-                    <button class="cat-button" id="catButton">
-                        <span class="cat-emoji">🐱</span>
-                    </button>
+                    <button class="boost-button" id="boostButton">🚀 Boost</button>
                 </div>
             </div>
             
-            <!-- Контент вкладки Friends -->
+            <!-- Контент вкладок -->
+            <div class="tab-content active" id="exchangeTab">
+                <div class="main-content">
+                    <!-- Кнопка кота в стиле Hamster -->
+                    <div class="cat-button-wrapper">
+                        <div class="cat-button-glow"></div>
+                        <button class="cat-button" id="catButton">
+                            <span class="cat-emoji">🐱</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
             <div class="tab-content" id="friendsTab">
                 <div id="friendsList" class="friends-list">
                     <div class="no-friends">Загрузка...</div>
                 </div>
                 <button class="invite-button" id="inviteButton">
-                    🔗 Пригласить друга (+5000 монет)
+                    🔗 Пригласить друга (+5000 $PURR)
                 </button>
             </div>
             
-            <!-- Контент вкладки Tasks -->
             <div class="tab-content" id="tasksTab">
                 <div id="tasksList" class="tasks-list">
                     <div class="no-friends">Загрузка заданий...</div>
@@ -511,8 +621,8 @@
         tg.expand();
         
         // Устанавливаем темную тему
-        tg.setHeaderColor('#1a1a2e');
-        tg.setBackgroundColor('#1a1a2e');
+        tg.setHeaderColor('#000000');
+        tg.setBackgroundColor('#000000');
         
         // ============ ПОЛУЧЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ ============
         let userId = null;
@@ -524,15 +634,18 @@
             isInTelegram = true;
             console.log('✅ Запущено в Telegram, user_id:', userId);
         } else {
-            // Пробуем получить из URL
             const urlParams = new URLSearchParams(window.location.search);
             const urlUserId = urlParams.get('user_id');
             if (urlUserId) {
                 userId = parseInt(urlUserId);
                 isInTelegram = true;
                 console.log('⚠️ user_id получен из URL:', userId);
+            } else {
+                console.error('❌ Не найден user_id в initDataUnsafe или URL');
             }
         }
+        
+        console.log('🔍 Итоговый userId:', userId, 'isInTelegram:', isInTelegram);
         
         // ============ СОСТОЯНИЕ ИГРЫ ============
         let gameState = {
@@ -542,21 +655,32 @@
             level: 1,
             clicks: 0,
             referrals: 0,
-            league: '🐱 Бродяга'
+            league: '🐱 Бродяга',
+            pnl: 0,
+            passiveIncomeEarned: 0
         };
         
         const API_URL = window.location.origin;
+        console.log('🌐 API_URL:', API_URL);
         
         // ============ ФУНКЦИИ API ============
         
         // Загрузка данных пользователя
         async function loadUserData() {
-            if (!userId) return;
+            if (!userId) {
+                console.error('❌ loadUserData: userId не установлен');
+                return;
+            }
             
             try {
+                console.log('📡 Загрузка данных для user_id:', userId);
                 const response = await fetch(`${API_URL}/api/user/${userId}`);
+                console.log('📡 Ответ сервера:', response.status, response.statusText);
+                
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('📊 Получены данные:', data);
+                    
                     gameState = {
                         balance: data.balance || 0,
                         energy: data.energy || 1000,
@@ -564,44 +688,78 @@
                         level: data.level || 1,
                         clicks: data.clicks || 0,
                         referrals: data.referrals_count || 0,
-                        league: data.league || '🐱 Бродяга'
+                        league: data.league || '🐱 Бродяга',
+                        pnl: data.pnl || 0,
+                        passiveIncomeEarned: data.passive_income_earned || 0
                     };
+                    
+                    console.log('✅ gameState обновлен:', gameState);
                     updateUI();
-                    console.log('📊 Данные загружены:', gameState);
+                } else {
+                    console.error('❌ Ошибка загрузки данных:', response.status, response.statusText);
+                    const errorText = await response.text();
+                    console.error('❌ Тело ошибки:', errorText);
                 }
             } catch (error) {
-                console.error('Ошибка загрузки данных:', error);
+                console.error('❌ Ошибка сети при загрузке данных:', error);
             }
         }
         
         // Обработка кликов
         async function handleClick() {
-            if (!userId || gameState.energy < 1) return;
+            if (!userId) {
+                console.error('❌ handleClick: userId не установлен');
+                return false;
+            }
+            
+            if (gameState.energy < 1) {
+                console.log('⚠️ Недостаточно энергии:', gameState.energy);
+                return false;
+            }
             
             try {
+                console.log('👆 Отправка клика: user_id=' + userId + ', clicks=1');
                 const response = await fetch(`${API_URL}/api/click`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify({
                         user_id: parseInt(userId),
-                        clicks_count: 1
+                        clicks_count: 1,
+                        client_timestamp: Date.now() / 1000
                     })
                 });
                 
+                console.log('📡 Ответ на клик:', response.status, response.statusText);
+                
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('📊 Данные после клика:', data);
+                    
                     if (data.success) {
                         gameState.balance = data.balance;
                         gameState.energy = data.energy;
                         gameState.level = data.level;
                         gameState.clicks = data.clicks;
                         gameState.league = data.league;
+                        gameState.pnl = data.pnl || gameState.pnl;
+                        console.log('✅ Клик обработан успешно');
                         return true;
+                    } else {
+                        console.log('⚠️ Клик не обработан:', data.message);
+                        if (data.energy !== undefined) {
+                            gameState.energy = data.energy;
+                        }
+                        return false;
                     }
+                } else {
+                    const errorText = await response.text();
+                    console.error('❌ Ошибка при клике:', response.status, errorText);
+                    return false;
                 }
-                return false;
             } catch (error) {
-                console.error('Ошибка синхронизации клика:', error);
+                console.error('❌ Ошибка сети при клике:', error);
                 return false;
             }
         }
@@ -611,13 +769,15 @@
             if (!userId) return;
             
             try {
+                console.log('📡 Загрузка списка друзей...');
                 const response = await fetch(`${API_URL}/api/referrals/${userId}`);
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('👥 Получены друзья:', data);
                     renderFriendsList(data.referrals);
                 }
             } catch (error) {
-                console.error('Ошибка загрузки друзей:', error);
+                console.error('❌ Ошибка загрузки друзей:', error);
             }
         }
         
@@ -626,13 +786,15 @@
             if (!userId) return;
             
             try {
+                console.log('📡 Загрузка заданий...');
                 const response = await fetch(`${API_URL}/api/tasks/${userId}`);
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('📋 Получены задания:', data);
                     renderTasksList(data.tasks);
                 }
             } catch (error) {
-                console.error('Ошибка загрузки заданий:', error);
+                console.error('❌ Ошибка загрузки заданий:', error);
             }
         }
         
@@ -641,12 +803,15 @@
             if (!userId) return;
             
             try {
+                console.log('📡 Выполнение задания:', taskId);
                 const response = await fetch(`${API_URL}/api/tasks/${userId}/complete/${taskId}`, {
                     method: 'POST'
                 });
                 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('🎉 Результат задания:', data);
+                    
                     if (data.success) {
                         gameState.balance = data.balance;
                         updateUI();
@@ -669,9 +834,9 @@
                     }
                 }
                 
-                await loadTasks(); // Перезагружаем задания
+                await loadTasks();
             } catch (error) {
-                console.error('Ошибка выполнения задания:', error);
+                console.error('❌ Ошибка выполнения задания:', error);
             }
         }
         
@@ -679,8 +844,10 @@
         
         // Обновление основного интерфейса
         function updateUI() {
+            console.log('🔄 Обновление UI...');
+            
             // Баланс
-            document.getElementById('balanceDisplay').textContent = gameState.balance.toLocaleString();
+            document.getElementById('balanceDisplay').textContent = gameState.balance.toLocaleString() + ' $PURR';
             
             // Энергия
             document.getElementById('energyDisplay').textContent = gameState.energy;
@@ -688,33 +855,57 @@
             const energyPercent = (gameState.energy / gameState.maxEnergy) * 100;
             document.getElementById('energyFill').style.width = energyPercent + '%';
             
-            // Уровень
+            // Уровень и лига
             document.getElementById('levelDisplay').textContent = gameState.level;
             document.getElementById('leagueBadge').textContent = gameState.league;
             
-            // Прогресс уровня (баланс внутри текущего уровня)
+            // Прогресс уровня
             const currentLevelThreshold = gameState.level * 1000;
             const progressInLevel = gameState.balance % currentLevelThreshold;
             const progressPercent = (progressInLevel / currentLevelThreshold) * 100;
             document.getElementById('levelProgress').textContent = Math.floor(progressPercent) + '%';
             document.getElementById('levelProgressBar').style.width = progressPercent + '%';
             
-            // Обновляем счетчик в кнопке друзей
-            document.getElementById('friendsCount').textContent = gameState.referrals;
+            // Пассивный доход
+            document.getElementById('pnlDisplay').textContent = gameState.pnl;
+            
+            console.log('✅ UI обновлен');
         }
         
         // Создание эффекта "+1" при клике
         function createClickEffect(x, y, amount) {
-            const effect = document.createElement('div');
-            effect.className = 'click-effect';
-            effect.textContent = '+' + amount;
-            effect.style.left = x + 'px';
-            effect.style.top = y + 'px';
-            document.body.appendChild(effect);
+            // Текст "+1 $PURR"
+            const textElement = document.createElement('div');
+            textElement.className = 'click-text';
+            textElement.textContent = '+' + amount + ' $PURR';
+            textElement.style.left = (x - 40) + 'px';
+            textElement.style.top = (y - 40) + 'px';
+            document.body.appendChild(textElement);
+            
+            // Частицы (звездочки, лапки)
+            const particles = ['✨', '⭐', '🐾', '💫', '🌟', '🐟'];
+            for (let i = 0; i < 6; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = particles[i];
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                
+                const angle = (Math.PI * 2 * i) / 6;
+                const distance = 40 + Math.random() * 30;
+                particle.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
+                particle.style.setProperty('--dy', Math.sin(angle) * distance + 'px');
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
             
             setTimeout(() => {
-                effect.remove();
-            }, 800);
+                textElement.remove();
+            }, 1000);
         }
         
         // Отрисовка списка друзей
@@ -727,7 +918,7 @@
                         <div style="font-size: 48px; margin-bottom: 10px;">👥</div>
                         <div>У вас пока нет друзей</div>
                         <div style="font-size: 12px; margin-top: 5px; color: #666;">
-                            Пригласите друга и получите 5000 монет!
+                            Пригласите друга и получите 5000 $PURR!
                         </div>
                     </div>
                 `;
@@ -741,13 +932,12 @@
                         <div>
                             <div class="friend-name">${friend.first_name || 'Игрок'}</div>
                             <div class="friend-level">Уровень: ${friend.level || 1}</div>
+                            ${friend.pnl ? `<div class="friend-pnl">💎 ${friend.pnl} $PURR/час</div>` : ''}
                         </div>
                     </div>
-                    <div style="color: #FFD700; font-size: 14px;">+5000 💰</div>
+                    <div style="color: #FFD700; font-size: 14px;">+5000 $PURR</div>
                 </div>
             `).join('');
-            
-            document.getElementById('friendsCount').textContent = referrals.length;
         }
         
         // Отрисовка списка заданий
@@ -763,26 +953,26 @@
                 let buttonClass = 'task-button';
                 let buttonText = 'Выполняется...';
                 let disabled = true;
+                let onclick = '';
                 
                 if (task.completed) {
                     buttonClass += ' completed';
                     buttonText = '✅ Выполнено';
-                    disabled = true;
                 } else if (task.progress >= task.target) {
                     buttonClass += ' can-claim';
-                    buttonText = '🎁 Получить награду';
+                    buttonText = '🎁 Получить ' + task.reward + ' $PURR';
                     disabled = false;
+                    onclick = `completeTask(${task.id})`;
                 } else {
                     buttonClass += ' in-progress';
-                    buttonText = `${task.progress}/${task.target}`;
-                    disabled = true;
+                    buttonText = task.progress + '/' + task.target;
                 }
                 
                 return `
                     <div class="task-item">
                         <div class="task-header">
                             <div class="task-title">${task.title}</div>
-                            <div class="task-reward">+${task.reward} 💰</div>
+                            <div class="task-reward">+${task.reward} $PURR</div>
                         </div>
                         <div class="task-description">${task.description}</div>
                         <div class="task-progress-bar">
@@ -790,7 +980,7 @@
                         </div>
                         <div class="task-progress-text">${task.progress}/${task.target}</div>
                         <button class="${buttonClass}" 
-                                onclick="${!task.completed && task.progress >= task.target ? `completeTask(${task.id})` : ''}"
+                                onclick="${onclick}"
                                 ${disabled ? 'disabled' : ''}>
                             ${buttonText}
                         </button>
@@ -803,7 +993,10 @@
         
         // Клик по коту
         document.getElementById('catButton').addEventListener('click', async function(e) {
+            console.log('👆 Клик по коту! Энергия:', gameState.energy);
+            
             if (gameState.energy < 1) {
+                console.log('⚠️ Нет энергии для клика');
                 if (tg.showPopup) {
                     tg.showPopup({
                         title: '😴 Нет энергии',
@@ -815,15 +1008,14 @@
             }
             
             const success = await handleClick();
+            console.log('📊 Результат клика:', success);
+            
             if (success) {
                 updateUI();
                 
-                // Создаем эффект "+1"
-                const rect = this.getBoundingClientRect();
-                const x = e.clientX;
-                const y = e.clientY;
+                // Создаем эффекты
                 const levelBonus = Math.floor(gameState.level * 0.5);
-                createClickEffect(x - 20, y - 20, 1 + levelBonus);
+                createClickEffect(e.clientX, e.clientY, 1 + levelBonus);
                 
                 // Виброотклик
                 if (tg.HapticFeedback) {
@@ -832,20 +1024,31 @@
             }
         });
         
+        // Boost кнопка
+        document.getElementById('boostButton').addEventListener('click', function() {
+            if (tg.showPopup) {
+                tg.showPopup({
+                    title: '🚀 Boost',
+                    message: 'Полная энергия восстановлена!',
+                    buttons: [{id: 'ok', type: 'default', text: 'OK'}]
+                });
+            }
+            gameState.energy = gameState.maxEnergy;
+            updateUI();
+        });
+        
         // Навигация по вкладкам
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 const tabName = this.dataset.tab;
+                console.log('📑 Переключение на вкладку:', tabName);
                 
-                // Обновляем активную вкладку
                 document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 
-                // Показываем контент
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                 document.getElementById(tabName + 'Tab').classList.add('active');
                 
-                // Загружаем данные для вкладки
                 if (tabName === 'friends') {
                     loadReferrals();
                 } else if (tabName === 'tasks') {
@@ -856,34 +1059,30 @@
         
         // Кнопка приглашения
         document.getElementById('inviteButton').addEventListener('click', function() {
+            const botUsername = 'ваш_бот'; // Замените на username вашего бота
+            const refLink = `https://t.me/${botUsername}?start=${userId}`;
+            
             if (tg.openTelegramLink) {
-                tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/ваш_бот?start=${userId}&text=🐱%20Играй%20в%20Кот-Кликера%20со%20мной!`);
-            } else {
-                const link = `https://t.me/ваш_бот?start=${userId}`;
-                if (tg.showPopup) {
-                    tg.showPopup({
-                        title: '🔗 Ваша реферальная ссылка',
-                        message: link,
-                        buttons: [
-                            {id: 'copy', type: 'default', text: 'Скопировать'},
-                            {id: 'close', type: 'cancel', text: 'Закрыть'}
-                        ]
-                    });
-                }
+                tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent('🐱 Играй в $PURR Clicker со мной! Listing Soon!')}`);
+            } else if (tg.showPopup) {
+                tg.showPopup({
+                    title: '🔗 Реферальная ссылка',
+                    message: refLink,
+                    buttons: [
+                        {id: 'copy', type: 'default', text: 'Скопировать'},
+                        {id: 'close', type: 'cancel', text: 'Закрыть'}
+                    ]
+                });
             }
         });
-        
-        // Обновление энергии каждые 3 секунды
-        setInterval(() => {
-            if (gameState.energy < gameState.maxEnergy) {
-                gameState.energy = Math.min(gameState.maxEnergy, gameState.energy + 3);
-                updateUI();
-            }
-        }, 3000);
         
         // ============ ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ============
         
         function initApp() {
+            console.log('🚀 Инициализация приложения...');
+            console.log('📱 isInTelegram:', isInTelegram);
+            console.log('👤 userId:', userId);
+            
             if (isInTelegram && userId) {
                 document.getElementById('gameContent').style.display = 'flex';
                 document.getElementById('errorContent').style.display = 'none';
@@ -891,23 +1090,25 @@
                 // Загружаем данные
                 loadUserData();
                 
-                // Периодическое обновление энергии
+                // Периодическое обновление для пассивного дохода
                 setInterval(() => {
+                    console.log('🔄 Периодическое обновление данных...');
                     loadUserData();
-                }, 10000); // Каждые 10 секунд
+                }, 30000);
                 
-                // Сохраняем при закрытии
-                window.addEventListener('beforeunload', () => {
+                // Обновление энергии локально
+                setInterval(() => {
                     if (gameState.energy < gameState.maxEnergy) {
-                        loadUserData();
+                        gameState.energy = Math.min(gameState.maxEnergy, gameState.energy + 3);
+                        updateUI();
                     }
-                });
+                }, 3000);
                 
-                console.log('🎮 Игра инициализирована');
+                console.log('✅ Приложение инициализировано успешно');
             } else {
                 document.getElementById('gameContent').style.display = 'none';
                 document.getElementById('errorContent').style.display = 'block';
-                console.log('❌ Приложение запущено не в Telegram');
+                console.error('❌ Приложение не в Telegram или отсутствует userId');
             }
         }
         
@@ -916,6 +1117,15 @@
         } else {
             initApp();
         }
+        
+        // Глобальный обработчик ошибок
+        window.addEventListener('error', function(e) {
+            console.error('🚨 Глобальная ошибка:', e.message, e.filename, e.lineno);
+        });
+        
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('🚨 Необработанное отклонение промиса:', e.reason);
+        });
     </script>
 </body>
 </html>
