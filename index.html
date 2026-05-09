@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>🐱 $PURR Clicker</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: #0a0014;
@@ -147,9 +143,7 @@
             white-space: nowrap;
             transition: all 0.3s ease;
         }
-        .boost-button:active {
-            transform: scale(0.95);
-        }
+        .boost-button:active { transform: scale(0.95); }
         .main-content {
             flex: 1;
             display: flex;
@@ -165,24 +159,17 @@
         }
         .cat-button-glow {
             position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
             border-radius: 50%;
             background: conic-gradient(from 0deg, #FFD700, #FFA500, #FF6347, #FFD700);
             animation: rotateGlow 3s linear infinite;
             filter: blur(15px);
             opacity: 0.7;
         }
-        @keyframes rotateGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .cat-button {
             position: relative;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #2a004d, #0d001a);
             border: 4px solid rgba(255, 215, 0, 0.5);
@@ -192,26 +179,19 @@
             justify-content: center;
             transition: transform 0.1s ease;
             z-index: 1;
-            box-shadow: 
-                0 0 30px rgba(255, 215, 0, 0.3),
-                inset 0 0 30px rgba(255, 215, 0, 0.1);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), inset 0 0 30px rgba(255, 215, 0, 0.1);
         }
         .cat-button:active {
             transform: scale(0.95);
             border-color: #FFD700;
-            box-shadow: 
-                0 0 50px rgba(255, 215, 0, 0.6),
-                0 0 100px rgba(255, 165, 0, 0.4),
-                inset 0 0 50px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.6), 0 0 100px rgba(255, 165, 0, 0.4), inset 0 0 50px rgba(255, 215, 0, 0.2);
         }
         .cat-emoji {
             font-size: 120px;
             transition: transform 0.1s ease;
             filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
         }
-        .cat-button:active .cat-emoji {
-            transform: scale(1.1);
-        }
+        .cat-button:active .cat-emoji { transform: scale(1.1); }
         .click-text {
             position: fixed;
             font-size: 32px;
@@ -268,24 +248,15 @@
             color: white;
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
-        .nav-tab .icon {
-            font-size: 22px;
-        }
+        .nav-tab .icon { font-size: 22px; }
         .tab-content {
             flex: 1;
             display: none;
             overflow-y: auto;
             padding: 10px 0;
         }
-        .tab-content.active {
-            display: flex;
-            flex-direction: column;
-        }
-        .friends-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .tab-content.active { display: flex; flex-direction: column; }
+        .friends-list { display: flex; flex-direction: column; gap: 10px; }
         .friend-item {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
@@ -295,29 +266,16 @@
             justify-content: space-between;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .friend-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .friend-info { display: flex; align-items: center; gap: 12px; }
         .friend-avatar {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea, #764ba2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             font-size: 20px;
         }
-        .friend-name {
-            font-weight: 600;
-            font-size: 15px;
-        }
-        .friend-level {
-            font-size: 12px;
-            color: #aaa;
-        }
+        .friend-name { font-weight: 600; font-size: 15px; }
+        .friend-level { font-size: 12px; color: #aaa; }
         .invite-button {
             width: 100%;
             background: linear-gradient(135deg, #25D366, #128C7E);
@@ -331,49 +289,21 @@
             margin-top: 10px;
             transition: all 0.3s ease;
         }
-        .invite-button:active {
-            transform: scale(0.98);
-        }
-        .no-friends {
-            text-align: center;
-            color: #888;
-            padding: 20px;
-            font-size: 14px;
-        }
-        .tasks-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .invite-button:active { transform: scale(0.98); }
+        .no-friends { text-align: center; color: #888; padding: 20px; font-size: 14px; }
+        .tasks-list { display: flex; flex-direction: column; gap: 10px; }
         .task-item {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             padding: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .task-title {
-            font-weight: 600;
-            font-size: 15px;
-        }
-        .task-reward {
-            color: #FFD700;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .task-description {
-            font-size: 13px;
-            color: #aaa;
-            margin-bottom: 10px;
-        }
+        .task-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .task-title { font-weight: 600; font-size: 15px; }
+        .task-reward { color: #FFD700; font-weight: 600; font-size: 14px; }
+        .task-description { font-size: 13px; color: #aaa; margin-bottom: 10px; }
         .task-progress-bar {
-            width: 100%;
-            height: 6px;
+            width: 100%; height: 6px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             overflow: hidden;
@@ -385,11 +315,7 @@
             border-radius: 10px;
             transition: width 0.3s ease;
         }
-        .task-progress-text {
-            font-size: 11px;
-            color: #aaa;
-            margin-bottom: 8px;
-        }
+        .task-progress-text { font-size: 11px; color: #aaa; margin-bottom: 8px; }
         .task-button {
             width: 100%;
             padding: 10px;
@@ -400,405 +326,373 @@
             transition: all 0.3s ease;
             font-size: 13px;
         }
-        .task-button.can-claim {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-        }
-        .task-button.completed {
-            background: rgba(255, 255, 255, 0.1);
-            color: #888;
-        }
-        .task-button.in-progress {
-            background: rgba(255, 255, 255, 0.05);
-            color: #aaa;
-        }
+        .task-button.can-claim { background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; }
+        .task-button.completed { background: rgba(255, 255, 255, 0.1); color: #888; }
+        .task-button.in-progress { background: rgba(255, 255, 255, 0.05); color: #aaa; }
     </style>
 </head>
 <body>
-    <div class="app" id="app">
-        <div class="app-header">
-            <div class="listing-badge">🚀 Listing Soon: $PURR</div>
-            <div class="passive-income">💎 Пассивный доход: <span id="pnlDisplay">0</span> $PURR/час</div>
+<div class="app" id="app">
+    <div class="app-header">
+        <div class="listing-badge">🚀 Listing Soon: $PURR</div>
+        <div class="passive-income">💎 Пассивный доход: <span id="pnlDisplay">0</span> $PURR/час</div>
+    </div>
+    <div class="stats-panel">
+        <div class="league-badge" id="leagueBadge">🐱 Бродяга</div>
+        <div class="level-info">
+            <span>Уровень <span id="levelDisplay">1</span></span>
+            <span id="levelProgress">0%</span>
         </div>
-        <div class="stats-panel">
-            <div class="league-badge" id="leagueBadge">🐱 Бродяга</div>
-            <div class="level-info">
-                <span>Уровень <span id="levelDisplay">1</span></span>
-                <span id="levelProgress">0%</span>
-            </div>
-            <div class="level-bar">
-                <div class="level-progress" id="levelProgressBar" style="width: 0%"></div>
-            </div>
+        <div class="level-bar">
+            <div class="level-progress" id="levelProgressBar" style="width: 0%"></div>
         </div>
-        <div class="balance-row">
-            <span class="balance-display" id="balanceDisplay">0 $PURR</span>
-            <div class="energy-section">
-                <span class="energy-display">⚡ <span id="energyDisplay">0</span>/<span id="maxEnergyDisplay">1000</span></span>
-                <div class="energy-bar">
-                    <div class="energy-fill" id="energyFill" style="width: 100%"></div>
-                </div>
-                <button class="boost-button" id="boostButton">🚀 Boost</button>
+    </div>
+    <div class="balance-row">
+        <span class="balance-display" id="balanceDisplay">0 $PURR</span>
+        <div class="energy-section">
+            <span class="energy-display">⚡ <span id="energyDisplay">0</span>/<span id="maxEnergyDisplay">1000</span></span>
+            <div class="energy-bar">
+                <div class="energy-fill" id="energyFill" style="width: 100%"></div>
             </div>
-        </div>
-
-        <!-- Вкладки -->
-        <div class="tab-content active" id="exchangeTab">
-            <div class="main-content">
-                <div class="cat-button-wrapper">
-                    <div class="cat-button-glow"></div>
-                    <button class="cat-button" id="catButton">
-                        <span class="cat-emoji">🐱</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="tab-content" id="friendsTab">
-            <div id="friendsList" class="friends-list">
-                <div class="no-friends">
-                    <div style="font-size:48px;">👥</div>
-                    <div>Приглашено друзей: <span id="friendsCount">0</span></div>
-                    <div style="font-size:12px;color:#666;">Пригласите друга и получите 5000 $PURR</div>
-                </div>
-            </div>
-            <button class="invite-button" id="inviteButton">🔗 Пригласить друга (+5000 $PURR)</button>
-        </div>
-
-        <div class="tab-content" id="tasksTab">
-            <div id="tasksList" class="tasks-list">
-                <div class="no-friends">Загрузка заданий...</div>
-            </div>
-        </div>
-
-        <div class="bottom-nav">
-            <button class="nav-tab active" data-tab="exchange"><span class="icon">🏠</span>Exchange</button>
-            <button class="nav-tab" data-tab="friends"><span class="icon">👥</span>Friends</button>
-            <button class="nav-tab" data-tab="tasks"><span class="icon">📋</span>Tasks</button>
+            <button class="boost-button" id="boostButton">🚀 Boost</button>
         </div>
     </div>
 
-    <script>
-        // ---------- ЛОКАЛЬНОЕ ХРАНИЛИЩЕ ----------
-        const STORAGE_KEY = 'purrGameState';
-        const MAX_ENERGY = 1000;
-        const ENERGY_RECOVERY_RATE = 3; // единиц в секунду
-        const LEVEL_THRESHOLD_MULT = 1000; // для повышения уровня нужно level * 1000 монет
+    <!-- Вкладки -->
+    <div class="tab-content active" id="exchangeTab">
+        <div class="main-content">
+            <div class="cat-button-wrapper">
+                <div class="cat-button-glow"></div>
+                <button class="cat-button" id="catButton">
+                    <span class="cat-emoji">🐱</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
-        function getDefaultState() {
-            return {
-                balance: 0,
-                energy: MAX_ENERGY,
-                maxEnergy: MAX_ENERGY,
-                level: 1,
-                clicks: 0,
-                referrals: 0,
-                pnl: 1.0,
-                lastVisit: Date.now(),
-                lastSaveTime: Date.now(),
-                completedTasks: [] // массив ID выполненных заданий
-            };
-        }
+    <div class="tab-content" id="friendsTab">
+        <div id="friendsList" class="friends-list">
+            <div class="no-friends">👥 У вас пока нет друзей</div>
+        </div>
+        <button class="invite-button" id="inviteButton">🔗 Пригласить друга (+5000 $PURR)</button>
+    </div>
 
-        function loadGame() {
-            let raw = localStorage.getItem(STORAGE_KEY);
-            if (raw) {
-                try {
-                    let state = JSON.parse(raw);
-                    // убедимся, что все поля существуют, иначе добавим дефолтные
-                    state = Object.assign(getDefaultState(), state);
-                    return state;
-                } catch (e) {
-                    return getDefaultState();
-                }
-            }
-            return getDefaultState();
-        }
+    <div class="tab-content" id="tasksTab">
+        <div id="tasksList" class="tasks-list"></div>
+    </div>
 
-        function saveGame(state) {
-            state.lastSaveTime = Date.now();
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        }
+    <div class="bottom-nav">
+        <button class="nav-tab active" data-tab="exchange"><span class="icon">🏠</span>Exchange</button>
+        <button class="nav-tab" data-tab="friends"><span class="icon">👥</span>Friends</button>
+        <button class="nav-tab" data-tab="tasks"><span class="icon">📋</span>Tasks</button>
+    </div>
+</div>
 
-        // Инициализация игры
-        let gameState = loadGame();
-        applyOfflineProgress(); // начислить пассивный доход и энергию
-        updateUI();
-
-        function applyOfflineProgress() {
-            const now = Date.now();
-            const elapsedMs = now - gameState.lastVisit;
-            if (elapsedMs > 0) {
-                // Пассивный доход
-                const hoursPassed = elapsedMs / (1000 * 60 * 60);
-                const passiveEarned = gameState.pnl * hoursPassed;
-                gameState.balance = Math.round((gameState.balance + passiveEarned) * 100) / 100;
-
-                // Восстановление энергии (предполагаем, что энергия тратилась только при кликах, которые сохранены)
-                // Энергия восстанавливается со временем с последнего сохранения
-                const elapsedSinceSave = now - gameState.lastSaveTime;
-                const energyRecovered = Math.floor(elapsedSinceSave / 1000 * ENERGY_RECOVERY_RATE);
-                gameState.energy = Math.min(gameState.maxEnergy, gameState.energy + energyRecovered);
-
-                gameState.lastVisit = now;
-                saveGame(gameState);
-            }
-        }
-
-        // Перерасчет лиги и PNL
-        function updateLeagueAndPNL() {
-            const lvl = gameState.level;
-            if (lvl < 5) gameState.league = '🐱 Бродяга';
-            else if (lvl < 10) gameState.league = '🏠 Домашний';
-            else if (lvl < 20) gameState.league = '👑 Мэр помойки';
-            else if (lvl < 35) gameState.league = '🌟 Звезда двора';
-            else if (lvl < 50) gameState.league = '🦁 Король котов';
-            else gameState.league = '🐉 Легенда';
-
-            gameState.pnl = Math.round(lvl * 0.5 * 100) / 100;
-        }
-
-        function handleClick(clientX, clientY) {
-            if (gameState.energy < 1) {
-                showAlert('😴 Нет энергии', 'Подождите восстановления');
-                return;
-            }
-
-            gameState.energy--;
-            gameState.clicks++;
-
-            const levelBonus = Math.floor(gameState.level * 0.5);
-            const earned = 1 + levelBonus;
-            gameState.balance += earned;
-
-            // Проверка повышения уровня
-            let leveledUp = false;
-            while (gameState.balance >= gameState.level * LEVEL_THRESHOLD_MULT) {
-                gameState.level++;
-                leveledUp = true;
-            }
-
-            updateLeagueAndPNL();
-            saveGame(gameState);
-            updateUI();
-
-            // Визуальные эффекты
-            createClickEffect(clientX, clientY, earned);
-            if (window.Telegram?.WebApp?.HapticFeedback) {
-                window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
-            }
-
-            if (leveledUp && window.Telegram?.WebApp?.showPopup) {
-                window.Telegram.WebApp.showPopup({
-                    title: '🎉 Новый уровень!',
-                    message: `Вы достигли уровня ${gameState.level}`,
-                    buttons: [{ id: 'ok', type: 'default', text: 'OK' }]
-                });
-            }
-        }
-
-        function updateUI() {
-            document.getElementById('balanceDisplay').textContent = Math.floor(gameState.balance).toLocaleString() + ' $PURR';
-            document.getElementById('energyDisplay').textContent = gameState.energy;
-            document.getElementById('maxEnergyDisplay').textContent = gameState.maxEnergy;
-            document.getElementById('energyFill').style.width = (gameState.energy / gameState.maxEnergy * 100) + '%';
-            document.getElementById('levelDisplay').textContent = gameState.level;
-            document.getElementById('leagueBadge').textContent = gameState.league;
-            document.getElementById('pnlDisplay').textContent = gameState.pnl;
-
-            const threshold = gameState.level * LEVEL_THRESHOLD_MULT;
-            const progressInLevel = gameState.balance % threshold;
-            const progressPercent = (progressInLevel / threshold) * 100;
-            document.getElementById('levelProgress').textContent = Math.floor(progressPercent) + '%';
-            document.getElementById('levelProgressBar').style.width = progressPercent + '%';
-
-            document.getElementById('friendsCount').textContent = gameState.referrals;
-            renderTasks();
-        }
-
-        // Эффекты
-        function createClickEffect(x, y, amount) {
-            const textEl = document.createElement('div');
-            textEl.className = 'click-text';
-            textEl.textContent = '+' + amount + ' $PURR';
-            textEl.style.left = (x - 40) + 'px';
-            textEl.style.top = (y - 40) + 'px';
-            document.body.appendChild(textEl);
-            setTimeout(() => textEl.remove(), 1000);
-
-            const particles = ['✨', '⭐', '🐾', '💫', '🌟'];
-            for (let i = 0; i < 5; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.textContent = particles[i];
-                p.style.left = x + 'px';
-                p.style.top = y + 'px';
-                const angle = (Math.PI * 2 * i) / 5;
-                const dist = 30 + Math.random() * 30;
-                p.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
-                p.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
-                document.body.appendChild(p);
-                setTimeout(() => p.remove(), 800);
-            }
-        }
-
-        function showAlert(title, message) {
-            if (window.Telegram?.WebApp?.showPopup) {
-                window.Telegram.WebApp.showPopup({ title, message, buttons: [{ id: 'ok', type: 'default', text: 'OK' }] });
-            } else {
-                alert(title + ': ' + message);
-            }
-        }
-
-        // Кнопка Boost
-        document.getElementById('boostButton').addEventListener('click', () => {
-            gameState.energy = gameState.maxEnergy;
-            saveGame(gameState);
-            updateUI();
-            showAlert('🚀 Boost', 'Энергия полностью восстановлена!');
-        });
-
-        // Кот клик
-        document.getElementById('catButton').addEventListener('click', (e) => {
-            handleClick(e.clientX, e.clientY);
-        });
-
-        // Навигация
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabName = tab.dataset.tab;
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                document.getElementById(tabName + 'Tab').classList.add('active');
-            });
-        });
-
-        // Кнопка приглашения
-        document.getElementById('inviteButton').addEventListener('click', () => {
-            const botUsername = 'your_bot_username'; // замените при необходимости
-            const link = `https://t.me/${botUsername}?start=ref${Math.random().toString(36).substring(2,8)}`;
-            if (window.Telegram?.WebApp?.openTelegramLink) {
-                window.Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=🐱%20Играй%20в%20$PURR%20Clicker!`);
-            } else {
-                prompt('Ваша реферальная ссылка (скопируйте):', link);
-            }
-        });
-
-        // ---------- ЗАДАНИЯ ----------
-        const TASKS = [
-            { id: 1, title: '🐱 Новичок', desc: 'Сделайте 10 кликов', reward: 100, target: 10, type: 'clicks' },
-            { id: 2, title: '⚡ Кликер', desc: 'Сделайте 100 кликов', reward: 500, target: 100, type: 'clicks' },
-            { id: 3, title: '💪 Мастер кликов', desc: 'Сделайте 1000 кликов', reward: 2000, target: 1000, type: 'clicks' },
-            { id: 4, title: '👥 Друг', desc: 'Пригласите 1 друга', reward: 1000, target: 1, type: 'referrals' },
-            { id: 5, title: '🌟 Популярный', desc: 'Пригласите 5 друзей', reward: 5000, target: 5, type: 'referrals' },
-            { id: 6, title: '📅 Ежедневный бонус', desc: 'Заходите ежедневно', reward: 500, target: 1, type: 'daily' }
-        ];
-
-        function renderTasks() {
-            const container = document.getElementById('tasksList');
-            const completed = gameState.completedTasks || [];
-            let html = '';
-            TASKS.forEach(task => {
-                let progress = 0;
-                let completedTask = completed.includes(task.id);
-                if (task.type === 'clicks') progress = Math.min(gameState.clicks, task.target);
-                else if (task.type === 'referrals') progress = Math.min(gameState.referrals, task.target);
-                else if (task.type === 'daily') {
-                    // Ежедневный бонус: можно получить раз в день по lastVisit
-                    const lastDate = new Date(gameState.lastVisit).toDateString();
-                    const today = new Date().toDateString();
-                    if (!completedTask && lastDate !== today) completedTask = false; // сброс для нового дня
-                    else if (completedTask && lastDate !== today) {
-                        // убираем отметку о выполнении, если день новый (можно реализовать более точно)
-                        completedTask = false;
-                        const idx = completed.indexOf(task.id);
-                        if (idx > -1) completed.splice(idx, 1);
-                        gameState.completedTasks = completed;
-                        saveGame(gameState);
-                    }
-                    progress = completedTask ? task.target : 0;
-                    if (!completedTask && lastDate !== today) progress = task.target; // доступно
-                }
-
-                const progressPercent = Math.min(100, (progress / task.target) * 100);
-                let btnClass = 'task-button';
-                let btnText = 'Выполняется...';
-                let disabled = true;
-                if (completedTask) {
-                    btnClass += ' completed';
-                    btnText = '✅ Выполнено';
-                } else if (progress >= task.target) {
-                    btnClass += ' can-claim';
-                    btnText = `🎁 Получить ${task.reward} $PURR`;
-                    disabled = false;
-                } else {
-                    btnClass += ' in-progress';
-                    btnText = `${progress}/${task.target}`;
-                }
-
-                html += `
-                    <div class="task-item">
-                        <div class="task-header">
-                            <div class="task-title">${task.title}</div>
-                            <div class="task-reward">+${task.reward} $PURR</div>
-                        </div>
-                        <div class="task-description">${task.desc}</div>
-                        <div class="task-progress-bar">
-                            <div class="task-progress-fill" style="width:${progressPercent}%"></div>
-                        </div>
-                        <div class="task-progress-text">${progress}/${task.target}</div>
-                        <button class="${btnClass}" ${disabled ? 'disabled' : ''} 
-                            onclick="${disabled ? '' : `completeTask(${task.id})`}">${btnText}</button>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        window.completeTask = function(taskId) {
-            const task = TASKS.find(t => t.id === taskId);
-            if (!task) return;
-            if (gameState.completedTasks.includes(taskId)) return;
-
-            let progress = 0;
-            if (task.type === 'clicks') progress = gameState.clicks;
-            else if (task.type === 'referrals') progress = gameState.referrals;
-            else if (task.type === 'daily') {
-                const lastDate = new Date(gameState.lastVisit).toDateString();
-                const today = new Date().toDateString();
-                if (lastDate !== today) progress = task.target;
-                else return;
-            }
-
-            if (progress >= task.target) {
-                gameState.balance += task.reward;
-                gameState.completedTasks.push(taskId);
-                saveGame(gameState);
-                updateUI();
-                showAlert('🎉 Задание выполнено!', `Получено ${task.reward} $PURR`);
+<script>
+    // Заглушка для Telegram WebApp, если открыто в браузере
+    if (!window.Telegram) {
+        window.Telegram = {
+            WebApp: {
+                ready: () => {},
+                expand: () => {},
+                setHeaderColor: () => {},
+                setBackgroundColor: () => {},
+                HapticFeedback: { impactOccurred: () => {} },
+                showPopup: (opts) => alert(opts.message),
+                openTelegramLink: (url) => window.open(url, '_blank')
             }
         };
+        console.log('Запущено вне Telegram, заглушка активна');
+    }
 
-        // Периодическое сохранение и обновление энергии (каждые 3 секунды)
-        setInterval(() => {
-            if (gameState.energy < gameState.maxEnergy) {
-                const now = Date.now();
-                const elapsed = now - gameState.lastSaveTime;
-                const recovered = Math.floor(elapsed / 1000 * ENERGY_RECOVERY_RATE);
-                if (recovered > 0) {
-                    gameState.energy = Math.min(gameState.maxEnergy, gameState.energy + recovered);
-                    gameState.lastSaveTime = now;
-                    saveGame(gameState);
-                    updateUI();
-                }
-            }
-            // также обновляем lastVisit, чтобы пассивный доход не начислялся дважды
-            gameState.lastVisit = Date.now();
-            saveGame(gameState);
-        }, 3000);
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
 
-        // Первоначальное отображение заданий
+    // ---------- ЛОКАЛЬНОЕ ХРАНИЛИЩЕ ----------
+    const STORAGE_KEY = 'purrGameState';
+    const MAX_ENERGY = 1000;
+    const ENERGY_RECOVERY_RATE = 3;
+    const LEVEL_THRESHOLD = 1000;
+
+    function defaultState() {
+        return {
+            balance: 0,
+            energy: MAX_ENERGY,
+            maxEnergy: MAX_ENERGY,
+            level: 1,
+            clicks: 0,
+            referrals: 0,
+            pnl: 1.0,
+            league: '🐱 Бродяга',
+            lastVisit: Date.now(),
+            lastSaveTime: Date.now(),
+            completedTasks: []
+        };
+    }
+
+    function loadGame() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? Object.assign(defaultState(), JSON.parse(raw)) : defaultState();
+        } catch (e) {
+            return defaultState();
+        }
+    }
+
+    function saveGame(state) {
+        state.lastSaveTime = Date.now();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    // Тестовая очистка (раскомментируй для сброса)
+    // localStorage.removeItem(STORAGE_KEY);
+
+    // Инициализация
+    let game = loadGame();
+    applyOfflineProgress();
+    updateLeagueAndPNL();
+    updateUI();
+
+    function applyOfflineProgress() {
+        const now = Date.now();
+        const elapsed = now - game.lastVisit;
+        if (elapsed > 0) {
+            // Пассивный доход
+            const hours = elapsed / 3600000;
+            game.balance = Math.round((game.balance + game.pnl * hours) * 100) / 100;
+            // Восстановление энергии с последнего сохранения
+            const energyElapsed = (now - game.lastSaveTime) / 1000;
+            game.energy = Math.min(MAX_ENERGY, game.energy + Math.floor(energyElapsed * ENERGY_RECOVERY_RATE));
+            game.lastVisit = now;
+            saveGame(game);
+        }
+    }
+
+    function updateLeagueAndPNL() {
+        const lvl = game.level;
+        if (lvl < 5) game.league = '🐱 Бродяга';
+        else if (lvl < 10) game.league = '🏠 Домашний';
+        else if (lvl < 20) game.league = '👑 Мэр помойки';
+        else if (lvl < 35) game.league = '🌟 Звезда двора';
+        else if (lvl < 50) game.league = '🦁 Король котов';
+        else game.league = '🐉 Легенда';
+        game.pnl = Math.round(lvl * 0.5 * 100) / 100;
+    }
+
+    function handleClick(e) {
+        if (game.energy < 1) {
+            tg.showPopup({ title: '😴 Нет энергии', message: 'Подождите восстановления', buttons: [{ id: 'ok', type: 'default', text: 'OK' }] });
+            return;
+        }
+        game.energy--;
+        game.clicks++;
+        const bonus = Math.floor(game.level * 0.5);
+        game.balance += 1 + bonus;
+
+        let leveledUp = false;
+        while (game.balance >= game.level * LEVEL_THRESHOLD) {
+            game.level++;
+            leveledUp = true;
+        }
+        updateLeagueAndPNL();
+        saveGame(game);
+        updateUI();
+        createClickEffect(e.clientX, e.clientY, 1 + bonus);
+        tg.HapticFeedback.impactOccurred('light');
+        if (leveledUp) {
+            tg.showPopup({ title: '🎉 Новый уровень!', message: `Вы достигли уровня ${game.level}`, buttons: [{ id: 'ok', type: 'default', text: 'OK' }] });
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('balanceDisplay').textContent = Math.floor(game.balance).toLocaleString() + ' $PURR';
+        document.getElementById('energyDisplay').textContent = game.energy;
+        document.getElementById('maxEnergyDisplay').textContent = game.maxEnergy;
+        document.getElementById('energyFill').style.width = (game.energy / game.maxEnergy * 100) + '%';
+        document.getElementById('levelDisplay').textContent = game.level;
+        document.getElementById('leagueBadge').textContent = game.league;
+        document.getElementById('pnlDisplay').textContent = game.pnl;
+
+        const threshold = game.level * LEVEL_THRESHOLD;
+        const progress = (game.balance % threshold) / threshold * 100;
+        document.getElementById('levelProgress').textContent = Math.floor(progress) + '%';
+        document.getElementById('levelProgressBar').style.width = progress + '%';
+
         renderTasks();
-    </script>
+    }
+
+    function createClickEffect(x, y, amount) {
+        const textEl = document.createElement('div');
+        textEl.className = 'click-text';
+        textEl.textContent = '+' + amount + ' $PURR';
+        textEl.style.left = (x - 40) + 'px';
+        textEl.style.top = (y - 40) + 'px';
+        document.body.appendChild(textEl);
+        setTimeout(() => textEl.remove(), 1000);
+
+        const particles = ['✨', '⭐', '🐾', '💫', '🌟'];
+        for (let i = 0; i < 5; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.textContent = particles[i];
+            p.style.left = x + 'px';
+            p.style.top = y + 'px';
+            const angle = (Math.PI * 2 * i) / 5;
+            const dist = 30 + Math.random() * 30;
+            p.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+            p.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        }
+    }
+
+    // ----- Обработчики кнопок -----
+    document.getElementById('catButton').addEventListener('click', handleClick);
+
+    document.getElementById('boostButton').addEventListener('click', () => {
+        game.energy = game.maxEnergy;
+        saveGame(game);
+        updateUI();
+        tg.showPopup({ title: '🚀 Boost', message: 'Энергия полностью восстановлена!' });
+    });
+
+    // Навигация
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const tabName = this.dataset.tab;
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        });
+    });
+
+    // Пригласить друга
+    document.getElementById('inviteButton').addEventListener('click', () => {
+        const botUsername = 'your_bot_username'; // замените, если нужно
+        const link = `https://t.me/${botUsername}?start=ref${Math.floor(Math.random()*10000)}`;
+        tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=🐱%20Играй%20в%20$PURR%20Clicker!`);
+    });
+
+    // ----- ЗАДАНИЯ -----
+    const TASKS = [
+        { id: 1, title: '🐱 Новичок', desc: '10 кликов', reward: 100, target: 10, type: 'clicks' },
+        { id: 2, title: '⚡ Кликер', desc: '100 кликов', reward: 500, target: 100, type: 'clicks' },
+        { id: 3, title: '💪 Мастер кликов', desc: '1000 кликов', reward: 2000, target: 1000, type: 'clicks' },
+        { id: 4, title: '👥 Друг', desc: 'Пригласите 1 друга', reward: 1000, target: 1, type: 'referrals' },
+        { id: 5, title: '🌟 Популярный', desc: 'Пригласите 5 друзей', reward: 5000, target: 5, type: 'referrals' },
+        { id: 6, title: '📅 Ежедневный бонус', desc: 'Заходите ежедневно', reward: 500, target: 1, type: 'daily' }
+    ];
+
+    function renderTasks() {
+        const container = document.getElementById('tasksList');
+        let html = '';
+        const completed = game.completedTasks || [];
+        const today = new Date().toDateString();
+        const lastDate = new Date(game.lastVisit).toDateString();
+
+        TASKS.forEach(task => {
+            let progress = 0;
+            let isCompleted = completed.includes(task.id);
+
+            if (task.type === 'clicks') {
+                progress = Math.min(game.clicks, task.target);
+            } else if (task.type === 'referrals') {
+                progress = Math.min(game.referrals, task.target);
+            } else if (task.type === 'daily') {
+                // сброс ежедневного задания, если новый день
+                if (isCompleted && lastDate !== today) {
+                    isCompleted = false;
+                    const idx = completed.indexOf(task.id);
+                    if (idx > -1) completed.splice(idx, 1);
+                    game.completedTasks = completed;
+                    saveGame(game);
+                }
+                progress = isCompleted ? task.target : 0;
+                // доступно, если ещё не выполнено сегодня
+                if (!isCompleted && lastDate !== today) progress = task.target;
+            }
+
+            const progressPercent = Math.min(100, (progress / task.target) * 100);
+            let btnClass = 'task-button';
+            let btnText = 'Выполняется...';
+            let disabled = true;
+            let onclick = '';
+
+            if (isCompleted) {
+                btnClass += ' completed';
+                btnText = '✅ Выполнено';
+            } else if (progress >= task.target) {
+                btnClass += ' can-claim';
+                btnText = `🎁 Получить ${task.reward} $PURR`;
+                disabled = false;
+                onclick = `completeTask(${task.id})`;
+            } else {
+                btnClass += ' in-progress';
+                btnText = `${progress}/${task.target}`;
+            }
+
+            html += `
+                <div class="task-item">
+                    <div class="task-header">
+                        <div class="task-title">${task.title}</div>
+                        <div class="task-reward">+${task.reward} $PURR</div>
+                    </div>
+                    <div class="task-description">${task.desc}</div>
+                    <div class="task-progress-bar">
+                        <div class="task-progress-fill" style="width:${progressPercent}%"></div>
+                    </div>
+                    <div class="task-progress-text">${progress}/${task.target}</div>
+                    <button class="${btnClass}" ${disabled ? 'disabled' : ''} onclick="${onclick}">${btnText}</button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    window.completeTask = function(taskId) {
+        const task = TASKS.find(t => t.id === taskId);
+        if (!task) return;
+        if (game.completedTasks.includes(taskId)) return;
+
+        let canComplete = false;
+        if (task.type === 'clicks' && game.clicks >= task.target) canComplete = true;
+        else if (task.type === 'referrals' && game.referrals >= task.target) canComplete = true;
+        else if (task.type === 'daily') {
+            const lastDate = new Date(game.lastVisit).toDateString();
+            const today = new Date().toDateString();
+            if (lastDate !== today) canComplete = true;
+        }
+
+        if (canComplete) {
+            game.balance += task.reward;
+            game.completedTasks.push(taskId);
+            saveGame(game);
+            updateUI();
+            tg.showPopup({ title: '🎉 Задание выполнено!', message: `Получено ${task.reward} $PURR` });
+        }
+    };
+
+    // Периодическое обновление энергии (каждые 2 секунды)
+    setInterval(() => {
+        if (game.energy < game.maxEnergy) {
+            const now = Date.now();
+            const seconds = (now - game.lastSaveTime) / 1000;
+            const recovered = Math.floor(seconds * ENERGY_RECOVERY_RATE);
+            if (recovered > 0) {
+                game.energy = Math.min(game.maxEnergy, game.energy + recovered);
+                game.lastSaveTime = now;
+                saveGame(game);
+                updateUI();
+            }
+        }
+        game.lastVisit = Date.now();
+        saveGame(game);
+    }, 2000);
+
+    // Первая отрисовка заданий
+    renderTasks();
+</script>
 </body>
 </html>
