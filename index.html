@@ -3,26 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>NODE Miner</title>
+    <title>NODE Miner • Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* ==============================
-           НОВЫЙ ПРЕМИАЛЬНЫЙ ДИЗАЙН
-           ============================== */
-        :root {
-            --bg-gradient: linear-gradient(145deg, #0a0e17 0%, #111b2b 100%);
-            --glass-bg: rgba(15, 25, 45, 0.65);
-            --glass-border: rgba(100, 150, 255, 0.2);
-            --neon-blue: #4a9eff;
-            --neon-cyan: #00e5ff;
-            --neon-purple: #b44dff;
-            --neon-gold: #f0b90b;
-            --text-primary: #ffffff;
-            --text-secondary: #a0b5d0;
-            --energy-color: #00e676;
-            --danger: #ff4d6a;
-            --card-bg: rgba(10, 20, 35, 0.8);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -30,15 +15,16 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 50% 20%, #1a2a6c, #000000);
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            transition: background 0.5s;
         }
 
         .app-container {
@@ -49,455 +35,280 @@
             flex-direction: column;
             position: relative;
             background: transparent;
-            box-shadow: 0 0 60px rgba(0, 180, 255, 0.15);
         }
 
-        /* Верхняя панель */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 20px;
+            margin: 10px 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
         .top-panel {
-            padding: 25px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 16px 15px;
             background: transparent;
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 20;
-        }
-
-        .balance-container {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .balance-label {
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .balance-amount {
-            font-size: 3rem;
-            font-weight: 700;
+            font-size: 3.8rem;
+            font-weight: 800;
             color: #ffffff;
-            text-shadow: 0 0 20px rgba(100, 180, 255, 0.5);
+            text-shadow: 0 0 30px rgba(79, 172, 254, 0.7);
             line-height: 1;
-            word-break: break-word;
+            margin: 10px 0;
+            font-family: 'Inter', sans-serif;
         }
 
         .pph-badge {
-            background: rgba(255,255,255,0.04);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 40px;
-            padding: 10px 22px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 8px 20px;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
+            color: #ccc;
         }
 
         .pph-value {
-            color: var(--neon-gold);
+            color: #f0b90b;
             font-weight: 700;
-            text-shadow: 0 0 10px rgba(240, 185, 11, 0.6);
+            text-shadow: 0 0 10px #f0b90b;
         }
 
-        /* Основная область */
+        .clicker-holder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .clicker-button {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #ffd966, #b8860b);
+            border: 4px solid rgba(255, 215, 0, 0.6);
+            box-shadow: 0 0 60px rgba(79, 172, 254, 0.8), 0 15px 30px rgba(0,0,0,0.7);
+            cursor: pointer;
+            font-size: 5rem;
+            color: white;
+            text-shadow: 0 0 25px white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s ease;
+            animation: floatGlow 3s ease-in-out infinite;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .clicker-button:active {
+            transform: scale(0.9);
+            box-shadow: 0 0 100px #4facfe, 0 10px 20px black;
+        }
+
+        @keyframes floatGlow {
+            0% { box-shadow: 0 0 40px rgba(79, 172, 254, 0.6); }
+            50% { box-shadow: 0 0 80px rgba(79, 172, 254, 1); }
+            100% { box-shadow: 0 0 40px rgba(79, 172, 254, 0.6); }
+        }
+
+        .energy-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 25px;
+        }
+
+        .energy-icon {
+            font-size: 1.4rem;
+            filter: drop-shadow(0 0 6px #f0b90b);
+        }
+
+        .energy-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .energy-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #f1c40f, #e67e22);
+            box-shadow: 0 0 15px #f39c12;
+            transition: width 0.3s;
+        }
+
         .tab-content {
+            display: none;
+            padding: 10px 16px 100px;
             flex: 1;
             overflow-y: auto;
-            padding: 10px 16px 90px;
-            display: none;
         }
 
         .tab-content.active {
             display: block;
         }
 
-        /* Майнинг */
-        .miner-center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px 0;
-        }
-
-        /* 3D монета/нода */
-        .clicker-button {
-            width: 190px;
-            height: 190px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, #ffd966, #d4a017);
-            border: 4px solid rgba(255, 215, 0, 0.5);
-            box-shadow: 0 0 50px rgba(0, 160, 255, 0.5), 0 20px 30px rgba(0,0,0,0.6), inset 0 -8px 0 rgba(0,0,0,0.4);
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.1s ease, box-shadow 0.1s;
-            font-size: 4rem;
-            color: rgba(255,255,255,0.9);
-            text-shadow: 0 0 30px rgba(255,255,255,0.8);
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-            animation: pulse-glow 2.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 30px rgba(0, 200, 255, 0.5), 0 20px 30px rgba(0,0,0,0.6), inset 0 -8px 0 rgba(0,0,0,0.4); }
-            50% { box-shadow: 0 0 70px rgba(0, 180, 255, 0.9), 0 20px 30px rgba(0,0,0,0.6), inset 0 -8px 0 rgba(0,0,0,0.4); }
-            100% { box-shadow: 0 0 30px rgba(0, 200, 255, 0.5), 0 20px 30px rgba(0,0,0,0.6), inset 0 -8px 0 rgba(0,0,0,0.4); }
-        }
-
-        .clicker-button:active {
-            transform: scale(0.88);
-            box-shadow: 0 0 90px rgba(0, 220, 255, 1), 0 10px 20px rgba(0,0,0,0.8), inset 0 -4px 0 rgba(0,0,0,0.5);
-        }
-
-        .clicker-button.disabled {
-            background: radial-gradient(circle at 35% 30%, #5a5a5a, #2d2d2d);
-            border-color: #444;
-            box-shadow: 0 0 20px rgba(100,100,100,0.3);
-            animation: none;
-            cursor: not-allowed;
-        }
-
-        /* Энергия */
-        .energy-container {
-            width: 90%;
-            margin-top: 35px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .energy-icon {
-            font-size: 1.5rem;
-            color: var(--energy-color);
-            text-shadow: 0 0 12px var(--energy-color);
-        }
-
-        .energy-bar {
-            flex: 1;
-            height: 8px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .energy-fill {
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(90deg, #00e676, #00c853);
-            box-shadow: 0 0 12px #00e676;
-            transition: width 0.3s ease;
-            border-radius: 10px;
-        }
-
-        .energy-text {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-align: right;
-            min-width: 80px;
-        }
-
-        /* Glassmorphism нижнее меню */
         .bottom-nav {
             position: fixed;
             bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
-            width: calc(100% - 30px);
-            max-width: 390px;
-            background: rgba(15, 25, 45, 0.7);
+            width: calc(100% - 24px);
+            max-width: 400px;
+            background: rgba(20, 30, 50, 0.7);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px;
             display: flex;
             justify-content: space-around;
-            padding: 10px 5px;
+            padding: 8px 5px;
             z-index: 100;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .nav-btn {
             background: transparent;
             border: none;
-            color: var(--text-secondary);
+            color: #aaa;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 600;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: all 0.2s;
-            padding: 8px 12px;
+            padding: 6px 12px;
             border-radius: 20px;
+            transition: 0.2s;
+            cursor: pointer;
         }
 
         .nav-btn.active {
-            color: #fff;
-            background: rgba(74, 158, 255, 0.15);
-            text-shadow: 0 0 10px var(--neon-blue);
+            color: white;
+            background: rgba(79, 172, 254, 0.2);
+            text-shadow: 0 0 10px #4facfe;
         }
 
         .nav-icon {
-            font-size: 1.5rem;
-            filter: drop-shadow(0 0 6px currentColor);
-        }
-
-        /* Карточки магазина (для консистентности) */
-        .filter-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 25px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-
-        .filter-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            color: var(--text-secondary);
-            padding: 10px 18px;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            white-space: nowrap;
-            backdrop-filter: blur(5px);
-            transition: all 0.2s;
-        }
-
-        .filter-btn.active {
-            background: rgba(74, 158, 255, 0.25);
-            color: white;
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(74, 158, 255, 0.3);
+            font-size: 1.3rem;
+            margin-bottom: 2px;
         }
 
         .cards-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 14px;
+            gap: 12px;
         }
 
         .card-item {
-            background: var(--card-bg);
+            background: rgba(255,255,255,0.03);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 22px;
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .card-item.owned {
-            border-color: rgba(240, 185, 11, 0.5);
-            box-shadow: 0 0 20px rgba(240, 185, 11, 0.15);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-title {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .card-level {
-            background: rgba(255,255,255,0.08);
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .card-stats {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .card-profit {
-            color: #00e676;
-            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 16px;
         }
 
         .upgrade-btn {
-            background: var(--neon-blue);
+            background: #4facfe;
             border: none;
-            color: white;
-            padding: 12px;
-            border-radius: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
-            margin-top: 5px;
-            box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
-        }
-
-        .upgrade-btn:active {
-            background: #3a7ed9;
-            box-shadow: 0 2px 10px rgba(74, 158, 255, 0.5);
-        }
-
-        .upgrade-btn:disabled {
-            background: #2a3344;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        /* Комбо и награды */
-        .combo-section {
-            background: rgba(10, 20, 35, 0.7);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 24px;
-            padding: 22px;
-            margin-bottom: 25px;
-        }
-
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #fff;
-        }
-
-        .daily-reward-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            margin-bottom: 18px;
-        }
-
-        .day-cell {
-            aspect-ratio: 1;
-            background: rgba(255,255,255,0.03);
+            padding: 10px;
             border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid transparent;
-        }
-
-        .day-cell.claimed {
-            background: rgba(0, 230, 118, 0.15);
-            cursor: default;
-        }
-
-        .day-cell.today {
-            border-color: #f0b90b;
-            background: rgba(240, 185, 11, 0.1);
-            box-shadow: 0 0 15px rgba(240, 185, 11, 0.3);
-        }
-
-        .day-reward {
             font-weight: bold;
-            font-size: 0.6rem;
-        }
-
-        .combo-cards {
-            display: flex;
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .combo-card {
-            flex: 1;
-            background: rgba(255,255,255,0.03);
-            border-radius: 16px;
-            padding: 15px 5px;
-            text-align: center;
-            font-size: 0.75rem;
-            border: 1px solid transparent;
-        }
-
-        .combo-card.completed {
-            border-color: #00e676;
-            background: rgba(0, 230, 118, 0.1);
-        }
-
-        .claim-combo-btn, .claim-daily-btn {
-            width: 100%;
-            border: none;
             color: white;
-            padding: 14px;
-            border-radius: 16px;
-            font-weight: bold;
+            width: 100%;
+            margin-top: 8px;
             cursor: pointer;
-            margin-top: 12px;
-            font-size: 0.95rem;
+            box-shadow: 0 0 15px #4facfe;
         }
 
-        .claim-daily-btn {
+        .special-timer {
+            color: #ff4d6a;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .filter-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #aaa;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+            backdrop-filter: blur(5px);
+        }
+
+        .filter-btn.active {
+            background: rgba(79, 172, 254, 0.25);
+            color: white;
+            border-color: #4facfe;
+        }
+
+        .claim-daily-btn, .claim-combo-btn {
             background: #00c853;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            cursor: pointer;
         }
 
         .claim-combo-btn {
             background: #f0b90b;
         }
 
-        .claim-combo-btn:disabled, .claim-daily-btn:disabled {
-            background: #2a3344;
-            cursor: not-allowed;
-        }
-
-        /* Статистика */
-        .stat-item {
+        .day-cell {
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
             display: flex;
-            justify-content: space-between;
-            padding: 18px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            border: 1px solid transparent;
         }
 
-        .stat-value {
-            font-weight: 700;
+        .day-cell.today {
+            border-color: #f0b90b;
+            background: rgba(240, 185, 11, 0.1);
         }
 
-        .reset-btn {
-            background: transparent;
-            border: 1px solid var(--danger);
-            color: var(--danger);
-            padding: 10px 16px;
-            border-radius: 12px;
-            margin-top: 30px;
-            cursor: pointer;
-            width: 100%;
-            font-weight: 600;
+        .combo-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.8rem;
         }
 
-        /* Модальное окно */
+        .combo-card.completed {
+            border: 2px solid #00e676;
+        }
+
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -505,582 +316,582 @@
         }
 
         .modal {
-            background: var(--glass-bg);
-            backdrop-filter: blur(30px);
+            background: rgba(20, 30, 50, 0.8);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.15);
             border-radius: 28px;
             padding: 30px;
             width: 85%;
-            max-width: 320px;
             text-align: center;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        .modal h3 {
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-        }
-
-        .modal .close-btn {
-            background: var(--neon-blue);
-            border: none;
-            color: white;
-            padding: 14px 30px;
-            border-radius: 18px;
-            margin-top: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 0 20px rgba(74, 158, 255, 0.4);
-        }
-
-        /* Партиклы */
-        .float-particle {
-            position: fixed;
-            pointer-events: none;
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: #fff;
-            text-shadow: 0 0 15px var(--neon-gold);
-            animation: floatUp 0.9s ease-out forwards;
-            z-index: 999;
-        }
-
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-90px) scale(0.6); }
         }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <!-- Верхняя панель -->
     <div class="top-panel">
-        <div class="balance-container">
-            <div class="balance-label">$NODE</div>
-            <div class="balance-amount" id="balanceDisplay">0</div>
+        <div style="font-size: 0.7rem; letter-spacing: 2px; color: #aaa;">$NODE</div>
+        <div class="balance-amount" id="balanceDisplay">0</div>
+        <div class="pph-badge">
+            <span>⚡ Прибыль в час</span>
+            <span class="pph-value" id="pphDisplay">0</span>
         </div>
-        <div style="display: flex; justify-content: center;">
-            <div class="pph-badge">
-                <span>⚡ Прибыль в час</span>
-                <span class="pph-value" id="pphDisplay">0</span>
-            </div>
-        </div>
+        <div style="margin-top: 5px; font-size: 0.8rem;" id="leagueDisplay">🥉 Testnet</div>
     </div>
 
-    <!-- Вкладки -->
     <div class="tab-content active" id="miningTab">
-        <div class="miner-center">
-            <button class="clicker-button" id="clickerBtn">
-                ⚛️
-            </button>
-            <div class="energy-container">
-                <span class="energy-icon">⚡</span>
-                <div class="energy-bar">
-                    <div class="energy-fill" id="energyFill" style="width: 100%;"></div>
-                </div>
-                <span class="energy-text" id="energyText">1000 / 1000</span>
-            </div>
+        <div class="clicker-holder">
+            <button class="clicker-button" id="clickerBtn">⚛️</button>
+        </div>
+        <div class="energy-container">
+            <span class="energy-icon">⚡</span>
+            <div class="energy-bar"><div class="energy-fill" id="energyFill" style="width: 100%;"></div></div>
+            <span id="energyText" style="font-size: 0.8rem;">1000/1000</span>
         </div>
     </div>
 
     <div class="tab-content" id="shopTab">
-        <div class="filter-bar">
+        <div class="filter-bar" style="display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto;">
             <button class="filter-btn active" data-category="all">Все</button>
             <button class="filter-btn" data-category="hardware">Железо</button>
             <button class="filter-btn" data-category="software">Софт</button>
             <button class="filter-btn" data-category="marketing">Маркетинг</button>
+            <button class="filter-btn" data-category="special">⭐ Спец</button>
+            <button class="filter-btn" data-category="secret" id="secretFilterBtn" style="display: none;">🔒 Секрет</button>
         </div>
         <div class="cards-grid" id="cardsContainer"></div>
     </div>
 
     <div class="tab-content" id="comboTab">
-        <div class="combo-section">
-            <div class="section-title">🎁 Ежедневная награда</div>
-            <div class="daily-reward-grid" id="dailyRewardGrid"></div>
-            <button class="claim-daily-btn" id="claimDailyBtn" disabled>Забрать награду</button>
-        </div>
-        <div class="combo-section">
-            <div class="section-title">🔥 Комбо дня</div>
-            <div class="combo-cards" id="comboCardsContainer"></div>
-            <button class="claim-combo-btn" id="claimComboBtn" disabled>Получить бонус (50 000 $NODE)</button>
+        <div class="glass-panel" id="dailyRewardBlock"></div>
+        <div class="glass-panel" id="comboBlock"></div>
+    </div>
+
+    <div class="tab-content" id="squadTab">
+        <div class="glass-panel">
+            <h3>👥 Сквад</h3>
+            <input type="text" id="squadNameInput" placeholder="Название сквада" style="width:100%; padding:10px; border-radius:10px; border:none; margin:10px 0; background: rgba(255,255,255,0.1); color:white;">
+            <button id="joinSquadBtn" style="background:#4facfe; border:none; padding:10px; border-radius:10px; width:100%; color:white; font-weight:bold;">Вступить / Создать</button>
+            <div style="margin-top:10px;" id="squadInfo"></div>
+            <div style="margin-top:20px;"><strong>🏆 Рейтинг сквадов</strong></div>
+            <div id="squadLeaderboard" style="font-size:0.8rem; margin-top:10px;"></div>
         </div>
     </div>
 
-    <div class="tab-content" id="statsTab">
-        <div class="stat-item"><span>Общий PPH</span><span class="stat-value" id="statPPH">0</span></div>
-        <div class="stat-item"><span>Куплено карточек</span><span class="stat-value" id="statCards">0</span></div>
-        <div class="stat-item"><span>Всего кликов</span><span class="stat-value" id="statClicks">0</span></div>
-        <button class="reset-btn" id="resetBtn">Сбросить прогресс</button>
+    <div class="tab-content" id="refTab">
+        <div class="glass-panel">
+            <h3>🔗 Рефералы</h3>
+            <p style="font-size:0.8rem;">Пригласи 3 друзей — открой секретные карты!</p>
+            <button id="generateRefCodeBtn" style="background:#4facfe; border:none; padding:10px; border-radius:10px; width:100%; color:white; margin:10px 0;">Создать код</button>
+            <div id="refCodeDisplay" style="word-break: break-all; margin:5px 0;"></div>
+            <button id="simulateInviteBtn" style="background:#f0b90b; border:none; padding:10px; border-radius:10px; width:100%; color:black; font-weight:bold;">Симулировать приглашение (+1 друг)</button>
+            <div style="margin-top:10px;">Приглашено: <span id="refCount">0</span></div>
+            <div style="font-size:0.7rem; color:#aaa;">+5% PPH за каждого друга 1 ур. | +2% за друзей друга</div>
+        </div>
     </div>
 
-    <!-- Glassmorphism нижнее меню -->
     <div class="bottom-nav">
-        <button class="nav-btn active" data-tab="miningTab">
-            <span class="nav-icon">⛏️</span> Майнинг
-        </button>
-        <button class="nav-btn" data-tab="shopTab">
-            <span class="nav-icon">🛒</span> Магазин
-        </button>
-        <button class="nav-btn" data-tab="comboTab">
-            <span class="nav-icon">🎯</span> Комбо
-        </button>
-        <button class="nav-btn" data-tab="statsTab">
-            <span class="nav-icon">📊</span> Статистика
-        </button>
+        <button class="nav-btn active" data-tab="miningTab"><span class="nav-icon">⛏️</span>Майнинг</button>
+        <button class="nav-btn" data-tab="shopTab"><span class="nav-icon">🛒</span>Магазин</button>
+        <button class="nav-btn" data-tab="comboTab"><span class="nav-icon">🎯</span>Комбо</button>
+        <button class="nav-btn" data-tab="squadTab"><span class="nav-icon">👥</span>Сквад</button>
+        <button class="nav-btn" data-tab="refTab"><span class="nav-icon">🔗</span>Рефералы</button>
     </div>
 </div>
 
-<!-- Модальное окно оффлайн-дохода -->
 <div id="offlineModal" class="modal-overlay" style="display: none;">
     <div class="modal">
         <h3>⏳ Пока вас не было</h3>
         <p>Вы заработали <span id="offlineAmount">0</span> $NODE</p>
-        <button class="close-btn" id="closeOfflineModal">Забрать</button>
+        <button class="close-btn" id="closeOfflineModal" style="background:#4facfe; border:none; padding:12px 25px; border-radius:20px; color:white; font-weight:bold; margin-top:15px;">Забрать</button>
     </div>
 </div>
 
 <script>
-    // ==============================
-    // ИНИЦИАЛИЗАЦИЯ TELEGRAM WEB APP
-    // ==============================
-    if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.ready();
-        window.Telegram.WebApp.expand();
-        const theme = window.Telegram.WebApp.themeParams;
-        const root = document.documentElement;
-        if (theme.bg_color) root.style.setProperty('--tg-theme-bg-color', theme.bg_color);
-        if (theme.text_color) root.style.setProperty('--tg-theme-text-color', theme.text_color);
-        // ... остальные переменные темы можно адаптировать, но мы используем кастомный дизайн
-    }
+    (function() {
+        // Telegram Web App ready
+        if (window.Telegram?.WebApp) {
+            window.Telegram.WebApp.ready();
+            window.Telegram.WebApp.expand();
+        }
 
-    // ==============================
-    // ДАННЫЕ КАРТОЧЕК (без изменений)
-    // ==============================
-    const cardsData = [
-        { id: 'hw1', name: 'Raspberry Pi Нода', category: 'hardware', baseCost: 10, baseProfit: 1 },
-        { id: 'hw2', name: 'SSD NVMe для Снапшотов', category: 'hardware', baseCost: 50, baseProfit: 5 },
-        { id: 'hw3', name: 'ОЗУ 32GB DDR4', category: 'hardware', baseCost: 120, baseProfit: 12 },
-        { id: 'hw4', name: 'Процессорный Кластер', category: 'hardware', baseCost: 300, baseProfit: 35 },
-        { id: 'hw5', name: 'Сетевая Карта 10Gbit', category: 'hardware', baseCost: 750, baseProfit: 80 },
-        { id: 'hw6', name: 'ИБП для Аптайма', category: 'hardware', baseCost: 1500, baseProfit: 160 },
-        { id: 'hw7', name: 'Охлаждение Ноды', category: 'hardware', baseCost: 3000, baseProfit: 320 },
-        { id: 'hw8', name: 'Статический IP-Адрес', category: 'hardware', baseCost: 5500, baseProfit: 600 },
-        { id: 'hw9', name: 'Выделенный Сервер', category: 'hardware', baseCost: 12000, baseProfit: 1300 },
-        { id: 'hw10', name: 'RAID-Массив 4xSSD', category: 'hardware', baseCost: 25000, baseProfit: 2700 },
-        { id: 'hw11', name: 'Оптоволоконный Канал', category: 'hardware', baseCost: 55000, baseProfit: 5800 },
-        { id: 'hw12', name: 'Резервный Генератор', category: 'hardware', baseCost: 120000, baseProfit: 12500 },
-        { id: 'hw13', name: 'Дата-центр (Колокейшн)', category: 'hardware', baseCost: 280000, baseProfit: 28000 },
-        { id: 'hw14', name: 'Ферма Валидаторов', category: 'hardware', baseCost: 650000, baseProfit: 62000 },
-        { id: 'hw15', name: 'Спутниковая Связь', category: 'hardware', baseCost: 1500000, baseProfit: 140000 },
-        { id: 'sw1', name: 'Обновление RPC-Ноды', category: 'software', baseCost: 25, baseProfit: 2 },
-        { id: 'sw2', name: 'Стейкинг Валидатора', category: 'software', baseCost: 75, baseProfit: 8 },
-        { id: 'sw3', name: 'MEV-Бот (v1)', category: 'software', baseCost: 200, baseProfit: 22 },
-        { id: 'sw4', name: 'Смарт-контракт Мост', category: 'software', baseCost: 500, baseProfit: 55 },
-        { id: 'sw5', name: 'Авто-рестейкинг', category: 'software', baseCost: 1200, baseProfit: 130 },
-        { id: 'sw6', name: 'Газ Оптимизатор', category: 'software', baseCost: 2800, baseProfit: 300 },
-        { id: 'sw7', name: 'Мониторинг Ноды (Grafana)', category: 'software', baseCost: 6500, baseProfit: 700 },
-        { id: 'sw8', name: 'Снапшот-Сервис', category: 'software', baseCost: 15000, baseProfit: 1600 },
-        { id: 'sw9', name: 'Консенсус Алгоритм (BFT)', category: 'software', baseCost: 35000, baseProfit: 3700 },
-        { id: 'sw10', name: 'Шардинг-Протокол', category: 'software', baseCost: 80000, baseProfit: 8500 },
-        { id: 'sw11', name: 'Криптография zk-SNARKs', category: 'software', baseCost: 180000, baseProfit: 19000 },
-        { id: 'sw12', name: 'Делегированный Стейк (DPoS)', category: 'software', baseCost: 400000, baseProfit: 42000 },
-        { id: 'sw13', name: 'Орбитальный Мост (Bridge)', category: 'software', baseCost: 900000, baseProfit: 95000 },
-        { id: 'sw14', name: 'Релеер Транзакций', category: 'software', baseCost: 2000000, baseProfit: 210000 },
-        { id: 'sw15', name: 'Нейро-Консенсус (AI)', category: 'software', baseCost: 5000000, baseProfit: 500000 },
-        { id: 'mk1', name: 'Twitter Инфлюенсер', category: 'marketing', baseCost: 40, baseProfit: 3 },
-        { id: 'mk2', name: 'Discord Комьюнити', category: 'marketing', baseCost: 150, baseProfit: 15 },
-        { id: 'mk3', name: 'YouTube Обзор Ноды', category: 'marketing', baseCost: 400, baseProfit: 42 },
-        { id: 'mk4', name: 'Telegram Амбассадор', category: 'marketing', baseCost: 1000, baseProfit: 105 },
-        { id: 'mk5', name: 'Партнерская Программа', category: 'marketing', baseCost: 2500, baseProfit: 260 },
-        { id: 'mk6', name: 'Аирдроп Кампания', category: 'marketing', baseCost: 6000, baseProfit: 630 },
-        { id: 'mk7', name: 'Реферальная Система', category: 'marketing', baseCost: 14000, baseProfit: 1500 },
-        { id: 'mk8', name: 'Медиа-Кит Проекта', category: 'marketing', baseCost: 32000, baseProfit: 3400 },
-        { id: 'mk9', name: 'Хакатон Спонсорство', category: 'marketing', baseCost: 75000, baseProfit: 8000 },
-        { id: 'mk10', name: 'Whitepaper 2.0', category: 'marketing', baseCost: 170000, baseProfit: 18000 },
-        { id: 'mk11', name: 'Листинг на CoinMarketCap', category: 'marketing', baseCost: 380000, baseProfit: 40000 },
-        { id: 'mk12', name: 'AMA Сессия (Twitter Space)', category: 'marketing', baseCost: 850000, baseProfit: 90000 },
-        { id: 'mk13', name: 'Кросс-чейн Партнерство', category: 'marketing', baseCost: 1900000, baseProfit: 200000 }
-    ];
+        // ========== КАРТОЧКИ ==========
+        const cardsData = [
+            { id: 'hw1', name: 'Raspberry Pi Нода', category: 'hardware', baseCost: 10, baseProfit: 1 },
+            { id: 'hw2', name: 'SSD NVMe для Снапшотов', category: 'hardware', baseCost: 50, baseProfit: 5 },
+            { id: 'hw3', name: 'ОЗУ 32GB DDR4', category: 'hardware', baseCost: 120, baseProfit: 12 },
+            { id: 'hw4', name: 'Процессорный Кластер', category: 'hardware', baseCost: 300, baseProfit: 35 },
+            { id: 'hw5', name: 'Сетевая Карта 10Gbit', category: 'hardware', baseCost: 750, baseProfit: 80 },
+            { id: 'hw6', name: 'ИБП для Аптайма', category: 'hardware', baseCost: 1500, baseProfit: 160 },
+            { id: 'hw7', name: 'Охлаждение Ноды', category: 'hardware', baseCost: 3000, baseProfit: 320 },
+            { id: 'hw8', name: 'Статический IP-Адрес', category: 'hardware', baseCost: 5500, baseProfit: 600 },
+            { id: 'hw9', name: 'Выделенный Сервер', category: 'hardware', baseCost: 12000, baseProfit: 1300 },
+            { id: 'hw10', name: 'RAID-Массив 4xSSD', category: 'hardware', baseCost: 25000, baseProfit: 2700 },
+            { id: 'hw11', name: 'Оптоволоконный Канал', category: 'hardware', baseCost: 55000, baseProfit: 5800 },
+            { id: 'hw12', name: 'Резервный Генератор', category: 'hardware', baseCost: 120000, baseProfit: 12500 },
+            { id: 'hw13', name: 'Дата-центр (Колокейшн)', category: 'hardware', baseCost: 280000, baseProfit: 28000 },
+            { id: 'hw14', name: 'Ферма Валидаторов', category: 'hardware', baseCost: 650000, baseProfit: 62000 },
+            { id: 'hw15', name: 'Спутниковая Связь', category: 'hardware', baseCost: 1500000, baseProfit: 140000 },
+            { id: 'sw1', name: 'Обновление RPC-Ноды', category: 'software', baseCost: 25, baseProfit: 2 },
+            { id: 'sw2', name: 'Стейкинг Валидатора', category: 'software', baseCost: 75, baseProfit: 8 },
+            { id: 'sw3', name: 'MEV-Бот (v1)', category: 'software', baseCost: 200, baseProfit: 22 },
+            { id: 'sw4', name: 'Смарт-контракт Мост', category: 'software', baseCost: 500, baseProfit: 55 },
+            { id: 'sw5', name: 'Авто-рестейкинг', category: 'software', baseCost: 1200, baseProfit: 130 },
+            { id: 'sw6', name: 'Газ Оптимизатор', category: 'software', baseCost: 2800, baseProfit: 300 },
+            { id: 'sw7', name: 'Мониторинг Ноды (Grafana)', category: 'software', baseCost: 6500, baseProfit: 700 },
+            { id: 'sw8', name: 'Снапшот-Сервис', category: 'software', baseCost: 15000, baseProfit: 1600 },
+            { id: 'sw9', name: 'Консенсус Алгоритм (BFT)', category: 'software', baseCost: 35000, baseProfit: 3700 },
+            { id: 'sw10', name: 'Шардинг-Протокол', category: 'software', baseCost: 80000, baseProfit: 8500 },
+            { id: 'sw11', name: 'Криптография zk-SNARKs', category: 'software', baseCost: 180000, baseProfit: 19000 },
+            { id: 'sw12', name: 'Делегированный Стейк (DPoS)', category: 'software', baseCost: 400000, baseProfit: 42000 },
+            { id: 'sw13', name: 'Орбитальный Мост (Bridge)', category: 'software', baseCost: 900000, baseProfit: 95000 },
+            { id: 'sw14', name: 'Релеер Транзакций', category: 'software', baseCost: 2000000, baseProfit: 210000 },
+            { id: 'sw15', name: 'Нейро-Консенсус (AI)', category: 'software', baseCost: 5000000, baseProfit: 500000 },
+            { id: 'mk1', name: 'Twitter Инфлюенсер', category: 'marketing', baseCost: 40, baseProfit: 3 },
+            { id: 'mk2', name: 'Discord Комьюнити', category: 'marketing', baseCost: 150, baseProfit: 15 },
+            { id: 'mk3', name: 'YouTube Обзор Ноды', category: 'marketing', baseCost: 400, baseProfit: 42 },
+            { id: 'mk4', name: 'Telegram Амбассадор', category: 'marketing', baseCost: 1000, baseProfit: 105 },
+            { id: 'mk5', name: 'Партнерская Программа', category: 'marketing', baseCost: 2500, baseProfit: 260 },
+            { id: 'mk6', name: 'Аирдроп Кампания', category: 'marketing', baseCost: 6000, baseProfit: 630 },
+            { id: 'mk7', name: 'Реферальная Система', category: 'marketing', baseCost: 14000, baseProfit: 1500 },
+            { id: 'mk8', name: 'Медиа-Кит Проекта', category: 'marketing', baseCost: 32000, baseProfit: 3400 },
+            { id: 'mk9', name: 'Хакатон Спонсорство', category: 'marketing', baseCost: 75000, baseProfit: 8000 },
+            { id: 'mk10', name: 'Whitepaper 2.0', category: 'marketing', baseCost: 170000, baseProfit: 18000 },
+            { id: 'mk11', name: 'Листинг на CoinMarketCap', category: 'marketing', baseCost: 380000, baseProfit: 40000 },
+            { id: 'mk12', name: 'AMA Сессия (Twitter Space)', category: 'marketing', baseCost: 850000, baseProfit: 90000 },
+            { id: 'mk13', name: 'Кросс-чейн Партнерство', category: 'marketing', baseCost: 1900000, baseProfit: 200000 }
+        ];
 
-    // ==============================
-    // СОСТОЯНИЕ ИГРЫ (без изменений)
-    // ==============================
-    const DEFAULT_STATE = {
-        balance: 100,
-        totalPPH: 0,
-        lastLogin: Date.now(),
-        energy: 1000,
-        lastEnergyUpdate: Date.now(),
-        cards: [],
-        dailyRewardDay: 0,
-        dailyRewardClaimed: false,
-        lastDailyRewardDate: null,
-        dailyComboDate: null,
-        dailyComboCards: [],
-        dailyComboClaimed: false,
-        totalClicks: 0
-    };
+        // Секретные карты (открываются при 3 рефералах)
+        const secretCards = [
+            { id: 'sc1', name: 'Генезис Ускоритель', category: 'secret', baseCost: 500000, baseProfit: 80000 },
+            { id: 'sc2', name: 'Квантовый Валидатор', category: 'secret', baseCost: 2000000, baseProfit: 300000 }
+        ];
 
-    let gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+        // Лимитированные спецкарты будут генерироваться динамически
+        let specialCards = [];
 
-    // DOM элементы
-    const balanceDisplay = document.getElementById('balanceDisplay');
-    const pphDisplay = document.getElementById('pphDisplay');
-    const energyFill = document.getElementById('energyFill');
-    const energyText = document.getElementById('energyText');
-    const clickerBtn = document.getElementById('clickerBtn');
-    const cardsContainer = document.getElementById('cardsContainer');
-    const dailyRewardGrid = document.getElementById('dailyRewardGrid');
-    const claimDailyBtn = document.getElementById('claimDailyBtn');
-    const claimComboBtn = document.getElementById('claimComboBtn');
-    const comboCardsContainer = document.getElementById('comboCardsContainer');
-    const statPPH = document.getElementById('statPPH');
-    const statCards = document.getElementById('statCards');
-    const statClicks = document.getElementById('statClicks');
-    const offlineModal = document.getElementById('offlineModal');
-    const offlineAmount = document.getElementById('offlineAmount');
-    const closeOfflineModal = document.getElementById('closeOfflineModal');
+        // ========== СОСТОЯНИЕ ==========
+        const DEFAULT_STATE = {
+            balance: 100,
+            totalPPH: 0,
+            lastLogin: Date.now(),
+            energy: 1000,
+            lastEnergyUpdate: Date.now(),
+            cards: [],
+            dailyRewardDay: 0,
+            dailyRewardClaimed: false,
+            lastDailyRewardDate: null,
+            dailyComboDate: null,
+            dailyComboCards: [],
+            dailyComboClaimed: false,
+            totalClicks: 0,
+            squadName: null,
+            referrals: 0,
+            referralCode: null,
+            // специальные карты дня
+            specialCardsDate: null,
+            specialCardsPurchased: [] // id купленных спецкарт, с временной меткой
+        };
 
-    // ==============================
-    // ФУНКЦИИ (без изменений)
-    // ==============================
-    function formatNumber(num) {
-        if (num >= 1e6) return (num / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
-        if (num >= 1e3) return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
-        return Math.floor(num).toLocaleString('ru-RU');
-    }
+        let gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
 
-    function getCardData(id) {
-        return cardsData.find(c => c.id === id);
-    }
+        // DOM элементы
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const pphDisplay = document.getElementById('pphDisplay');
+        const energyFill = document.getElementById('energyFill');
+        const energyText = document.getElementById('energyText');
+        const clickerBtn = document.getElementById('clickerBtn');
+        const cardsContainer = document.getElementById('cardsContainer');
+        const leagueDisplay = document.getElementById('leagueDisplay');
+        const squadNameInput = document.getElementById('squadNameInput');
+        const joinSquadBtn = document.getElementById('joinSquadBtn');
+        const squadInfo = document.getElementById('squadInfo');
+        const squadLeaderboard = document.getElementById('squadLeaderboard');
+        const refCountSpan = document.getElementById('refCount');
+        const refCodeDisplay = document.getElementById('refCodeDisplay');
+        const generateRefCodeBtn = document.getElementById('generateRefCodeBtn');
+        const simulateInviteBtn = document.getElementById('simulateInviteBtn');
+        const secretFilterBtn = document.getElementById('secretFilterBtn');
 
-    function getPlayerCard(id) {
-        return gameState.cards.find(c => c.id === id);
-    }
+        // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
+        function formatNumber(num) {
+            if (num >= 1e6) return (num / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+            if (num >= 1e3) return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
+            return Math.floor(num).toLocaleString('ru-RU');
+        }
 
-    function getCardProfit(id, level) {
-        const card = getCardData(id);
-        if (!card || level < 1) return 0;
-        return card.baseProfit * level * (1 + 0.15 * (level - 1));
-    }
+        function getCardData(id) {
+            return cardsData.find(c => c.id === id) || secretCards.find(c => c.id === id) || specialCards.find(c => c.id === id);
+        }
 
-    function calculateTotalPPH() {
-        let total = 0;
-        gameState.cards.forEach(c => {
-            total += getCardProfit(c.id, c.level);
-        });
-        gameState.totalPPH = total;
-    }
+        function getPlayerCard(id) {
+            return gameState.cards.find(c => c.id === id);
+        }
 
-    function getUpgradeCost(id, currentLevel) {
-        const card = getCardData(id);
-        if (!card) return Infinity;
-        return Math.floor(card.baseCost * Math.pow(1.5, currentLevel));
-    }
+        function getCardProfit(id, level) {
+            const card = getCardData(id);
+            if (!card || level < 1) return 0;
+            return card.baseProfit * level * (1 + 0.15 * (level - 1));
+        }
 
-    function saveGame() {
-        localStorage.setItem('nodeMinerState', JSON.stringify(gameState));
-    }
+        function calculateTotalPPH() {
+            let total = 0;
+            gameState.cards.forEach(c => {
+                total += getCardProfit(c.id, c.level);
+            });
+            // бонус от рефералов: 5% за каждого друга 1 уровня + 2% за друга второго уровня (симулируем просто как *0.05 за каждого)
+            const refBonus = gameState.referrals * 0.05; // 5% за каждого
+            gameState.totalPPH = total * (1 + refBonus);
+        }
 
-    function loadGame() {
-        const saved = localStorage.getItem('nodeMinerState');
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-                gameState = Object.assign({}, DEFAULT_STATE, parsed);
-                if (!Array.isArray(gameState.cards)) gameState.cards = [];
-                if (!Array.isArray(gameState.dailyComboCards)) gameState.dailyComboCards = [];
-            } catch (e) {
-                console.error('Ошибка загрузки сохранения', e);
-                gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+        function getUpgradeCost(id, currentLevel) {
+            const card = getCardData(id);
+            if (!card) return Infinity;
+            return Math.floor(card.baseCost * Math.pow(1.5, currentLevel));
+        }
+
+        function saveGame() {
+            localStorage.setItem('nodeMinerPremium', JSON.stringify(gameState));
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem('nodeMinerPremium');
+            if (saved) {
+                try {
+                    gameState = Object.assign({}, DEFAULT_STATE, JSON.parse(saved));
+                } catch (e) {}
+            }
+            if (!Array.isArray(gameState.cards)) gameState.cards = [];
+            if (!Array.isArray(gameState.specialCardsPurchased)) gameState.specialCardsPurchased = [];
+            calculateTotalPPH();
+        }
+
+        // Офлайн доход
+        function processOfflineIncome() {
+            const now = Date.now();
+            let delta = (now - gameState.lastLogin) / 1000;
+            if (delta < 0) delta = 0;
+            const maxDelta = 86400;
+            if (delta > maxDelta) delta = maxDelta;
+            if (delta > 0 && gameState.totalPPH > 0) {
+                const earned = (gameState.totalPPH / 3600) * delta;
+                gameState.balance += earned;
+                return earned;
+            }
+            return 0;
+        }
+
+        function restoreEnergy() {
+            const now = Date.now();
+            const delta = (now - gameState.lastEnergyUpdate) / 1000;
+            if (delta > 0) {
+                gameState.energy = Math.min(1000, gameState.energy + delta * 2);
+                gameState.lastEnergyUpdate = now;
             }
         }
-        calculateTotalPPH();
-    }
 
-    function processOfflineIncome() {
-        const now = Date.now();
-        let deltaSeconds = (now - gameState.lastLogin) / 1000;
-        if (deltaSeconds < 0) deltaSeconds = 0;
-        const maxSeconds = 86400;
-        if (deltaSeconds > maxSeconds) deltaSeconds = maxSeconds;
-        if (deltaSeconds > 0 && gameState.totalPPH > 0) {
-            const earned = (gameState.totalPPH / 3600) * deltaSeconds;
-            gameState.balance += earned;
-            return earned;
-        }
-        return 0;
-    }
-
-    function restoreEnergy() {
-        const now = Date.now();
-        let deltaSeconds = (now - gameState.lastEnergyUpdate) / 1000;
-        if (deltaSeconds < 0) deltaSeconds = 0;
-        const maxEnergy = 1000;
-        const restoreRate = 2;
-        const restored = Math.min(deltaSeconds * restoreRate, maxEnergy - gameState.energy);
-        if (restored > 0) {
-            gameState.energy = Math.min(maxEnergy, gameState.energy + restored);
-        }
-        gameState.lastEnergyUpdate = now;
-    }
-
-    function updateDailyProgress() {
-        const today = new Date().toISOString().split('T')[0];
-        if (gameState.lastDailyRewardDate !== today) {
-            gameState.dailyRewardClaimed = false;
-        }
-        if (gameState.dailyComboDate !== today) {
-            gameState.dailyComboDate = today;
-            gameState.dailyComboClaimed = false;
-            const categories = ['hardware', 'software', 'marketing'];
-            const combo = [];
-            categories.forEach(cat => {
-                const catCards = cardsData.filter(c => c.category === cat);
-                const randomCard = catCards[Math.floor(Math.random() * catCards.length)];
-                combo.push(randomCard.id);
+        // Ежедневные обновления
+        function updateDailyProgress() {
+            const today = new Date().toISOString().slice(0,10);
+            if (gameState.lastDailyRewardDate !== today) gameState.dailyRewardClaimed = false;
+            if (gameState.dailyComboDate !== today) {
+                gameState.dailyComboDate = today;
+                gameState.dailyComboClaimed = false;
+                const cats = ['hardware','software','marketing'];
+                gameState.dailyComboCards = cats.map(cat => {
+                    const pool = cardsData.filter(c => c.category === cat);
+                    return pool[Math.floor(Math.random() * pool.length)].id;
+                });
+            }
+            // Специальные карты дня
+            if (gameState.specialCardsDate !== today) {
+                gameState.specialCardsDate = today;
+                gameState.specialCardsPurchased = []; // сбрасываем покупки предыдущего дня
+                generateSpecialCards();
+            }
+            // Удаляем просроченные спецкарты (если куплены не сегодня)
+            gameState.cards = gameState.cards.filter(c => {
+                if (c.id.startsWith('sp_')) {
+                    const spec = specialCards.find(s => s.id === c.id);
+                    return spec && gameState.specialCardsDate === today;
+                }
+                return true;
             });
-            gameState.dailyComboCards = combo;
         }
-    }
 
-    function checkDailyComboCompleted() {
-        if (!gameState.dailyComboCards.length) return false;
-        return gameState.dailyComboCards.every(id => {
-            const playerCard = getPlayerCard(id);
-            return playerCard && playerCard.level >= 1;
+        function generateSpecialCards() {
+            specialCards = [];
+            const names = ['Интервью с Дуровым', 'Листинг на Binance', 'Коллаб с Vitalik', 'NFT Airdrop', 'SEC одобрение'];
+            for (let i = 0; i < 3; i++) {
+                const id = 'sp_' + i;
+                specialCards.push({
+                    id: id,
+                    name: names[i],
+                    category: 'special',
+                    baseCost: 50000 + i * 30000,
+                    baseProfit: 10000 + i * 7000,
+                    expires: Date.now() + 86400000
+                });
+            }
+        }
+
+        function getLeague(pph) {
+            if (pph >= 100000) return { name: '💎 Genesis', color: '#b44dff' };
+            if (pph >= 10000) return { name: '🥈 Validator', color: '#4facfe' };
+            if (pph >= 1000) return { name: '🥉 Mainnet', color: '#f0b90b' };
+            return { name: '🔹 Testnet', color: '#aaa' };
+        }
+
+        function updateLeagueUI() {
+            const league = getLeague(gameState.totalPPH);
+            leagueDisplay.textContent = league.name;
+            leagueDisplay.style.color = league.color;
+            // меняем свечение кнопки соответственно
+            clickerBtn.style.boxShadow = `0 0 60px ${league.color}, 0 15px 30px black`;
+        }
+
+        // ========== РЕНДЕРИНГ ==========
+        function updateUI() {
+            balanceDisplay.textContent = formatNumber(gameState.balance);
+            pphDisplay.textContent = formatNumber(gameState.totalPPH);
+            energyFill.style.width = (gameState.energy / 10) + '%';
+            energyText.textContent = Math.floor(gameState.energy) + '/1000';
+            updateLeagueUI();
+            refCountSpan.textContent = gameState.referrals;
+            if (gameState.referrals >= 3) secretFilterBtn.style.display = 'inline-block';
+            else secretFilterBtn.style.display = 'none';
+        }
+
+        function renderShop(category = 'all') {
+            let allCards = [...cardsData];
+            if (category === 'secret') allCards = [...secretCards];
+            else if (category === 'special') allCards = [...specialCards];
+            else if (category !== 'all') allCards = cardsData.filter(c => c.category === category);
+            else allCards = [...cardsData, ...specialCards, ...(gameState.referrals >= 3 ? secretCards : [])];
+
+            cardsContainer.innerHTML = allCards.map(card => {
+                const playerCard = getPlayerCard(card.id);
+                const level = playerCard ? playerCard.level : 0;
+                const profit = getCardProfit(card.id, level);
+                const cost = getUpgradeCost(card.id, level);
+                const canBuy = gameState.balance >= cost;
+                const isSpecial = card.category === 'special';
+                const expiresText = isSpecial ? `<div class="special-timer">До конца: ${new Date(card.expires).toLocaleTimeString()}</div>` : '';
+                return `
+                    <div class="card-item">
+                        <strong>${card.name}</strong> ${expiresText}
+                        <div>Прибыль: +${formatNumber(profit)}/ч</div>
+                        <button class="upgrade-btn" data-id="${card.id}" ${!canBuy ? 'disabled' : ''}>
+                            ${level === 0 ? 'Купить' : 'Апгрейд'} (${formatNumber(cost)})
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            document.querySelectorAll('.upgrade-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.target.dataset.id;
+                    buyUpgrade(id);
+                });
+            });
+        }
+
+        function buyUpgrade(cardId) {
+            const playerCard = getPlayerCard(cardId);
+            const level = playerCard ? playerCard.level : 0;
+            const cost = getUpgradeCost(cardId, level);
+            if (gameState.balance < cost) return;
+            // проверка спецкарты на доступность
+            const card = getCardData(cardId);
+            if (card?.category === 'special' && gameState.specialCardsDate !== new Date().toISOString().slice(0,10)) {
+                alert('Срок действия карты истёк!');
+                return;
+            }
+            gameState.balance -= cost;
+            if (!playerCard) {
+                gameState.cards.push({ id: cardId, level: 1 });
+            } else {
+                playerCard.level++;
+            }
+            calculateTotalPPH();
+            saveGame();
+            updateUI();
+            renderShop(document.querySelector('.filter-btn.active')?.dataset.category || 'all');
+        }
+
+        function claimDailyReward() {
+            if (gameState.dailyRewardClaimed) return;
+            const rewards = [50,150,400,1000,3000,8000,25000];
+            const reward = rewards[gameState.dailyRewardDay];
+            gameState.balance += reward;
+            gameState.dailyRewardClaimed = true;
+            gameState.lastDailyRewardDate = new Date().toISOString().slice(0,10);
+            gameState.dailyRewardDay = (gameState.dailyRewardDay + 1) % 7;
+            saveGame();
+            updateUI();
+            renderDailyReward();
+        }
+
+        function renderDailyReward() {
+            const rewards = [50,150,400,1000,3000,8000,25000];
+            const today = new Date().toISOString().slice(0,10);
+            const claimed = gameState.dailyRewardClaimed && gameState.lastDailyRewardDate === today;
+            let html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px;">';
+            for (let i=0; i<7; i++) {
+                let cls = 'day-cell';
+                if (i < gameState.dailyRewardDay || (i === gameState.dailyRewardDay && claimed)) cls += ' claimed';
+                if (i === gameState.dailyRewardDay && !claimed) cls += ' today';
+                html += `<div class="${cls}"><span>День${i+1}</span><span>${formatNumber(rewards[i])}</span></div>`;
+            }
+            html += '</div>';
+            html += `<button class="claim-daily-btn" ${claimed ? 'disabled' : ''}>${claimed ? 'Получено' : 'Забрать'}</button>`;
+            document.getElementById('dailyRewardBlock').innerHTML = html;
+            document.querySelector('.claim-daily-btn')?.addEventListener('click', claimDailyReward);
+        }
+
+        function claimDailyCombo() {
+            if (gameState.dailyComboClaimed || !checkComboCompleted()) return;
+            gameState.balance += 50000;
+            gameState.dailyComboClaimed = true;
+            saveGame();
+            updateUI();
+            renderCombo();
+        }
+
+        function checkComboCompleted() {
+            return gameState.dailyComboCards.every(id => {
+                const pc = getPlayerCard(id);
+                return pc && pc.level >= 1;
+            });
+        }
+
+        function renderCombo() {
+            const combo = gameState.dailyComboCards;
+            let html = '<h4>🔥 Комбо дня</h4><div style="display:flex;gap:8px;margin:10px 0;">';
+            combo.forEach(id => {
+                const card = getCardData(id);
+                const has = getPlayerCard(id)?.level >= 1;
+                html += `<div class="combo-card ${has ? 'completed' : ''}">${card?.name || id}</div>`;
+            });
+            html += '</div>';
+            const completed = checkComboCompleted();
+            html += `<button class="claim-combo-btn" ${!completed || gameState.dailyComboClaimed ? 'disabled' : ''}>${gameState.dailyComboClaimed ? 'Получено' : 'Забрать 50K'}</button>`;
+            document.getElementById('comboBlock').innerHTML = html;
+            document.querySelector('.claim-combo-btn')?.addEventListener('click', claimDailyCombo);
+        }
+
+        // Сквады
+        function renderSquad() {
+            if (gameState.squadName) {
+                squadInfo.innerHTML = `Ваш сквад: <strong>${gameState.squadName}</strong><br>Ваш PPH: ${formatNumber(gameState.totalPPH)}`;
+            } else {
+                squadInfo.innerHTML = 'Вы не в скваде';
+            }
+            // Симулированный рейтинг
+            const squads = [
+                { name: 'Crypto Whales', pph: 500000 + Math.random()*200000 },
+                { name: 'Node Warriors', pph: 300000 + Math.random()*150000 },
+                { name: 'Mainnet Kings', pph: 200000 + Math.random()*100000 },
+                { name: gameState.squadName || 'Ваш сквад', pph: gameState.totalPPH + Math.random()*50000 }
+            ];
+            squads.sort((a,b) => b.pph - a.pph);
+            squadLeaderboard.innerHTML = squads.map((s,i) => `${i+1}. ${s.name} — ${formatNumber(s.pph)} PPH`).join('<br>');
+        }
+
+        joinSquadBtn.addEventListener('click', () => {
+            const name = squadNameInput.value.trim();
+            if (!name) return;
+            gameState.squadName = name;
+            saveGame();
+            renderSquad();
         });
-    }
 
-    function clickMine(e) {
-        if (gameState.energy < 1) {
-            clickerBtn.classList.add('disabled');
-            return;
-        }
-        gameState.energy -= 1;
-        gameState.totalClicks += 1;
-        const clickValue = 1 + (gameState.totalPPH / 3600) * 10;
-        gameState.balance += clickValue;
-        saveGame();
-        updateUI();
+        // Рефералы
+        generateRefCodeBtn.addEventListener('click', () => {
+            gameState.referralCode = 'REF' + Math.random().toString(36).substring(2,8).toUpperCase();
+            refCodeDisplay.textContent = 'Код: ' + gameState.referralCode;
+            saveGame();
+        });
 
-        const rect = clickerBtn.getBoundingClientRect();
-        const particle = document.createElement('div');
-        particle.className = 'float-particle';
-        particle.textContent = '+' + formatNumber(clickValue);
-        particle.style.left = rect.left + rect.width/2 - 20 + 'px';
-        particle.style.top = rect.top + 'px';
-        document.body.appendChild(particle);
-        setTimeout(() => particle.remove(), 900);
+        simulateInviteBtn.addEventListener('click', () => {
+            gameState.referrals += 1;
+            calculateTotalPPH();
+            saveGame();
+            updateUI();
+            renderShop();
+            if (gameState.referrals >= 3) alert('Открыта секретная категория карт!');
+        });
 
-        if (gameState.energy < 1) {
-            clickerBtn.classList.add('disabled');
-        }
-    }
+        // Кнопка кликера
+        clickerBtn.addEventListener('click', () => {
+            if (gameState.energy < 1) return;
+            gameState.energy--;
+            gameState.totalClicks++;
+            const clickValue = 1 + (gameState.totalPPH / 3600) * 10;
+            gameState.balance += clickValue;
+            saveGame();
+            updateUI();
+            // частица
+            const r = clickerBtn.getBoundingClientRect();
+            const p = document.createElement('div');
+            p.style.cssText = `position:fixed;left:${r.left+r.width/2-20}px;top:${r.top}px;color:#f0b90b;font-weight:bold;pointer-events:none;animation:floatUp 1s forwards;`;
+            p.textContent = '+' + formatNumber(clickValue);
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 1000);
+        });
 
-    function buyUpgrade(cardId) {
-        const playerCard = getPlayerCard(cardId);
-        const currentLevel = playerCard ? playerCard.level : 0;
-        const cost = getUpgradeCost(cardId, currentLevel);
-        if (gameState.balance < cost) return;
-        gameState.balance -= cost;
-        if (!playerCard) {
-            gameState.cards.push({ id: cardId, level: 1 });
-        } else {
-            playerCard.level += 1;
-        }
-        calculateTotalPPH();
-        saveGame();
-        updateUI();
-        renderShop();
-    }
+        // Навигация
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                const tabId = btn.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+                btn.classList.add('active');
+                if (tabId === 'shopTab') renderShop();
+                if (tabId === 'comboTab') { renderDailyReward(); renderCombo(); }
+                if (tabId === 'squadTab') renderSquad();
+            });
+        });
 
-    function claimDailyReward() {
-        if (gameState.dailyRewardClaimed) return;
-        const rewards = [50, 150, 400, 1000, 3000, 8000, 25000];
-        const reward = rewards[gameState.dailyRewardDay];
-        gameState.balance += reward;
-        gameState.dailyRewardClaimed = true;
-        gameState.lastDailyRewardDate = new Date().toISOString().split('T')[0];
-        gameState.dailyRewardDay = (gameState.dailyRewardDay + 1) % 7;
-        saveGame();
-        updateUI();
-        renderDailyReward();
-        alert(`Получено ${formatNumber(reward)} $NODE!`);
-    }
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderShop(btn.dataset.category);
+            });
+        });
 
-    function claimDailyCombo() {
-        if (gameState.dailyComboClaimed || !checkDailyComboCompleted()) return;
-        const reward = 50000;
-        gameState.balance += reward;
-        gameState.dailyComboClaimed = true;
-        saveGame();
-        updateUI();
-        renderCombo();
-        alert(`Комбо дня! +${formatNumber(reward)} $NODE`);
-    }
-
-    function resetProgress() {
-        if (confirm('Вы уверены, что хотите полностью сбросить прогресс?')) {
-            gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+        // Инициализация
+        function init() {
+            loadGame();
+            restoreEnergy();
+            const offlineEarned = processOfflineIncome();
+            gameState.lastLogin = Date.now();
+            updateDailyProgress();
+            calculateTotalPPH();
             saveGame();
             updateUI();
             renderShop();
             renderDailyReward();
             renderCombo();
-            updateStats();
-        }
-    }
-
-    function updateUI() {
-        balanceDisplay.textContent = formatNumber(gameState.balance);
-        pphDisplay.textContent = formatNumber(gameState.totalPPH);
-        const energyPercent = (gameState.energy / 1000) * 100;
-        energyFill.style.width = energyPercent + '%';
-        energyText.textContent = Math.floor(gameState.energy) + ' / 1000';
-        clickerBtn.classList.toggle('disabled', gameState.energy < 1);
-        statPPH.textContent = formatNumber(gameState.totalPPH);
-        statCards.textContent = gameState.cards.filter(c => c.level > 0).length;
-        statClicks.textContent = gameState.totalClicks;
-    }
-
-    function updateStats() {
-        statPPH.textContent = formatNumber(gameState.totalPPH);
-        statCards.textContent = gameState.cards.filter(c => c.level > 0).length;
-        statClicks.textContent = gameState.totalClicks;
-    }
-
-    function renderShop(category = 'all') {
-        const filtered = cardsData.filter(c => category === 'all' || c.category === category);
-        cardsContainer.innerHTML = filtered.map(card => {
-            const playerCard = getPlayerCard(card.id);
-            const level = playerCard ? playerCard.level : 0;
-            const profit = getCardProfit(card.id, level);
-            const nextCost = getUpgradeCost(card.id, level);
-            const canAfford = gameState.balance >= nextCost;
-            return `
-                <div class="card-item ${level > 0 ? 'owned' : ''}">
-                    <div class="card-header">
-                        <span class="card-title">${card.name}</span>
-                        <span class="card-level">Ур. ${level}</span>
-                    </div>
-                    <div class="card-stats">
-                        <span>Прибыль: <span class="card-profit">+${formatNumber(profit)}/ч</span></span>
-                    </div>
-                    <button class="upgrade-btn" data-id="${card.id}" ${!canAfford ? 'disabled' : ''}>
-                        ${level === 0 ? 'Купить' : 'Апгрейд'} (${formatNumber(nextCost)} $NODE)
-                    </button>
-                </div>
-            `;
-        }).join('');
-
-        cardsContainer.querySelectorAll('.upgrade-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = e.target.dataset.id;
-                buyUpgrade(id);
-            });
-        });
-    }
-
-    function renderDailyReward() {
-        const rewards = [50, 150, 400, 1000, 3000, 8000, 25000];
-        const today = new Date().toISOString().split('T')[0];
-        const isTodayClaimed = gameState.dailyRewardClaimed && gameState.lastDailyRewardDate === today;
-        let html = '';
-        for (let i = 0; i < 7; i++) {
-            let classes = 'day-cell';
-            if (i < gameState.dailyRewardDay || (i === gameState.dailyRewardDay && isTodayClaimed)) {
-                classes += ' claimed';
+            renderSquad();
+            if (offlineEarned > 0) {
+                document.getElementById('offlineAmount').textContent = formatNumber(offlineEarned);
+                document.getElementById('offlineModal').style.display = 'flex';
             }
-            if (i === gameState.dailyRewardDay && !isTodayClaimed) {
-                classes += ' today';
-            }
-            html += `<div class="${classes}"><span>День ${i+1}</span><span class="day-reward">${formatNumber(rewards[i])}</span></div>`;
-        }
-        dailyRewardGrid.innerHTML = html;
-        claimDailyBtn.disabled = isTodayClaimed;
-        claimDailyBtn.textContent = isTodayClaimed ? 'Награда получена' : 'Забрать награду';
-    }
-
-    function renderCombo() {
-        if (!gameState.dailyComboCards.length) {
-            comboCardsContainer.innerHTML = '<p>Загрузка...</p>';
-            return;
-        }
-        const completed = checkDailyComboCompleted();
-        const html = gameState.dailyComboCards.map(id => {
-            const card = getCardData(id);
-            const playerCard = getPlayerCard(id);
-            const hasCard = playerCard && playerCard.level >= 1;
-            return `<div class="combo-card ${hasCard ? 'completed' : ''}">${card.name}<br><small>${hasCard ? '✅ Есть' : '❌ Нет'}</small></div>`;
-        }).join('');
-        comboCardsContainer.innerHTML = html;
-        claimComboBtn.disabled = !completed || gameState.dailyComboClaimed;
-        claimComboBtn.textContent = gameState.dailyComboClaimed ? 'Бонус получен' : 'Получить бонус (50 000 $NODE)';
-    }
-
-    function init() {
-        loadGame();
-        restoreEnergy();
-        const offlineEarned = processOfflineIncome();
-        gameState.lastLogin = Date.now();
-        updateDailyProgress();
-        calculateTotalPPH();
-        saveGame();
-        updateUI();
-        renderShop();
-        renderDailyReward();
-        renderCombo();
-        updateStats();
-
-        if (offlineEarned > 0) {
-            offlineAmount.textContent = formatNumber(offlineEarned);
-            offlineModal.style.display = 'flex';
+            setInterval(() => {
+                restoreEnergy();
+                updateUI();
+            }, 1000);
         }
 
-        setInterval(() => {
-            restoreEnergy();
-            updateUI();
-            saveGame();
-        }, 1000);
-    }
-
-    // Привязка событий
-    clickerBtn.addEventListener('click', clickMine);
-
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tabId = btn.dataset.tab;
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
-            if (tabId === 'shopTab') renderShop();
-            if (tabId === 'comboTab') {
-                renderDailyReward();
-                renderCombo();
-            }
-            if (tabId === 'statsTab') updateStats();
+        document.getElementById('closeOfflineModal').addEventListener('click', () => {
+            document.getElementById('offlineModal').style.display = 'none';
         });
-    });
 
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const category = btn.dataset.category;
-            renderShop(category);
-        });
-    });
-
-    claimDailyBtn.addEventListener('click', claimDailyReward);
-    claimComboBtn.addEventListener('click', claimDailyCombo);
-    document.getElementById('resetBtn').addEventListener('click', resetProgress);
-    closeOfflineModal.addEventListener('click', () => {
-        offlineModal.style.display = 'none';
-    });
-
-    init();
+        init();
+    })();
 </script>
 </body>
 </html>
