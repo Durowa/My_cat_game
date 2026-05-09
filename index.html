@@ -5,23 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>NODE Miner</title>
     <style>
+        /* ==============================
+           НОВЫЙ ПРЕМИАЛЬНЫЙ ДИЗАЙН
+           ============================== */
         :root {
-            --tg-theme-bg-color: #1a1a2e;
-            --tg-theme-text-color: #e0e0e0;
-            --tg-theme-hint-color: #8a8a8a;
-            --tg-theme-link-color: #6c9fff;
-            --tg-theme-button-color: #4a80f0;
-            --tg-theme-button-text-color: #ffffff;
-            --tg-theme-secondary-bg-color: #16213e;
-            --tg-theme-header-bg-color: #0f3460;
-            --tg-theme-section-bg-color: #1a1a2e;
-            --tg-theme-accent-text-color: #4a80f0;
-            --tg-theme-destructive-text-color: #ff5e5e;
-            --card-bg: #0f3460;
-            --card-hover: #1a4a7a;
-            --success: #2ecc71;
-            --warning: #f1c40f;
-            --danger: #e74c3c;
+            --bg-gradient: linear-gradient(145deg, #0a0e17 0%, #111b2b 100%);
+            --glass-bg: rgba(15, 25, 45, 0.65);
+            --glass-border: rgba(100, 150, 255, 0.2);
+            --neon-blue: #4a9eff;
+            --neon-cyan: #00e5ff;
+            --neon-purple: #b44dff;
+            --neon-gold: #f0b90b;
+            --text-primary: #ffffff;
+            --text-secondary: #a0b5d0;
+            --energy-color: #00e676;
+            --danger: #ff4d6a;
+            --card-bg: rgba(10, 20, 35, 0.8);
         }
 
         * {
@@ -31,81 +30,88 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: var(--tg-theme-bg-color);
-            color: var(--tg-theme-text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 0;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            transition: background 0.3s;
         }
 
         .app-container {
             width: 100%;
             max-width: 420px;
-            background: var(--tg-theme-secondary-bg-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 0 20px rgba(0,0,0,0.4);
             position: relative;
+            background: transparent;
+            box-shadow: 0 0 60px rgba(0, 180, 255, 0.15);
         }
 
+        /* Верхняя панель */
         .top-panel {
-            background: var(--tg-theme-header-bg-color);
-            padding: 20px 16px 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 25px 20px 20px;
+            background: transparent;
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             position: sticky;
             top: 0;
-            z-index: 10;
-            backdrop-filter: blur(10px);
+            z-index: 20;
         }
 
         .balance-container {
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 15px;
         }
 
         .balance-label {
-            font-size: 0.8rem;
-            color: var(--tg-theme-hint-color);
-            letter-spacing: 1px;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
         }
 
         .balance-amount {
-            font-size: 2.4rem;
+            font-size: 3rem;
             font-weight: 700;
-            color: var(--tg-theme-accent-text-color);
-            margin: 5px 0;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(100, 180, 255, 0.5);
+            line-height: 1;
             word-break: break-word;
         }
 
         .pph-badge {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 6px 16px;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 40px;
+            padding: 10px 22px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-size: 0.9rem;
-            color: var(--tg-theme-hint-color);
+            color: var(--text-secondary);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
         }
 
         .pph-value {
-            color: #f1c40f;
-            font-weight: bold;
+            color: var(--neon-gold);
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(240, 185, 11, 0.6);
         }
 
+        /* Основная область */
         .tab-content {
             flex: 1;
             overflow-y: auto;
-            padding: 16px;
-            padding-bottom: 80px;
+            padding: 10px 16px 90px;
             display: none;
         }
 
@@ -113,117 +119,194 @@
             display: block;
         }
 
-        /* Mining Tab */
+        /* Майнинг */
         .miner-center {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 30px 0;
+            padding: 20px 0;
         }
 
+        /* 3D монета/нода */
         .clicker-button {
-            width: 180px;
-            height: 180px;
+            width: 190px;
+            height: 190px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #f39c12, #d35400);
-            border: none;
-            box-shadow: 0 10px 30px rgba(243, 156, 18, 0.4);
+            background: radial-gradient(circle at 35% 30%, #ffd966, #d4a017);
+            border: 4px solid rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 50px rgba(0, 160, 255, 0.5), 0 20px 30px rgba(0,0,0,0.6), inset 0 -8px 0 rgba(0,0,0,0.4);
             cursor: pointer;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: transform 0.1s ease, box-shadow 0.1s;
-            position: relative;
-            color: white;
-            font-size: 3rem;
-            font-weight: bold;
-            user-select: none;
+            font-size: 4rem;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 0 30px rgba(255,255,255,0.8);
             outline: none;
             -webkit-tap-highlight-color: transparent;
+            animation: pulse-glow 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 30px rgba(0, 200, 255, 0.5), 0 20px 30px rgba(0,0,0,0.6), inset 0 -8px 0 rgba(0,0,0,0.4); }
+            50% { box-shadow: 0 0 70px rgba(0, 180, 255, 0.9), 0 20px 30px rgba(0,0,0,0.6), inset 0 -8px 0 rgba(0,0,0,0.4); }
+            100% { box-shadow: 0 0 30px rgba(0, 200, 255, 0.5), 0 20px 30px rgba(0,0,0,0.6), inset 0 -8px 0 rgba(0,0,0,0.4); }
         }
 
         .clicker-button:active {
-            transform: scale(0.9);
-            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.6);
+            transform: scale(0.88);
+            box-shadow: 0 0 90px rgba(0, 220, 255, 1), 0 10px 20px rgba(0,0,0,0.8), inset 0 -4px 0 rgba(0,0,0,0.5);
         }
 
         .clicker-button.disabled {
-            background: #555;
-            box-shadow: none;
+            background: radial-gradient(circle at 35% 30%, #5a5a5a, #2d2d2d);
+            border-color: #444;
+            box-shadow: 0 0 20px rgba(100,100,100,0.3);
+            animation: none;
             cursor: not-allowed;
-            transform: none;
+        }
+
+        /* Энергия */
+        .energy-container {
+            width: 90%;
+            margin-top: 35px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .energy-icon {
+            font-size: 1.5rem;
+            color: var(--energy-color);
+            text-shadow: 0 0 12px var(--energy-color);
         }
 
         .energy-bar {
-            width: 100%;
-            height: 20px;
-            background: rgba(255,255,255,0.1);
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.08);
             border-radius: 10px;
-            margin-top: 30px;
             overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
         }
 
         .energy-fill {
             height: 100%;
             width: 100%;
-            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            background: linear-gradient(90deg, #00e676, #00c853);
+            box-shadow: 0 0 12px #00e676;
             transition: width 0.3s ease;
             border-radius: 10px;
         }
 
         .energy-text {
-            text-align: center;
-            margin-top: 8px;
             font-size: 0.85rem;
-            color: var(--tg-theme-hint-color);
+            color: var(--text-secondary);
+            text-align: right;
+            min-width: 80px;
         }
 
-        /* Shop Tab */
+        /* Glassmorphism нижнее меню */
+        .bottom-nav {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 30px);
+            max-width: 390px;
+            background: rgba(15, 25, 45, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 5px;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            padding: 8px 12px;
+            border-radius: 20px;
+        }
+
+        .nav-btn.active {
+            color: #fff;
+            background: rgba(74, 158, 255, 0.15);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 6px currentColor);
+        }
+
+        /* Карточки магазина (для консистентности) */
         .filter-bar {
             display: flex;
             gap: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             overflow-x: auto;
             padding-bottom: 5px;
         }
 
         .filter-btn {
-            background: var(--card-bg);
-            border: none;
-            color: var(--tg-theme-text-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-secondary);
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.85rem;
             cursor: pointer;
             white-space: nowrap;
-            transition: background 0.2s;
+            backdrop-filter: blur(5px);
+            transition: all 0.2s;
         }
 
         .filter-btn.active {
-            background: var(--tg-theme-button-color);
-            color: var(--tg-theme-button-text-color);
+            background: rgba(74, 158, 255, 0.25);
+            color: white;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(74, 158, 255, 0.3);
         }
 
         .cards-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
+            gap: 14px;
         }
 
         .card-item {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 16px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 22px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            transition: background 0.2s;
-            border: 1px solid transparent;
+            gap: 10px;
+            transition: transform 0.2s, border-color 0.2s;
         }
 
         .card-item.owned {
-            border-color: #f1c40f55;
+            border-color: rgba(240, 185, 11, 0.5);
+            box-shadow: 0 0 20px rgba(240, 185, 11, 0.15);
         }
 
         .card-header {
@@ -238,95 +321,102 @@
         }
 
         .card-level {
-            background: rgba(255,255,255,0.1);
-            padding: 4px 10px;
-            border-radius: 12px;
+            background: rgba(255,255,255,0.08);
+            padding: 5px 12px;
+            border-radius: 15px;
             font-size: 0.8rem;
+            color: var(--text-secondary);
         }
 
         .card-stats {
-            display: flex;
-            justify-content: space-between;
             font-size: 0.85rem;
-            color: var(--tg-theme-hint-color);
+            color: var(--text-secondary);
         }
 
         .card-profit {
-            color: #2ecc71;
+            color: #00e676;
+            font-weight: 600;
         }
 
         .upgrade-btn {
-            background: var(--tg-theme-button-color);
-            color: white;
+            background: var(--neon-blue);
             border: none;
-            padding: 10px;
-            border-radius: 10px;
+            color: white;
+            padding: 12px;
+            border-radius: 14px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 4px;
+            transition: background 0.2s, box-shadow 0.2s;
+            margin-top: 5px;
+            box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
         }
 
         .upgrade-btn:active {
-            background: #3a6fd8;
+            background: #3a7ed9;
+            box-shadow: 0 2px 10px rgba(74, 158, 255, 0.5);
         }
 
         .upgrade-btn:disabled {
-            background: #555;
+            background: #2a3344;
+            box-shadow: none;
             cursor: not-allowed;
         }
 
-        /* Combo Tab */
+        /* Комбо и награды */
         .combo-section {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
+            background: rgba(10, 20, 35, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 22px;
             margin-bottom: 25px;
         }
 
         .section-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #fff;
         }
 
         .daily-reward-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 6px;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .day-cell {
             aspect-ratio: 1;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
-            position: relative;
+            font-size: 0.65rem;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: 0.2s;
+            border: 1px solid transparent;
         }
 
         .day-cell.claimed {
-            background: #2ecc7144;
+            background: rgba(0, 230, 118, 0.15);
             cursor: default;
         }
 
         .day-cell.today {
-            border: 2px solid #f1c40f;
-            background: #f1c40f22;
+            border-color: #f0b90b;
+            background: rgba(240, 185, 11, 0.1);
+            box-shadow: 0 0 15px rgba(240, 185, 11, 0.3);
         }
 
         .day-reward {
             font-weight: bold;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
         }
 
         .combo-cards {
@@ -337,112 +427,69 @@
 
         .combo-card {
             flex: 1;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 15px 5px;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            border: 1px solid transparent;
         }
 
         .combo-card.completed {
-            border: 2px solid #2ecc71;
+            border-color: #00e676;
+            background: rgba(0, 230, 118, 0.1);
         }
 
-        .claim-combo-btn {
+        .claim-combo-btn, .claim-daily-btn {
             width: 100%;
-            background: #f39c12;
             border: none;
             color: white;
-            padding: 12px;
-            border-radius: 10px;
+            padding: 14px;
+            border-radius: 16px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .claim-combo-btn:disabled {
-            background: #555;
-            cursor: not-allowed;
+            margin-top: 12px;
+            font-size: 0.95rem;
         }
 
         .claim-daily-btn {
-            width: 100%;
-            background: #2ecc71;
-            border: none;
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
+            background: #00c853;
         }
 
-        .claim-daily-btn:disabled {
-            background: #555;
+        .claim-combo-btn {
+            background: #f0b90b;
+        }
+
+        .claim-combo-btn:disabled, .claim-daily-btn:disabled {
+            background: #2a3344;
             cursor: not-allowed;
         }
 
-        /* Stats Tab */
+        /* Статистика */
         .stat-item {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
+            padding: 18px 0;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .stat-value {
-            font-weight: bold;
+            font-weight: 700;
         }
 
         .reset-btn {
             background: transparent;
             border: 1px solid var(--danger);
             color: var(--danger);
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 10px 16px;
+            border-radius: 12px;
             margin-top: 30px;
             cursor: pointer;
-            font-size: 0.8rem;
             width: 100%;
+            font-weight: 600;
         }
 
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 420px;
-            background: var(--tg-theme-header-bg-color);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            z-index: 20;
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-btn {
-            background: transparent;
-            border: none;
-            color: var(--tg-theme-hint-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: color 0.2s;
-            padding: 5px 15px;
-        }
-
-        .nav-btn.active {
-            color: var(--tg-theme-button-color);
-        }
-
-        .nav-icon {
-            font-size: 1.4rem;
-        }
-
-        /* Modal */
+        /* Модальное окно */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -450,60 +497,57 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 100;
-            backdrop-filter: blur(3px);
+            z-index: 200;
         }
 
         .modal {
-            background: var(--tg-theme-secondary-bg-color);
-            border-radius: 20px;
-            padding: 25px;
-            width: 90%;
-            max-width: 350px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            border-radius: 28px;
+            padding: 30px;
+            width: 85%;
+            max-width: 320px;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
 
         .modal h3 {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
         }
 
         .modal .close-btn {
-            background: var(--tg-theme-button-color);
+            background: var(--neon-blue);
             border: none;
             color: white;
-            padding: 12px 30px;
-            border-radius: 10px;
-            margin-top: 20px;
+            padding: 14px 30px;
+            border-radius: 18px;
+            margin-top: 25px;
             cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 0 20px rgba(74, 158, 255, 0.4);
         }
 
-        /* Floating particles */
+        /* Партиклы */
         .float-particle {
             position: fixed;
             pointer-events: none;
-            font-weight: bold;
-            color: #f1c40f;
-            animation: floatUp 0.8s ease-out forwards;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #fff;
+            text-shadow: 0 0 15px var(--neon-gold);
+            animation: floatUp 0.9s ease-out forwards;
             z-index: 999;
         }
 
         @keyframes floatUp {
             0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-80px) scale(0.5); }
-        }
-
-        /* Responsive */
-        @media (max-width: 420px) {
-            .clicker-button {
-                width: 150px;
-                height: 150px;
-                font-size: 2.5rem;
-            }
+            100% { opacity: 0; transform: translateY(-90px) scale(0.6); }
         }
     </style>
 </head>
@@ -512,12 +556,14 @@
     <!-- Верхняя панель -->
     <div class="top-panel">
         <div class="balance-container">
-            <div class="balance-label">Баланс $NODE</div>
+            <div class="balance-label">$NODE</div>
             <div class="balance-amount" id="balanceDisplay">0</div>
         </div>
-        <div class="pph-badge">
-            <span>⚡ Прибыль в час</span>
-            <span class="pph-value" id="pphDisplay">0</span>
+        <div style="display: flex; justify-content: center;">
+            <div class="pph-badge">
+                <span>⚡ Прибыль в час</span>
+                <span class="pph-value" id="pphDisplay">0</span>
+            </div>
         </div>
     </div>
 
@@ -525,12 +571,15 @@
     <div class="tab-content active" id="miningTab">
         <div class="miner-center">
             <button class="clicker-button" id="clickerBtn">
-                ⛏️
+                ⚛️
             </button>
-            <div class="energy-bar">
-                <div class="energy-fill" id="energyFill" style="width: 100%;"></div>
+            <div class="energy-container">
+                <span class="energy-icon">⚡</span>
+                <div class="energy-bar">
+                    <div class="energy-fill" id="energyFill" style="width: 100%;"></div>
+                </div>
+                <span class="energy-text" id="energyText">1000 / 1000</span>
             </div>
-            <div class="energy-text" id="energyText">1000 / 1000</div>
         </div>
     </div>
 
@@ -564,7 +613,7 @@
         <button class="reset-btn" id="resetBtn">Сбросить прогресс</button>
     </div>
 
-    <!-- Навигация -->
+    <!-- Glassmorphism нижнее меню -->
     <div class="bottom-nav">
         <button class="nav-btn active" data-tab="miningTab">
             <span class="nav-icon">⛏️</span> Майнинг
@@ -591,519 +640,447 @@
 </div>
 
 <script>
-    (function() {
-        // ==============================
-        // ИНИЦИАЛИЗАЦИЯ TELEGRAM WEB APP
-        // ==============================
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
-            // Применяем цвета темы Telegram
-            const theme = window.Telegram.WebApp.themeParams;
-            const root = document.documentElement;
-            if (theme.bg_color) root.style.setProperty('--tg-theme-bg-color', theme.bg_color);
-            if (theme.text_color) root.style.setProperty('--tg-theme-text-color', theme.text_color);
-            if (theme.hint_color) root.style.setProperty('--tg-theme-hint-color', theme.hint_color);
-            if (theme.link_color) root.style.setProperty('--tg-theme-link-color', theme.link_color);
-            if (theme.button_color) root.style.setProperty('--tg-theme-button-color', theme.button_color);
-            if (theme.button_text_color) root.style.setProperty('--tg-theme-button-text-color', theme.button_text_color);
-            if (theme.secondary_bg_color) root.style.setProperty('--tg-theme-secondary-bg-color', theme.secondary_bg_color);
-            if (theme.header_bg_color) root.style.setProperty('--tg-theme-header-bg-color', theme.header_bg_color);
-            if (theme.section_bg_color) root.style.setProperty('--tg-theme-section-bg-color', theme.section_bg_color);
-            if (theme.accent_text_color) root.style.setProperty('--tg-theme-accent-text-color', theme.accent_text_color);
-            if (theme.destructive_text_color) root.style.setProperty('--tg-theme-destructive-text-color', theme.destructive_text_color);
-        }
+    // ==============================
+    // ИНИЦИАЛИЗАЦИЯ TELEGRAM WEB APP
+    // ==============================
+    if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+        const theme = window.Telegram.WebApp.themeParams;
+        const root = document.documentElement;
+        if (theme.bg_color) root.style.setProperty('--tg-theme-bg-color', theme.bg_color);
+        if (theme.text_color) root.style.setProperty('--tg-theme-text-color', theme.text_color);
+        // ... остальные переменные темы можно адаптировать, но мы используем кастомный дизайн
+    }
 
-        // ==============================
-        // ОПЦИОНАЛЬНО: ИСПОЛЬЗОВАНИЕ CLOUD STORAGE TELEGRAM
-        // -----------------------------------------------
-        // Чтобы прогресс не терялся при очистке кэша, замените
-        // localStorage на Telegram CloudStorage. Пример:
-        //
-        // async function loadGame() {
-        //     if (window.Telegram?.WebApp?.CloudStorage) {
-        //         const keys = await Telegram.WebApp.CloudStorage.getKeys();
-        //         if (keys.includes('nodeMinerState')) {
-        //             const raw = await Telegram.WebApp.CloudStorage.getItem('nodeMinerState');
-        //             return JSON.parse(raw);
-        //         }
-        //     }
-        //     return null;
-        // }
-        //
-        // async function saveGame(state) {
-        //     if (window.Telegram?.WebApp?.CloudStorage) {
-        //         await Telegram.WebApp.CloudStorage.setItem('nodeMinerState', JSON.stringify(state));
-        //     }
-        // }
-        //
-        // Инициализацию игры нужно сделать асинхронной и вызывать loadGame().
-        // ==============================
+    // ==============================
+    // ДАННЫЕ КАРТОЧЕК (без изменений)
+    // ==============================
+    const cardsData = [
+        { id: 'hw1', name: 'Raspberry Pi Нода', category: 'hardware', baseCost: 10, baseProfit: 1 },
+        { id: 'hw2', name: 'SSD NVMe для Снапшотов', category: 'hardware', baseCost: 50, baseProfit: 5 },
+        { id: 'hw3', name: 'ОЗУ 32GB DDR4', category: 'hardware', baseCost: 120, baseProfit: 12 },
+        { id: 'hw4', name: 'Процессорный Кластер', category: 'hardware', baseCost: 300, baseProfit: 35 },
+        { id: 'hw5', name: 'Сетевая Карта 10Gbit', category: 'hardware', baseCost: 750, baseProfit: 80 },
+        { id: 'hw6', name: 'ИБП для Аптайма', category: 'hardware', baseCost: 1500, baseProfit: 160 },
+        { id: 'hw7', name: 'Охлаждение Ноды', category: 'hardware', baseCost: 3000, baseProfit: 320 },
+        { id: 'hw8', name: 'Статический IP-Адрес', category: 'hardware', baseCost: 5500, baseProfit: 600 },
+        { id: 'hw9', name: 'Выделенный Сервер', category: 'hardware', baseCost: 12000, baseProfit: 1300 },
+        { id: 'hw10', name: 'RAID-Массив 4xSSD', category: 'hardware', baseCost: 25000, baseProfit: 2700 },
+        { id: 'hw11', name: 'Оптоволоконный Канал', category: 'hardware', baseCost: 55000, baseProfit: 5800 },
+        { id: 'hw12', name: 'Резервный Генератор', category: 'hardware', baseCost: 120000, baseProfit: 12500 },
+        { id: 'hw13', name: 'Дата-центр (Колокейшн)', category: 'hardware', baseCost: 280000, baseProfit: 28000 },
+        { id: 'hw14', name: 'Ферма Валидаторов', category: 'hardware', baseCost: 650000, baseProfit: 62000 },
+        { id: 'hw15', name: 'Спутниковая Связь', category: 'hardware', baseCost: 1500000, baseProfit: 140000 },
+        { id: 'sw1', name: 'Обновление RPC-Ноды', category: 'software', baseCost: 25, baseProfit: 2 },
+        { id: 'sw2', name: 'Стейкинг Валидатора', category: 'software', baseCost: 75, baseProfit: 8 },
+        { id: 'sw3', name: 'MEV-Бот (v1)', category: 'software', baseCost: 200, baseProfit: 22 },
+        { id: 'sw4', name: 'Смарт-контракт Мост', category: 'software', baseCost: 500, baseProfit: 55 },
+        { id: 'sw5', name: 'Авто-рестейкинг', category: 'software', baseCost: 1200, baseProfit: 130 },
+        { id: 'sw6', name: 'Газ Оптимизатор', category: 'software', baseCost: 2800, baseProfit: 300 },
+        { id: 'sw7', name: 'Мониторинг Ноды (Grafana)', category: 'software', baseCost: 6500, baseProfit: 700 },
+        { id: 'sw8', name: 'Снапшот-Сервис', category: 'software', baseCost: 15000, baseProfit: 1600 },
+        { id: 'sw9', name: 'Консенсус Алгоритм (BFT)', category: 'software', baseCost: 35000, baseProfit: 3700 },
+        { id: 'sw10', name: 'Шардинг-Протокол', category: 'software', baseCost: 80000, baseProfit: 8500 },
+        { id: 'sw11', name: 'Криптография zk-SNARKs', category: 'software', baseCost: 180000, baseProfit: 19000 },
+        { id: 'sw12', name: 'Делегированный Стейк (DPoS)', category: 'software', baseCost: 400000, baseProfit: 42000 },
+        { id: 'sw13', name: 'Орбитальный Мост (Bridge)', category: 'software', baseCost: 900000, baseProfit: 95000 },
+        { id: 'sw14', name: 'Релеер Транзакций', category: 'software', baseCost: 2000000, baseProfit: 210000 },
+        { id: 'sw15', name: 'Нейро-Консенсус (AI)', category: 'software', baseCost: 5000000, baseProfit: 500000 },
+        { id: 'mk1', name: 'Twitter Инфлюенсер', category: 'marketing', baseCost: 40, baseProfit: 3 },
+        { id: 'mk2', name: 'Discord Комьюнити', category: 'marketing', baseCost: 150, baseProfit: 15 },
+        { id: 'mk3', name: 'YouTube Обзор Ноды', category: 'marketing', baseCost: 400, baseProfit: 42 },
+        { id: 'mk4', name: 'Telegram Амбассадор', category: 'marketing', baseCost: 1000, baseProfit: 105 },
+        { id: 'mk5', name: 'Партнерская Программа', category: 'marketing', baseCost: 2500, baseProfit: 260 },
+        { id: 'mk6', name: 'Аирдроп Кампания', category: 'marketing', baseCost: 6000, baseProfit: 630 },
+        { id: 'mk7', name: 'Реферальная Система', category: 'marketing', baseCost: 14000, baseProfit: 1500 },
+        { id: 'mk8', name: 'Медиа-Кит Проекта', category: 'marketing', baseCost: 32000, baseProfit: 3400 },
+        { id: 'mk9', name: 'Хакатон Спонсорство', category: 'marketing', baseCost: 75000, baseProfit: 8000 },
+        { id: 'mk10', name: 'Whitepaper 2.0', category: 'marketing', baseCost: 170000, baseProfit: 18000 },
+        { id: 'mk11', name: 'Листинг на CoinMarketCap', category: 'marketing', baseCost: 380000, baseProfit: 40000 },
+        { id: 'mk12', name: 'AMA Сессия (Twitter Space)', category: 'marketing', baseCost: 850000, baseProfit: 90000 },
+        { id: 'mk13', name: 'Кросс-чейн Партнерство', category: 'marketing', baseCost: 1900000, baseProfit: 200000 }
+    ];
 
-        // ==============================
-        // ДАННЫЕ КАРТОЧЕК
-        // ==============================
-        const cardsData = [
-            // Железо (hardware)
-            { id: 'hw1', name: 'Raspberry Pi Нода', category: 'hardware', baseCost: 10, baseProfit: 1 },
-            { id: 'hw2', name: 'SSD NVMe для Снапшотов', category: 'hardware', baseCost: 50, baseProfit: 5 },
-            { id: 'hw3', name: 'ОЗУ 32GB DDR4', category: 'hardware', baseCost: 120, baseProfit: 12 },
-            { id: 'hw4', name: 'Процессорный Кластер', category: 'hardware', baseCost: 300, baseProfit: 35 },
-            { id: 'hw5', name: 'Сетевая Карта 10Gbit', category: 'hardware', baseCost: 750, baseProfit: 80 },
-            { id: 'hw6', name: 'ИБП для Аптайма', category: 'hardware', baseCost: 1500, baseProfit: 160 },
-            { id: 'hw7', name: 'Охлаждение Ноды', category: 'hardware', baseCost: 3000, baseProfit: 320 },
-            { id: 'hw8', name: 'Статический IP-Адрес', category: 'hardware', baseCost: 5500, baseProfit: 600 },
-            { id: 'hw9', name: 'Выделенный Сервер', category: 'hardware', baseCost: 12000, baseProfit: 1300 },
-            { id: 'hw10', name: 'RAID-Массив 4xSSD', category: 'hardware', baseCost: 25000, baseProfit: 2700 },
-            { id: 'hw11', name: 'Оптоволоконный Канал', category: 'hardware', baseCost: 55000, baseProfit: 5800 },
-            { id: 'hw12', name: 'Резервный Генератор', category: 'hardware', baseCost: 120000, baseProfit: 12500 },
-            { id: 'hw13', name: 'Дата-центр (Колокейшн)', category: 'hardware', baseCost: 280000, baseProfit: 28000 },
-            { id: 'hw14', name: 'Ферма Валидаторов', category: 'hardware', baseCost: 650000, baseProfit: 62000 },
-            { id: 'hw15', name: 'Спутниковая Связь', category: 'hardware', baseCost: 1500000, baseProfit: 140000 },
-            // Софт (software)
-            { id: 'sw1', name: 'Обновление RPC-Ноды', category: 'software', baseCost: 25, baseProfit: 2 },
-            { id: 'sw2', name: 'Стейкинг Валидатора', category: 'software', baseCost: 75, baseProfit: 8 },
-            { id: 'sw3', name: 'MEV-Бот (v1)', category: 'software', baseCost: 200, baseProfit: 22 },
-            { id: 'sw4', name: 'Смарт-контракт Мост', category: 'software', baseCost: 500, baseProfit: 55 },
-            { id: 'sw5', name: 'Авто-рестейкинг', category: 'software', baseCost: 1200, baseProfit: 130 },
-            { id: 'sw6', name: 'Газ Оптимизатор', category: 'software', baseCost: 2800, baseProfit: 300 },
-            { id: 'sw7', name: 'Мониторинг Ноды (Grafana)', category: 'software', baseCost: 6500, baseProfit: 700 },
-            { id: 'sw8', name: 'Снапшот-Сервис', category: 'software', baseCost: 15000, baseProfit: 1600 },
-            { id: 'sw9', name: 'Консенсус Алгоритм (BFT)', category: 'software', baseCost: 35000, baseProfit: 3700 },
-            { id: 'sw10', name: 'Шардинг-Протокол', category: 'software', baseCost: 80000, baseProfit: 8500 },
-            { id: 'sw11', name: 'Криптография zk-SNARKs', category: 'software', baseCost: 180000, baseProfit: 19000 },
-            { id: 'sw12', name: 'Делегированный Стейк (DPoS)', category: 'software', baseCost: 400000, baseProfit: 42000 },
-            { id: 'sw13', name: 'Орбитальный Мост (Bridge)', category: 'software', baseCost: 900000, baseProfit: 95000 },
-            { id: 'sw14', name: 'Релеер Транзакций', category: 'software', baseCost: 2000000, baseProfit: 210000 },
-            { id: 'sw15', name: 'Нейро-Консенсус (AI)', category: 'software', baseCost: 5000000, baseProfit: 500000 },
-            // Маркетинг (marketing)
-            { id: 'mk1', name: 'Twitter Инфлюенсер', category: 'marketing', baseCost: 40, baseProfit: 3 },
-            { id: 'mk2', name: 'Discord Комьюнити', category: 'marketing', baseCost: 150, baseProfit: 15 },
-            { id: 'mk3', name: 'YouTube Обзор Ноды', category: 'marketing', baseCost: 400, baseProfit: 42 },
-            { id: 'mk4', name: 'Telegram Амбассадор', category: 'marketing', baseCost: 1000, baseProfit: 105 },
-            { id: 'mk5', name: 'Партнерская Программа', category: 'marketing', baseCost: 2500, baseProfit: 260 },
-            { id: 'mk6', name: 'Аирдроп Кампания', category: 'marketing', baseCost: 6000, baseProfit: 630 },
-            { id: 'mk7', name: 'Реферальная Система', category: 'marketing', baseCost: 14000, baseProfit: 1500 },
-            { id: 'mk8', name: 'Медиа-Кит Проекта', category: 'marketing', baseCost: 32000, baseProfit: 3400 },
-            { id: 'mk9', name: 'Хакатон Спонсорство', category: 'marketing', baseCost: 75000, baseProfit: 8000 },
-            { id: 'mk10', name: 'Whitepaper 2.0', category: 'marketing', baseCost: 170000, baseProfit: 18000 },
-            { id: 'mk11', name: 'Листинг на CoinMarketCap', category: 'marketing', baseCost: 380000, baseProfit: 40000 },
-            { id: 'mk12', name: 'AMA Сессия (Twitter Space)', category: 'marketing', baseCost: 850000, baseProfit: 90000 },
-            { id: 'mk13', name: 'Кросс-чейн Партнерство', category: 'marketing', baseCost: 1900000, baseProfit: 200000 }
-        ];
+    // ==============================
+    // СОСТОЯНИЕ ИГРЫ (без изменений)
+    // ==============================
+    const DEFAULT_STATE = {
+        balance: 100,
+        totalPPH: 0,
+        lastLogin: Date.now(),
+        energy: 1000,
+        lastEnergyUpdate: Date.now(),
+        cards: [],
+        dailyRewardDay: 0,
+        dailyRewardClaimed: false,
+        lastDailyRewardDate: null,
+        dailyComboDate: null,
+        dailyComboCards: [],
+        dailyComboClaimed: false,
+        totalClicks: 0
+    };
 
-        // ==============================
-        // СОСТОЯНИЕ ИГРЫ
-        // ==============================
-        const DEFAULT_STATE = {
-            balance: 100,
-            totalPPH: 0,
-            lastLogin: Date.now(),
-            energy: 1000,
-            lastEnergyUpdate: Date.now(),
-            cards: [], // { id, level }
-            dailyRewardDay: 0,
-            dailyRewardClaimed: false,
-            lastDailyRewardDate: null,
-            dailyComboDate: null,
-            dailyComboCards: [],
-            dailyComboClaimed: false,
-            totalClicks: 0
-        };
+    let gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
 
-        let gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    // DOM элементы
+    const balanceDisplay = document.getElementById('balanceDisplay');
+    const pphDisplay = document.getElementById('pphDisplay');
+    const energyFill = document.getElementById('energyFill');
+    const energyText = document.getElementById('energyText');
+    const clickerBtn = document.getElementById('clickerBtn');
+    const cardsContainer = document.getElementById('cardsContainer');
+    const dailyRewardGrid = document.getElementById('dailyRewardGrid');
+    const claimDailyBtn = document.getElementById('claimDailyBtn');
+    const claimComboBtn = document.getElementById('claimComboBtn');
+    const comboCardsContainer = document.getElementById('comboCardsContainer');
+    const statPPH = document.getElementById('statPPH');
+    const statCards = document.getElementById('statCards');
+    const statClicks = document.getElementById('statClicks');
+    const offlineModal = document.getElementById('offlineModal');
+    const offlineAmount = document.getElementById('offlineAmount');
+    const closeOfflineModal = document.getElementById('closeOfflineModal');
 
-        // DOM элементы
-        const balanceDisplay = document.getElementById('balanceDisplay');
-        const pphDisplay = document.getElementById('pphDisplay');
-        const energyFill = document.getElementById('energyFill');
-        const energyText = document.getElementById('energyText');
-        const clickerBtn = document.getElementById('clickerBtn');
-        const cardsContainer = document.getElementById('cardsContainer');
-        const dailyRewardGrid = document.getElementById('dailyRewardGrid');
-        const claimDailyBtn = document.getElementById('claimDailyBtn');
-        const claimComboBtn = document.getElementById('claimComboBtn');
-        const comboCardsContainer = document.getElementById('comboCardsContainer');
-        const statPPH = document.getElementById('statPPH');
-        const statCards = document.getElementById('statCards');
-        const statClicks = document.getElementById('statClicks');
-        const offlineModal = document.getElementById('offlineModal');
-        const offlineAmount = document.getElementById('offlineAmount');
-        const closeOfflineModal = document.getElementById('closeOfflineModal');
+    // ==============================
+    // ФУНКЦИИ (без изменений)
+    // ==============================
+    function formatNumber(num) {
+        if (num >= 1e6) return (num / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+        if (num >= 1e3) return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
+        return Math.floor(num).toLocaleString('ru-RU');
+    }
 
-        // ==============================
-        // ФУНКЦИИ
-        // ==============================
-        function formatNumber(num) {
-            if (num >= 1e6) return (num / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
-            if (num >= 1e3) return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
-            return Math.floor(num).toLocaleString('ru-RU');
-        }
+    function getCardData(id) {
+        return cardsData.find(c => c.id === id);
+    }
 
-        function getCardData(id) {
-            return cardsData.find(c => c.id === id);
-        }
+    function getPlayerCard(id) {
+        return gameState.cards.find(c => c.id === id);
+    }
 
-        function getPlayerCard(id) {
-            return gameState.cards.find(c => c.id === id);
-        }
+    function getCardProfit(id, level) {
+        const card = getCardData(id);
+        if (!card || level < 1) return 0;
+        return card.baseProfit * level * (1 + 0.15 * (level - 1));
+    }
 
-        function getCardProfit(id, level) {
-            const card = getCardData(id);
-            if (!card || level < 1) return 0;
-            return card.baseProfit * level * (1 + 0.15 * (level - 1));
-        }
+    function calculateTotalPPH() {
+        let total = 0;
+        gameState.cards.forEach(c => {
+            total += getCardProfit(c.id, c.level);
+        });
+        gameState.totalPPH = total;
+    }
 
-        function calculateTotalPPH() {
-            let total = 0;
-            gameState.cards.forEach(c => {
-                total += getCardProfit(c.id, c.level);
-            });
-            gameState.totalPPH = total;
-        }
+    function getUpgradeCost(id, currentLevel) {
+        const card = getCardData(id);
+        if (!card) return Infinity;
+        return Math.floor(card.baseCost * Math.pow(1.5, currentLevel));
+    }
 
-        function getUpgradeCost(id, currentLevel) {
-            const card = getCardData(id);
-            if (!card) return Infinity;
-            return Math.floor(card.baseCost * Math.pow(1.5, currentLevel));
-        }
+    function saveGame() {
+        localStorage.setItem('nodeMinerState', JSON.stringify(gameState));
+    }
 
-        function saveGame() {
-            localStorage.setItem('nodeMinerState', JSON.stringify(gameState));
-        }
-
-        function loadGame() {
-            const saved = localStorage.getItem('nodeMinerState');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    gameState = Object.assign({}, DEFAULT_STATE, parsed);
-                    // Убедимся, что cards массив объектов
-                    if (!Array.isArray(gameState.cards)) gameState.cards = [];
-                    if (!Array.isArray(gameState.dailyComboCards)) gameState.dailyComboCards = [];
-                } catch (e) {
-                    console.error('Ошибка загрузки сохранения', e);
-                    gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
-                }
-            }
-            calculateTotalPPH();
-        }
-
-        // Оффлайн доход
-        function processOfflineIncome() {
-            const now = Date.now();
-            let deltaSeconds = (now - gameState.lastLogin) / 1000;
-            if (deltaSeconds < 0) deltaSeconds = 0;
-            const maxSeconds = 86400; // 24 часа
-            if (deltaSeconds > maxSeconds) deltaSeconds = maxSeconds;
-
-            if (deltaSeconds > 0 && gameState.totalPPH > 0) {
-                const earned = (gameState.totalPPH / 3600) * deltaSeconds;
-                gameState.balance += earned;
-                return earned;
-            }
-            return 0;
-        }
-
-        // Восстановление энергии
-        function restoreEnergy() {
-            const now = Date.now();
-            let deltaSeconds = (now - gameState.lastEnergyUpdate) / 1000;
-            if (deltaSeconds < 0) deltaSeconds = 0;
-            const maxEnergy = 1000;
-            const restoreRate = 2; // в секунду
-            const restored = Math.min(deltaSeconds * restoreRate, maxEnergy - gameState.energy);
-            if (restored > 0) {
-                gameState.energy = Math.min(maxEnergy, gameState.energy + restored);
-            }
-            gameState.lastEnergyUpdate = now;
-        }
-
-        // Ежедневные механики
-        function updateDailyProgress() {
-            const today = new Date().toISOString().split('T')[0];
-            // Ежедневная награда
-            if (gameState.lastDailyRewardDate !== today) {
-                gameState.dailyRewardClaimed = false;
-            }
-            // Комбо дня
-            if (gameState.dailyComboDate !== today) {
-                gameState.dailyComboDate = today;
-                gameState.dailyComboClaimed = false;
-                // Генерируем 3 случайные карты из разных категорий
-                const categories = ['hardware', 'software', 'marketing'];
-                const combo = [];
-                categories.forEach(cat => {
-                    const catCards = cardsData.filter(c => c.category === cat);
-                    const randomCard = catCards[Math.floor(Math.random() * catCards.length)];
-                    combo.push(randomCard.id);
-                });
-                gameState.dailyComboCards = combo;
-            }
-        }
-
-        function checkDailyComboCompleted() {
-            if (!gameState.dailyComboCards.length) return false;
-            return gameState.dailyComboCards.every(id => {
-                const playerCard = getPlayerCard(id);
-                return playerCard && playerCard.level >= 1;
-            });
-        }
-
-        // ==============================
-        // ОБРАБОТЧИКИ СОБЫТИЙ
-        // ==============================
-        function clickMine(e) {
-            if (gameState.energy < 1) {
-                clickerBtn.classList.add('disabled');
-                return;
-            }
-            gameState.energy -= 1;
-            gameState.totalClicks += 1;
-            const clickValue = 1 + (gameState.totalPPH / 3600) * 10;
-            gameState.balance += clickValue;
-            saveGame();
-            updateUI();
-
-            // Анимация частицы
-            const rect = clickerBtn.getBoundingClientRect();
-            const particle = document.createElement('div');
-            particle.className = 'float-particle';
-            particle.textContent = '+' + formatNumber(clickValue);
-            particle.style.left = rect.left + rect.width/2 - 20 + 'px';
-            particle.style.top = rect.top + 'px';
-            document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 800);
-
-            if (gameState.energy < 1) {
-                clickerBtn.classList.add('disabled');
-            }
-        }
-
-        function buyUpgrade(cardId) {
-            const playerCard = getPlayerCard(cardId);
-            const currentLevel = playerCard ? playerCard.level : 0;
-            const cost = getUpgradeCost(cardId, currentLevel);
-            if (gameState.balance < cost) return;
-
-            gameState.balance -= cost;
-            if (!playerCard) {
-                gameState.cards.push({ id: cardId, level: 1 });
-            } else {
-                playerCard.level += 1;
-            }
-            calculateTotalPPH();
-            saveGame();
-            updateUI();
-            renderShop();
-        }
-
-        function claimDailyReward() {
-            if (gameState.dailyRewardClaimed) return;
-            const rewards = [50, 150, 400, 1000, 3000, 8000, 25000];
-            const reward = rewards[gameState.dailyRewardDay];
-            gameState.balance += reward;
-            gameState.dailyRewardClaimed = true;
-            gameState.lastDailyRewardDate = new Date().toISOString().split('T')[0];
-            // Переход к следующему дню (цикл 0-6)
-            gameState.dailyRewardDay = (gameState.dailyRewardDay + 1) % 7;
-            saveGame();
-            updateUI();
-            renderDailyReward();
-            alert(`Получено ${formatNumber(reward)} $NODE!`);
-        }
-
-        function claimDailyCombo() {
-            if (gameState.dailyComboClaimed || !checkDailyComboCompleted()) return;
-            const reward = 50000;
-            gameState.balance += reward;
-            gameState.dailyComboClaimed = true;
-            saveGame();
-            updateUI();
-            renderCombo();
-            alert(`Комбо дня! +${formatNumber(reward)} $NODE`);
-        }
-
-        function resetProgress() {
-            if (confirm('Вы уверены, что хотите полностью сбросить прогресс? Это действие необратимо.')) {
+    function loadGame() {
+        const saved = localStorage.getItem('nodeMinerState');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                gameState = Object.assign({}, DEFAULT_STATE, parsed);
+                if (!Array.isArray(gameState.cards)) gameState.cards = [];
+                if (!Array.isArray(gameState.dailyComboCards)) gameState.dailyComboCards = [];
+            } catch (e) {
+                console.error('Ошибка загрузки сохранения', e);
                 gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
-                saveGame();
-                updateUI();
-                renderShop();
-                renderDailyReward();
-                renderCombo();
-                updateStats();
             }
         }
+        calculateTotalPPH();
+    }
 
-        // ==============================
-        // РЕНДЕРИНГ
-        // ==============================
-        function updateUI() {
-            balanceDisplay.textContent = formatNumber(gameState.balance);
-            pphDisplay.textContent = formatNumber(gameState.totalPPH);
-            const energyPercent = (gameState.energy / 1000) * 100;
-            energyFill.style.width = energyPercent + '%';
-            energyText.textContent = Math.floor(gameState.energy) + ' / 1000';
-            clickerBtn.classList.toggle('disabled', gameState.energy < 1);
-            statPPH.textContent = formatNumber(gameState.totalPPH);
-            statCards.textContent = gameState.cards.filter(c => c.level > 0).length;
-            statClicks.textContent = gameState.totalClicks;
+    function processOfflineIncome() {
+        const now = Date.now();
+        let deltaSeconds = (now - gameState.lastLogin) / 1000;
+        if (deltaSeconds < 0) deltaSeconds = 0;
+        const maxSeconds = 86400;
+        if (deltaSeconds > maxSeconds) deltaSeconds = maxSeconds;
+        if (deltaSeconds > 0 && gameState.totalPPH > 0) {
+            const earned = (gameState.totalPPH / 3600) * deltaSeconds;
+            gameState.balance += earned;
+            return earned;
         }
+        return 0;
+    }
 
-        function updateStats() {
-            statPPH.textContent = formatNumber(gameState.totalPPH);
-            statCards.textContent = gameState.cards.filter(c => c.level > 0).length;
-            statClicks.textContent = gameState.totalClicks;
+    function restoreEnergy() {
+        const now = Date.now();
+        let deltaSeconds = (now - gameState.lastEnergyUpdate) / 1000;
+        if (deltaSeconds < 0) deltaSeconds = 0;
+        const maxEnergy = 1000;
+        const restoreRate = 2;
+        const restored = Math.min(deltaSeconds * restoreRate, maxEnergy - gameState.energy);
+        if (restored > 0) {
+            gameState.energy = Math.min(maxEnergy, gameState.energy + restored);
         }
+        gameState.lastEnergyUpdate = now;
+    }
 
-        function renderShop(category = 'all') {
-            const filtered = cardsData.filter(c => category === 'all' || c.category === category);
-            cardsContainer.innerHTML = filtered.map(card => {
-                const playerCard = getPlayerCard(card.id);
-                const level = playerCard ? playerCard.level : 0;
-                const profit = getCardProfit(card.id, level);
-                const nextCost = getUpgradeCost(card.id, level);
-                const canAfford = gameState.balance >= nextCost;
-                return `
-                    <div class="card-item ${level > 0 ? 'owned' : ''}">
-                        <div class="card-header">
-                            <span class="card-title">${card.name}</span>
-                            <span class="card-level">Ур. ${level}</span>
-                        </div>
-                        <div class="card-stats">
-                            <span>Прибыль: <span class="card-profit">+${formatNumber(profit)}/ч</span></span>
-                        </div>
-                        <button class="upgrade-btn" data-id="${card.id}" ${!canAfford ? 'disabled' : ''}>
-                            ${level === 0 ? 'Купить' : 'Апгрейд'} (${formatNumber(nextCost)} $NODE)
-                        </button>
-                    </div>
-                `;
-            }).join('');
-
-            // Обработчики кнопок
-            cardsContainer.querySelectorAll('.upgrade-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = e.target.dataset.id;
-                    buyUpgrade(id);
-                });
+    function updateDailyProgress() {
+        const today = new Date().toISOString().split('T')[0];
+        if (gameState.lastDailyRewardDate !== today) {
+            gameState.dailyRewardClaimed = false;
+        }
+        if (gameState.dailyComboDate !== today) {
+            gameState.dailyComboDate = today;
+            gameState.dailyComboClaimed = false;
+            const categories = ['hardware', 'software', 'marketing'];
+            const combo = [];
+            categories.forEach(cat => {
+                const catCards = cardsData.filter(c => c.category === cat);
+                const randomCard = catCards[Math.floor(Math.random() * catCards.length)];
+                combo.push(randomCard.id);
             });
+            gameState.dailyComboCards = combo;
         }
+    }
 
-        function renderDailyReward() {
-            const rewards = [50, 150, 400, 1000, 3000, 8000, 25000];
-            const today = new Date().toISOString().split('T')[0];
-            const isTodayClaimed = gameState.dailyRewardClaimed && gameState.lastDailyRewardDate === today;
-            let html = '';
-            for (let i = 0; i < 7; i++) {
-                let classes = 'day-cell';
-                if (i < gameState.dailyRewardDay || (i === gameState.dailyRewardDay && isTodayClaimed)) {
-                    classes += ' claimed';
-                }
-                if (i === gameState.dailyRewardDay && !isTodayClaimed) {
-                    classes += ' today';
-                }
-                html += `<div class="${classes}"><span>День ${i+1}</span><span class="day-reward">${formatNumber(rewards[i])}</span></div>`;
-            }
-            dailyRewardGrid.innerHTML = html;
-            claimDailyBtn.disabled = isTodayClaimed;
-            claimDailyBtn.textContent = isTodayClaimed ? 'Награда получена' : 'Забрать награду';
+    function checkDailyComboCompleted() {
+        if (!gameState.dailyComboCards.length) return false;
+        return gameState.dailyComboCards.every(id => {
+            const playerCard = getPlayerCard(id);
+            return playerCard && playerCard.level >= 1;
+        });
+    }
+
+    function clickMine(e) {
+        if (gameState.energy < 1) {
+            clickerBtn.classList.add('disabled');
+            return;
         }
+        gameState.energy -= 1;
+        gameState.totalClicks += 1;
+        const clickValue = 1 + (gameState.totalPPH / 3600) * 10;
+        gameState.balance += clickValue;
+        saveGame();
+        updateUI();
 
-        function renderCombo() {
-            if (!gameState.dailyComboCards.length) {
-                comboCardsContainer.innerHTML = '<p>Загрузка...</p>';
-                return;
-            }
-            const completed = checkDailyComboCompleted();
-            const html = gameState.dailyComboCards.map(id => {
-                const card = getCardData(id);
-                const playerCard = getPlayerCard(id);
-                const hasCard = playerCard && playerCard.level >= 1;
-                return `<div class="combo-card ${hasCard ? 'completed' : ''}">${card.name}<br><small>${hasCard ? '✅ Есть' : '❌ Нет'}</small></div>`;
-            }).join('');
-            comboCardsContainer.innerHTML = html;
-            claimComboBtn.disabled = !completed || gameState.dailyComboClaimed;
-            claimComboBtn.textContent = gameState.dailyComboClaimed ? 'Бонус получен' : 'Получить бонус (50 000 $NODE)';
+        const rect = clickerBtn.getBoundingClientRect();
+        const particle = document.createElement('div');
+        particle.className = 'float-particle';
+        particle.textContent = '+' + formatNumber(clickValue);
+        particle.style.left = rect.left + rect.width/2 - 20 + 'px';
+        particle.style.top = rect.top + 'px';
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 900);
+
+        if (gameState.energy < 1) {
+            clickerBtn.classList.add('disabled');
         }
+    }
 
-        // ==============================
-        // ИНИЦИАЛИЗАЦИЯ
-        // ==============================
-        function init() {
-            loadGame();
-            restoreEnergy();
-            const offlineEarned = processOfflineIncome();
-            gameState.lastLogin = Date.now();
-            updateDailyProgress();
-            calculateTotalPPH();
+    function buyUpgrade(cardId) {
+        const playerCard = getPlayerCard(cardId);
+        const currentLevel = playerCard ? playerCard.level : 0;
+        const cost = getUpgradeCost(cardId, currentLevel);
+        if (gameState.balance < cost) return;
+        gameState.balance -= cost;
+        if (!playerCard) {
+            gameState.cards.push({ id: cardId, level: 1 });
+        } else {
+            playerCard.level += 1;
+        }
+        calculateTotalPPH();
+        saveGame();
+        updateUI();
+        renderShop();
+    }
+
+    function claimDailyReward() {
+        if (gameState.dailyRewardClaimed) return;
+        const rewards = [50, 150, 400, 1000, 3000, 8000, 25000];
+        const reward = rewards[gameState.dailyRewardDay];
+        gameState.balance += reward;
+        gameState.dailyRewardClaimed = true;
+        gameState.lastDailyRewardDate = new Date().toISOString().split('T')[0];
+        gameState.dailyRewardDay = (gameState.dailyRewardDay + 1) % 7;
+        saveGame();
+        updateUI();
+        renderDailyReward();
+        alert(`Получено ${formatNumber(reward)} $NODE!`);
+    }
+
+    function claimDailyCombo() {
+        if (gameState.dailyComboClaimed || !checkDailyComboCompleted()) return;
+        const reward = 50000;
+        gameState.balance += reward;
+        gameState.dailyComboClaimed = true;
+        saveGame();
+        updateUI();
+        renderCombo();
+        alert(`Комбо дня! +${formatNumber(reward)} $NODE`);
+    }
+
+    function resetProgress() {
+        if (confirm('Вы уверены, что хотите полностью сбросить прогресс?')) {
+            gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
             saveGame();
             updateUI();
             renderShop();
             renderDailyReward();
             renderCombo();
             updateStats();
+        }
+    }
 
-            // Показать оффлайн-доход модально, если заработано
-            if (offlineEarned > 0) {
-                offlineAmount.textContent = formatNumber(offlineEarned);
-                offlineModal.style.display = 'flex';
+    function updateUI() {
+        balanceDisplay.textContent = formatNumber(gameState.balance);
+        pphDisplay.textContent = formatNumber(gameState.totalPPH);
+        const energyPercent = (gameState.energy / 1000) * 100;
+        energyFill.style.width = energyPercent + '%';
+        energyText.textContent = Math.floor(gameState.energy) + ' / 1000';
+        clickerBtn.classList.toggle('disabled', gameState.energy < 1);
+        statPPH.textContent = formatNumber(gameState.totalPPH);
+        statCards.textContent = gameState.cards.filter(c => c.level > 0).length;
+        statClicks.textContent = gameState.totalClicks;
+    }
+
+    function updateStats() {
+        statPPH.textContent = formatNumber(gameState.totalPPH);
+        statCards.textContent = gameState.cards.filter(c => c.level > 0).length;
+        statClicks.textContent = gameState.totalClicks;
+    }
+
+    function renderShop(category = 'all') {
+        const filtered = cardsData.filter(c => category === 'all' || c.category === category);
+        cardsContainer.innerHTML = filtered.map(card => {
+            const playerCard = getPlayerCard(card.id);
+            const level = playerCard ? playerCard.level : 0;
+            const profit = getCardProfit(card.id, level);
+            const nextCost = getUpgradeCost(card.id, level);
+            const canAfford = gameState.balance >= nextCost;
+            return `
+                <div class="card-item ${level > 0 ? 'owned' : ''}">
+                    <div class="card-header">
+                        <span class="card-title">${card.name}</span>
+                        <span class="card-level">Ур. ${level}</span>
+                    </div>
+                    <div class="card-stats">
+                        <span>Прибыль: <span class="card-profit">+${formatNumber(profit)}/ч</span></span>
+                    </div>
+                    <button class="upgrade-btn" data-id="${card.id}" ${!canAfford ? 'disabled' : ''}>
+                        ${level === 0 ? 'Купить' : 'Апгрейд'} (${formatNumber(nextCost)} $NODE)
+                    </button>
+                </div>
+            `;
+        }).join('');
+
+        cardsContainer.querySelectorAll('.upgrade-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.target.dataset.id;
+                buyUpgrade(id);
+            });
+        });
+    }
+
+    function renderDailyReward() {
+        const rewards = [50, 150, 400, 1000, 3000, 8000, 25000];
+        const today = new Date().toISOString().split('T')[0];
+        const isTodayClaimed = gameState.dailyRewardClaimed && gameState.lastDailyRewardDate === today;
+        let html = '';
+        for (let i = 0; i < 7; i++) {
+            let classes = 'day-cell';
+            if (i < gameState.dailyRewardDay || (i === gameState.dailyRewardDay && isTodayClaimed)) {
+                classes += ' claimed';
             }
+            if (i === gameState.dailyRewardDay && !isTodayClaimed) {
+                classes += ' today';
+            }
+            html += `<div class="${classes}"><span>День ${i+1}</span><span class="day-reward">${formatNumber(rewards[i])}</span></div>`;
+        }
+        dailyRewardGrid.innerHTML = html;
+        claimDailyBtn.disabled = isTodayClaimed;
+        claimDailyBtn.textContent = isTodayClaimed ? 'Награда получена' : 'Забрать награду';
+    }
 
-            // Запуск таймеров
-            setInterval(() => {
-                restoreEnergy();
-                updateUI();
-                saveGame();
-            }, 1000);
+    function renderCombo() {
+        if (!gameState.dailyComboCards.length) {
+            comboCardsContainer.innerHTML = '<p>Загрузка...</p>';
+            return;
+        }
+        const completed = checkDailyComboCompleted();
+        const html = gameState.dailyComboCards.map(id => {
+            const card = getCardData(id);
+            const playerCard = getPlayerCard(id);
+            const hasCard = playerCard && playerCard.level >= 1;
+            return `<div class="combo-card ${hasCard ? 'completed' : ''}">${card.name}<br><small>${hasCard ? '✅ Есть' : '❌ Нет'}</small></div>`;
+        }).join('');
+        comboCardsContainer.innerHTML = html;
+        claimComboBtn.disabled = !completed || gameState.dailyComboClaimed;
+        claimComboBtn.textContent = gameState.dailyComboClaimed ? 'Бонус получен' : 'Получить бонус (50 000 $NODE)';
+    }
 
-            // Обновление PPH каждую секунду на случай изменений (уже в updateUI)
+    function init() {
+        loadGame();
+        restoreEnergy();
+        const offlineEarned = processOfflineIncome();
+        gameState.lastLogin = Date.now();
+        updateDailyProgress();
+        calculateTotalPPH();
+        saveGame();
+        updateUI();
+        renderShop();
+        renderDailyReward();
+        renderCombo();
+        updateStats();
+
+        if (offlineEarned > 0) {
+            offlineAmount.textContent = formatNumber(offlineEarned);
+            offlineModal.style.display = 'flex';
         }
 
-        // ==============================
-        // ПРИВЯЗКА СОБЫТИЙ
-        // ==============================
-        clickerBtn.addEventListener('click', clickMine);
+        setInterval(() => {
+            restoreEnergy();
+            updateUI();
+            saveGame();
+        }, 1000);
+    }
 
-        // Навигация
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tabId = btn.dataset.tab;
-                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById(tabId).classList.add('active');
-                btn.classList.add('active');
-                if (tabId === 'shopTab') renderShop();
-                if (tabId === 'comboTab') {
-                    renderDailyReward();
-                    renderCombo();
-                }
-                if (tabId === 'statsTab') updateStats();
-            });
+    // Привязка событий
+    clickerBtn.addEventListener('click', clickMine);
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.dataset.tab;
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+            if (tabId === 'shopTab') renderShop();
+            if (tabId === 'comboTab') {
+                renderDailyReward();
+                renderCombo();
+            }
+            if (tabId === 'statsTab') updateStats();
         });
+    });
 
-        // Фильтр магазина
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const category = btn.dataset.category;
-                renderShop(category);
-            });
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const category = btn.dataset.category;
+            renderShop(category);
         });
+    });
 
-        claimDailyBtn.addEventListener('click', claimDailyReward);
-        claimComboBtn.addEventListener('click', claimDailyCombo);
+    claimDailyBtn.addEventListener('click', claimDailyReward);
+    claimComboBtn.addEventListener('click', claimDailyCombo);
+    document.getElementById('resetBtn').addEventListener('click', resetProgress);
+    closeOfflineModal.addEventListener('click', () => {
+        offlineModal.style.display = 'none';
+    });
 
-        document.getElementById('resetBtn').addEventListener('click', resetProgress);
-
-        closeOfflineModal.addEventListener('click', () => {
-            offlineModal.style.display = 'none';
-        });
-
-        // Запуск
-        init();
-    })();
+    init();
 </script>
 </body>
 </html>
