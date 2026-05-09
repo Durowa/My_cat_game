@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>🐱 Кот-Кликер</title>
+    
+    <!-- Подключение Telegram Web App JS -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -52,6 +56,7 @@
             margin: 20px auto;
             cursor: pointer;
             transition: transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .cat-container:active {
@@ -62,6 +67,7 @@
             font-size: 150px;
             user-select: none;
             -webkit-user-select: none;
+            pointer-events: none;
         }
         
         .click-effect {
@@ -71,6 +77,7 @@
             color: #FFD700;
             pointer-events: none;
             animation: floatUp 0.8s ease-out;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
         
         @keyframes floatUp {
@@ -115,10 +122,15 @@
             gap: 8px;
             width: 100%;
             transition: background 0.3s;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .friends-button:hover {
             background: #128C7E;
+        }
+        
+        .friends-button:active {
+            transform: scale(0.98);
         }
         
         .level-up {
@@ -130,45 +142,101 @@
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
+        
+        .error-message {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            max-width: 350px;
+            width: 90%;
+        }
+        
+        .error-message h2 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        .error-message p {
+            color: #666;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="stats">
-            <div class="stat-item">
-                <span>🐟</span>
-                <span id="balance">0</span>
+    <div id="app">
+        <!-- Основной контент -->
+        <div id="gameContent" class="container" style="display: none;">
+            <div class="stats">
+                <div class="stat-item">
+                    <span>🐟</span>
+                    <span id="balance">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>⭐</span>
+                    <span id="level">1</span>
+                </div>
             </div>
-            <div class="stat-item">
-                <span>⭐</span>
-                <span id="level">1</span>
+            
+            <div class="level-bar">
+                <div class="level-progress" id="progressBar" style="width: 0%"></div>
             </div>
+            
+            <div class="cat-container" id="catContainer">
+                <div class="cat" id="cat">🐱</div>
+            </div>
+            
+            <button class="friends-button" id="friendsButton">
+                👥 Друзья: <span id="friendsCount">0</span>
+            </button>
         </div>
         
-        <div class="level-bar">
-            <div class="level-progress" id="progressBar" style="width: 0%"></div>
+        <!-- Сообщение об ошибке -->
+        <div id="errorContent" class="error-message" style="display: none;">
+            <h2>❌ Ошибка</h2>
+            <p>Пожалуйста, запустите игру через бота в Telegram!</p>
+            <p style="margin-top: 15px; font-size: 14px;">
+                Нажмите кнопку "Играть" в чате с ботом
+            </p>
         </div>
-        
-        <div class="cat-container" id="catContainer">
-            <div class="cat" id="cat">🐱</div>
-        </div>
-        
-        <button class="friends-button" id="friendsButton">
-            👥 Друзья: <span id="friendsCount">0</span>
-        </button>
     </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        // Инициализация Telegram Web App
+        // ============ ИНИЦИАЛИЗАЦИЯ TELEGRAM WEB APP ============
         const tg = window.Telegram.WebApp;
+        
+        // Сообщаем Telegram, что приложение готово
+        tg.ready();
+        
+        // Разворачиваем на весь экран
         tg.expand();
         
-        // Получение user_id из URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('user_id');
+        // Устанавливаем цвет заголовка (опционально)
+        tg.setHeaderColor('#764ba2');
         
-        // Состояние игры
+        // ============ ПОЛУЧЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ ============
+        let userId = null;
+        let isInTelegram = false;
+        
+        // Проверяем, запущено ли приложение внутри Telegram
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            // Получаем user_id из initData (самый надежный способ)
+            userId = tg.initDataUnsafe.user.id;
+            isInTelegram = true;
+            console.log('✅ Запущено в Telegram, user_id:', userId);
+        } else {
+            // Пробуем получить из URL как запасной вариант
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlUserId = urlParams.get('user_id');
+            
+            if (urlUserId) {
+                userId = parseInt(urlUserId);
+                isInTelegram = true;
+                console.log('⚠️ user_id получен из URL:', userId);
+            }
+        }
+        
+        // ============ СОСТОЯНИЕ ИГРЫ ============
         let gameState = {
             balance: 0,
             level: 1,
@@ -179,19 +247,26 @@
         // API базовый URL
         const API_URL = window.location.origin;
         
+        // ============ ФУНКЦИИ API ============
+        
         // Загрузка данных пользователя
         async function loadUserData() {
+            if (!userId) return;
+            
             try {
                 const response = await fetch(`${API_URL}/api/user/${userId}`);
                 if (response.ok) {
                     const data = await response.json();
                     gameState = {
-                        balance: data.balance,
-                        level: data.level,
-                        clicks: data.clicks,
-                        referrals: data.referrals_count
+                        balance: data.balance || 0,
+                        level: data.level || 1,
+                        clicks: data.clicks || 0,
+                        referrals: data.referrals_count || 0
                     };
                     updateUI();
+                    console.log('📊 Данные загружены:', gameState);
+                } else {
+                    console.error('Ошибка загрузки данных. Статус:', response.status);
                 }
             } catch (error) {
                 console.error('Ошибка загрузки данных:', error);
@@ -200,6 +275,8 @@
         
         // Отправка кликов на сервер
         async function syncClicks() {
+            if (!userId) return;
+            
             try {
                 const response = await fetch(`${API_URL}/api/click`, {
                     method: 'POST',
@@ -217,24 +294,26 @@
                     gameState.balance = data.balance;
                     gameState.level = data.level;
                     gameState.clicks = data.clicks;
+                    updateUI();
                 }
             } catch (error) {
                 console.error('Ошибка синхронизации:', error);
             }
         }
         
+        // ============ ФУНКЦИИ UI ============
+        
         // Обновление интерфейса
         function updateUI() {
-            document.getElementById('balance').textContent = gameState.balance;
+            document.getElementById('balance').textContent = gameState.balance.toLocaleString();
             document.getElementById('level').textContent = gameState.level;
             document.getElementById('friendsCount').textContent = gameState.referrals;
             
             // Прогресс до следующего уровня
             const currentLevel = gameState.level;
-            const currentBalance = gameState.balance;
-            const nextLevelThreshold = currentLevel * 1000;
-            const progress = (currentBalance % 1000) / 1000 * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
+            const progressInLevel = gameState.balance % (currentLevel * 1000);
+            const progress = (progressInLevel / (currentLevel * 1000)) * 100;
+            document.getElementById('progressBar').style.width = Math.min(progress, 100) + '%';
         }
         
         // Создание эффекта при клике
@@ -251,8 +330,10 @@
             }, 800);
         }
         
+        // ============ ОБРАБОТЧИКИ СОБЫТИЙ ============
+        
         // Обработчик клика по коту
-        document.getElementById('catContainer').addEventListener('click', async (e) => {
+        document.getElementById('catContainer').addEventListener('click', async function(e) {
             const oldLevel = gameState.level;
             
             // Увеличиваем счетчики
@@ -264,14 +345,27 @@
             // Проверка повышения уровня
             if (gameState.balance >= gameState.level * 1000) {
                 gameState.level++;
-                document.getElementById('cat').classList.add('level-up');
+                
+                // Анимация повышения уровня
+                const catElement = document.getElementById('cat');
+                catElement.classList.add('level-up');
                 setTimeout(() => {
-                    document.getElementById('cat').classList.remove('level-up');
+                    catElement.classList.remove('level-up');
                 }, 500);
+                
+                // Виброотклик при повышении уровня (если доступно)
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
+            } else {
+                // Легкий виброотклик при обычном клике
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('light');
+                }
             }
             
             // Создаем визуальный эффект
-            const rect = e.currentTarget.getBoundingClientRect();
+            const rect = this.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             createClickEffect(x, y, earned);
@@ -285,28 +379,77 @@
         });
         
         // Обработчик кнопки друзей
-        document.getElementById('friendsButton').addEventListener('click', () => {
-            tg.showAlert(`👥 У вас ${gameState.referrals} друзей\n\nПриглашайте друзей и получайте бонусы!`);
+        document.getElementById('friendsButton').addEventListener('click', function() {
+            if (tg.showPopup) {
+                tg.showPopup({
+                    title: '👥 Реферальная система',
+                    message: `Вы пригласили: ${gameState.referrals} друзей\n\n` +
+                             `🎁 За каждого друга вы получаете 5000 рыбок\n` +
+                             `🎉 Ваш друг получает 2000 рыбок\n\n` +
+                             `💰 Всего заработано: ${gameState.referrals * 5000} рыбок`,
+                    buttons: [
+                        {id: 'ok', type: 'default', text: 'ОК'}
+                    ]
+                });
+            } else {
+                alert('👥 У вас ' + gameState.referrals + ' друзей\n\nПриглашайте друзей и получайте бонусы!');
+            }
         });
         
-        // Инициализация
-        if (userId) {
-            loadUserData();
-            
-            // Сохраняем прогресс при закрытии
-            window.addEventListener('beforeunload', async () => {
-                await syncClicks();
-            });
-            
-            // Сохраняем прогресс при сворачивании
-            document.addEventListener('visibilitychange', async () => {
-                if (document.hidden) {
+        // ============ ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ============
+        
+        function initApp() {
+            if (isInTelegram && userId) {
+                // Показываем игровой контент
+                document.getElementById('gameContent').style.display = 'block';
+                document.getElementById('errorContent').style.display = 'none';
+                
+                // Загружаем данные пользователя
+                loadUserData();
+                
+                // Настраиваем кнопку "Назад" в Telegram
+                tg.BackButton.show();
+                tg.BackButton.onClick(() => {
+                    tg.close();
+                });
+                
+                // Сохраняем прогресс при закрытии
+                window.addEventListener('beforeunload', async () => {
                     await syncClicks();
-                }
-            });
-        } else {
-            document.body.innerHTML = '<h2>Ошибка: отсутствует user_id</h2>';
+                });
+                
+                // Сохраняем прогресс при сворачивании
+                document.addEventListener('visibilitychange', async () => {
+                    if (document.hidden) {
+                        await syncClicks();
+                    }
+                });
+                
+                console.log('🎮 Игра инициализирована для пользователя:', userId);
+            } else {
+                // Показываем сообщение об ошибке
+                document.getElementById('gameContent').style.display = 'none';
+                document.getElementById('errorContent').style.display = 'block';
+                console.log('❌ Приложение запущено не в Telegram');
+            }
         }
+        
+        // Запускаем приложение после полной загрузки страницы
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+        
+        // ============ ДЛЯ ТЕСТИРОВАНИЯ В БРАУЗЕРЕ ============
+        // Раскомментируйте для тестирования без Telegram
+        /*
+        if (!isInTelegram) {
+            userId = 123456789; // Замените на ID тестового пользователя
+            isInTelegram = true;
+            initApp();
+        }
+        */
     </script>
 </body>
 </html>
