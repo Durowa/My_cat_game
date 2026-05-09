@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🐱 Кот-Кликер</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .cat-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        
+        .cat-container:active {
+            transform: scale(0.95);
+        }
+        
+        .cat {
+            font-size: 150px;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .click-effect {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            pointer-events: none;
+            animation: floatUp 0.8s ease-out;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+        
+        .level-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .level-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            transition: width 0.3s;
+            border-radius: 5px;
+        }
+        
+        .friends-button {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        .friends-button:hover {
+            background: #128C7E;
+        }
+        
+        .level-up {
+            animation: levelUp 0.5s ease-out;
+        }
+        
+        @keyframes levelUp {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="stats">
+            <div class="stat-item">
+                <span>🐟</span>
+                <span id="balance">0</span>
+            </div>
+            <div class="stat-item">
+                <span>⭐</span>
+                <span id="level">1</span>
+            </div>
+        </div>
+        
+        <div class="level-bar">
+            <div class="level-progress" id="progressBar" style="width: 0%"></div>
+        </div>
+        
+        <div class="cat-container" id="catContainer">
+            <div class="cat" id="cat">🐱</div>
+        </div>
+        
+        <button class="friends-button" id="friendsButton">
+            👥 Друзья: <span id="friendsCount">0</span>
+        </button>
+    </div>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        // Получение user_id из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('user_id');
+        
+        // Состояние игры
+        let gameState = {
+            balance: 0,
+            level: 1,
+            clicks: 0,
+            referrals: 0
+        };
+        
+        // API базовый URL
+        const API_URL = window.location.origin;
+        
+        // Загрузка данных пользователя
+        async function loadUserData() {
+            try {
+                const response = await fetch(`${API_URL}/api/user/${userId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    gameState = {
+                        balance: data.balance,
+                        level: data.level,
+                        clicks: data.clicks,
+                        referrals: data.referrals_count
+                    };
+                    updateUI();
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+            }
+        }
+        
+        // Отправка кликов на сервер
+        async function syncClicks() {
+            try {
+                const response = await fetch(`${API_URL}/api/click`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: parseInt(userId),
+                        clicks: gameState.clicks
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    gameState.balance = data.balance;
+                    gameState.level = data.level;
+                    gameState.clicks = data.clicks;
+                }
+            } catch (error) {
+                console.error('Ошибка синхронизации:', error);
+            }
+        }
+        
+        // Обновление интерфейса
+        function updateUI() {
+            document.getElementById('balance').textContent = gameState.balance;
+            document.getElementById('level').textContent = gameState.level;
+            document.getElementById('friendsCount').textContent = gameState.referrals;
+            
+            // Прогресс до следующего уровня
+            const currentLevel = gameState.level;
+            const currentBalance = gameState.balance;
+            const nextLevelThreshold = currentLevel * 1000;
+            const progress = (currentBalance % 1000) / 1000 * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+        
+        // Создание эффекта при клике
+        function createClickEffect(x, y, amount) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.textContent = '+' + amount;
+            effect.style.left = x + 'px';
+            effect.style.top = y + 'px';
+            document.querySelector('.cat-container').appendChild(effect);
+            
+            setTimeout(() => {
+                effect.remove();
+            }, 800);
+        }
+        
+        // Обработчик клика по коту
+        document.getElementById('catContainer').addEventListener('click', async (e) => {
+            const oldLevel = gameState.level;
+            
+            // Увеличиваем счетчики
+            gameState.clicks++;
+            const levelBonus = Math.floor(gameState.level * 0.5);
+            const earned = 1 + levelBonus;
+            gameState.balance += earned;
+            
+            // Проверка повышения уровня
+            if (gameState.balance >= gameState.level * 1000) {
+                gameState.level++;
+                document.getElementById('cat').classList.add('level-up');
+                setTimeout(() => {
+                    document.getElementById('cat').classList.remove('level-up');
+                }, 500);
+            }
+            
+            // Создаем визуальный эффект
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            createClickEffect(x, y, earned);
+            
+            updateUI();
+            
+            // Синхронизируем с сервером каждые 10 кликов
+            if (gameState.clicks % 10 === 0) {
+                await syncClicks();
+            }
+        });
+        
+        // Обработчик кнопки друзей
+        document.getElementById('friendsButton').addEventListener('click', () => {
+            tg.showAlert(`👥 У вас ${gameState.referrals} друзей\n\nПриглашайте друзей и получайте бонусы!`);
+        });
+        
+        // Инициализация
+        if (userId) {
+            loadUserData();
+            
+            // Сохраняем прогресс при закрытии
+            window.addEventListener('beforeunload', async () => {
+                await syncClicks();
+            });
+            
+            // Сохраняем прогресс при сворачивании
+            document.addEventListener('visibilitychange', async () => {
+                if (document.hidden) {
+                    await syncClicks();
+                }
+            });
+        } else {
+            document.body.innerHTML = '<h2>Ошибка: отсутствует user_id</h2>';
+        }
+    </script>
+</body>
+</html>
