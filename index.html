@@ -8,334 +8,139 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: radial-gradient(circle at 50% 20%, #1a2a6c, #000000);
-            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 50% 20%, #1a2a6c, #000);
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            transition: background 0.5s;
         }
-
-        .app-container {
-            width: 100%;
-            max-width: 420px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            background: transparent;
-        }
-
+        .app-container { width: 100%; max-width: 420px; min-height: 100vh; display: flex; flex-direction: column; }
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 20px;
-            margin: 10px 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 20px; margin: 10px 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
-
         .top-panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 25px 16px 15px;
-            background: transparent;
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex; flex-direction: column; align-items: center; padding: 25px 16px 15px;
+            background: transparent; backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-
         .balance-amount {
-            font-size: 3.8rem;
-            font-weight: 800;
-            color: #ffffff;
-            text-shadow: 0 0 30px rgba(79, 172, 254, 0.7);
-            line-height: 1;
-            margin: 10px 0;
-            font-family: 'Inter', sans-serif;
+            font-size: 3.8rem; font-weight: 800; color: #fff;
+            text-shadow: 0 0 30px rgba(79,172,254,0.7); margin: 10px 0;
         }
-
         .pph-badge {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 30px;
-            padding: 8px 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            color: #ccc;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15); border-radius: 30px;
+            padding: 8px 20px; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #ccc;
         }
-
-        .pph-value {
-            color: #f0b90b;
-            font-weight: 700;
-            text-shadow: 0 0 10px #f0b90b;
-        }
-
-        .clicker-holder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px 0;
-        }
-
+        .pph-value { color: #f0b90b; font-weight: 700; text-shadow: 0 0 10px #f0b90b; }
+        .clicker-holder { display: flex; flex-direction: column; align-items: center; margin: 20px 0; }
         .clicker-button {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
+            width: 200px; height: 200px; border-radius: 50%;
             background: radial-gradient(circle at 35% 30%, #ffd966, #b8860b);
-            border: 4px solid rgba(255, 215, 0, 0.6);
-            box-shadow: 0 0 60px rgba(79, 172, 254, 0.8), 0 15px 30px rgba(0,0,0,0.7);
-            cursor: pointer;
-            font-size: 5rem;
-            color: white;
-            text-shadow: 0 0 25px white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.1s ease;
-            animation: floatGlow 3s ease-in-out infinite;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
+            border: 4px solid rgba(255,215,0,0.6);
+            box-shadow: 0 0 60px rgba(79,172,254,0.8), 0 15px 30px rgba(0,0,0,0.7);
+            cursor: pointer; font-size: 5rem; color: white; text-shadow: 0 0 25px white;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.1s; animation: floatGlow 3s infinite;
         }
-
-        .clicker-button:active {
-            transform: scale(0.9);
-            box-shadow: 0 0 100px #4facfe, 0 10px 20px black;
-        }
-
+        .clicker-button:active { transform: scale(0.9); box-shadow: 0 0 100px #4facfe; }
         @keyframes floatGlow {
-            0% { box-shadow: 0 0 40px rgba(79, 172, 254, 0.6); }
-            50% { box-shadow: 0 0 80px rgba(79, 172, 254, 1); }
-            100% { box-shadow: 0 0 40px rgba(79, 172, 254, 0.6); }
+            0% { box-shadow: 0 0 40px rgba(79,172,254,0.6); }
+            50% { box-shadow: 0 0 80px rgba(79,172,254,1); }
+            100% { box-shadow: 0 0 40px rgba(79,172,254,0.6); }
         }
-
-        .energy-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            margin-top: 25px;
-        }
-
-        .energy-icon {
-            font-size: 1.4rem;
-            filter: drop-shadow(0 0 6px #f0b90b);
-        }
-
-        .energy-bar {
-            flex: 1;
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
+        .energy-container { display: flex; align-items: center; gap: 10px; width: 100%; margin-top: 25px; }
+        .energy-icon { font-size: 1.4rem; filter: drop-shadow(0 0 6px #f0b90b); }
+        .energy-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
         .energy-fill {
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(90deg, #f1c40f, #e67e22);
-            box-shadow: 0 0 15px #f39c12;
-            transition: width 0.3s;
+            height: 100%; width: 100%; background: linear-gradient(90deg, #f1c40f, #e67e22);
+            box-shadow: 0 0 15px #f39c12; transition: width 0.3s;
         }
-
-        .tab-content {
-            display: none;
-            padding: 10px 16px 100px;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
+        .tab-content { display: none; padding: 10px 16px 100px; flex: 1; overflow-y: auto; }
+        .tab-content.active { display: block; }
         .bottom-nav {
-            position: fixed;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 24px);
-            max-width: 400px;
-            background: rgba(20, 30, 50, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 5px;
-            z-index: 100;
+            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 24px); max-width: 400px;
+            background: rgba(20,30,50,0.7); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 30px;
+            display: flex; justify-content: space-around; padding: 8px 5px; z-index: 100;
         }
-
         .nav-btn {
-            background: transparent;
-            border: none;
-            color: #aaa;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.6rem;
-            font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 20px;
-            transition: 0.2s;
-            cursor: pointer;
+            background: transparent; border: none; color: #aaa;
+            display: flex; flex-direction: column; align-items: center; font-size: 0.6rem;
+            font-weight: 600; padding: 6px 12px; border-radius: 20px; transition: 0.2s; cursor: pointer;
         }
-
-        .nav-btn.active {
-            color: white;
-            background: rgba(79, 172, 254, 0.2);
-            text-shadow: 0 0 10px #4facfe;
-        }
-
-        .nav-icon {
-            font-size: 1.3rem;
-            margin-bottom: 2px;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
+        .nav-btn.active { color: white; background: rgba(79,172,254,0.2); text-shadow: 0 0 10px #4facfe; }
+        .nav-icon { font-size: 1.3rem; margin-bottom: 2px; }
+        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         .card-item {
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px;
-            padding: 16px;
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 16px;
         }
-
         .upgrade-btn {
-            background: #4facfe;
-            border: none;
-            padding: 10px;
-            border-radius: 12px;
-            font-weight: bold;
-            color: white;
-            width: 100%;
-            margin-top: 8px;
-            cursor: pointer;
+            background: #4facfe; border: none; padding: 10px; border-radius: 12px;
+            font-weight: bold; color: white; width: 100%; margin-top: 8px; cursor: pointer;
             box-shadow: 0 0 15px #4facfe;
         }
-
-        .special-timer {
-            color: #ff4d6a;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-
+        .special-timer { color: #ff4d6a; font-weight: bold; font-size: 0.8rem; }
         .filter-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #aaa;
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            white-space: nowrap;
-            backdrop-filter: blur(5px);
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #aaa; padding: 8px 14px; border-radius: 20px; font-size: 0.8rem;
+            cursor: pointer; white-space: nowrap; backdrop-filter: blur(5px);
         }
-
-        .filter-btn.active {
-            background: rgba(79, 172, 254, 0.25);
-            color: white;
-            border-color: #4facfe;
-        }
-
+        .filter-btn.active { background: rgba(79,172,254,0.25); color: white; border-color: #4facfe; }
         .claim-daily-btn, .claim-combo-btn {
-            background: #00c853;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            color: white;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 10px;
-            cursor: pointer;
+            background: #00c853; border: none; padding: 12px; border-radius: 12px;
+            color: white; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer;
         }
-
-        .claim-combo-btn {
-            background: #f0b90b;
-        }
-
+        .claim-combo-btn { background: #f0b90b; }
         .day-cell {
-            aspect-ratio: 1;
-            background: rgba(255,255,255,0.03);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            border: 1px solid transparent;
+            aspect-ratio: 1; background: rgba(255,255,255,0.03); border-radius: 10px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 0.65rem; border: 1px solid transparent;
         }
-
-        .day-cell.today {
-            border-color: #f0b90b;
-            background: rgba(240, 185, 11, 0.1);
+        .day-cell.today { border-color: #f0b90b; background: rgba(240,185,11,0.1); }
+        .combo-card { background: rgba(255,255,255,0.05); border-radius: 14px; padding: 12px; text-align: center; font-size: 0.8rem; }
+        .combo-card.completed { border: 2px solid #00e676; }
+        .admin-panel {
+            background: rgba(255,0,0,0.2); border: 1px solid #ff4d6a; border-radius: 16px;
+            padding: 15px; margin: 10px 16px; display: none;
         }
-
-        .combo-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 12px;
-            text-align: center;
-            font-size: 0.8rem;
-        }
-
-        .combo-card.completed {
-            border: 2px solid #00e676;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-        }
-
-        .modal {
-            background: rgba(20, 30, 50, 0.8);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 28px;
-            padding: 30px;
-            width: 85%;
-            text-align: center;
+        .admin-btn {
+            background: #ff4d6a; border: none; color: white; padding: 8px 12px;
+            border-radius: 8px; margin: 5px 3px; font-size: 0.75rem; cursor: pointer;
         }
     </style>
 </head>
 <body>
 <div class="app-container">
     <div class="top-panel">
-        <div style="font-size: 0.7rem; letter-spacing: 2px; color: #aaa;">$NODE</div>
+        <div style="font-size:0.7rem;letter-spacing:2px;color:#aaa;">$NODE</div>
         <div class="balance-amount" id="balanceDisplay">0</div>
         <div class="pph-badge">
             <span>⚡ Прибыль в час</span>
             <span class="pph-value" id="pphDisplay">0</span>
         </div>
-        <div style="margin-top: 5px; font-size: 0.8rem;" id="leagueDisplay">🥉 Testnet</div>
+        <div style="margin-top:5px;font-size:0.8rem;" id="leagueDisplay">🥉 Testnet</div>
+    </div>
+
+    <!-- Админ-панель (видна только админу) -->
+    <div class="admin-panel" id="adminPanel">
+        <strong>🔧 Админ-панель</strong>
+        <div>
+            <button class="admin-btn" id="adminAddBalance">+100k NODE</button>
+            <button class="admin-btn" id="adminReset">Сброс</button>
+            <button class="admin-btn" id="adminSetPPH">PPH 1M</button>
+            <button class="admin-btn" id="adminUnlockAll">Открыть всё</button>
+        </div>
     </div>
 
     <div class="tab-content active" id="miningTab">
@@ -344,19 +149,19 @@
         </div>
         <div class="energy-container">
             <span class="energy-icon">⚡</span>
-            <div class="energy-bar"><div class="energy-fill" id="energyFill" style="width: 100%;"></div></div>
-            <span id="energyText" style="font-size: 0.8rem;">1000/1000</span>
+            <div class="energy-bar"><div class="energy-fill" id="energyFill" style="width:100%;"></div></div>
+            <span id="energyText" style="font-size:0.8rem;">1000/1000</span>
         </div>
     </div>
 
     <div class="tab-content" id="shopTab">
-        <div class="filter-bar" style="display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto;">
+        <div style="display:flex;gap:8px;margin-bottom:15px;overflow-x:auto;" id="filterBar">
             <button class="filter-btn active" data-category="all">Все</button>
             <button class="filter-btn" data-category="hardware">Железо</button>
             <button class="filter-btn" data-category="software">Софт</button>
             <button class="filter-btn" data-category="marketing">Маркетинг</button>
             <button class="filter-btn" data-category="special">⭐ Спец</button>
-            <button class="filter-btn" data-category="secret" id="secretFilterBtn" style="display: none;">🔒 Секрет</button>
+            <button class="filter-btn" data-category="secret" id="secretFilterBtn" style="display:none;">🔒 Секрет</button>
         </div>
         <div class="cards-grid" id="cardsContainer"></div>
     </div>
@@ -369,11 +174,11 @@
     <div class="tab-content" id="squadTab">
         <div class="glass-panel">
             <h3>👥 Сквад</h3>
-            <input type="text" id="squadNameInput" placeholder="Название сквада" style="width:100%; padding:10px; border-radius:10px; border:none; margin:10px 0; background: rgba(255,255,255,0.1); color:white;">
-            <button id="joinSquadBtn" style="background:#4facfe; border:none; padding:10px; border-radius:10px; width:100%; color:white; font-weight:bold;">Вступить / Создать</button>
+            <input type="text" id="squadNameInput" placeholder="Название сквада" style="width:100%;padding:10px;border-radius:10px;border:none;margin:10px 0;background:rgba(255,255,255,0.1);color:white;">
+            <button id="joinSquadBtn" style="background:#4facfe;border:none;padding:10px;border-radius:10px;width:100%;color:white;font-weight:bold;">Вступить / Создать</button>
             <div style="margin-top:10px;" id="squadInfo"></div>
             <div style="margin-top:20px;"><strong>🏆 Рейтинг сквадов</strong></div>
-            <div id="squadLeaderboard" style="font-size:0.8rem; margin-top:10px;"></div>
+            <div id="squadLeaderboard" style="font-size:0.8rem;margin-top:10px;"></div>
         </div>
     </div>
 
@@ -381,11 +186,16 @@
         <div class="glass-panel">
             <h3>🔗 Рефералы</h3>
             <p style="font-size:0.8rem;">Пригласи 3 друзей — открой секретные карты!</p>
-            <button id="generateRefCodeBtn" style="background:#4facfe; border:none; padding:10px; border-radius:10px; width:100%; color:white; margin:10px 0;">Создать код</button>
-            <div id="refCodeDisplay" style="word-break: break-all; margin:5px 0;"></div>
-            <button id="simulateInviteBtn" style="background:#f0b90b; border:none; padding:10px; border-radius:10px; width:100%; color:black; font-weight:bold;">Симулировать приглашение (+1 друг)</button>
+            <div style="margin:10px 0;">
+                <label style="font-size:0.8rem;">Username бота (без @):</label>
+                <input type="text" id="botUsernameInput" placeholder="your_bot" style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(255,255,255,0.1);color:white;">
+            </div>
+            <button id="generateRefLinkBtn" style="background:#4facfe;border:none;padding:10px;border-radius:10px;width:100%;color:white;font-weight:bold;">Создать реферальную ссылку</button>
+            <div id="refLinkDisplay" style="word-break:break-all;margin:10px 0;font-size:0.8rem;"></div>
+            <input type="text" id="refCodeInput" placeholder="Введите код друга" style="width:100%;padding:10px;border-radius:10px;border:none;margin-top:10px;background:rgba(255,255,255,0.1);color:white;">
+            <button id="applyRefCodeBtn" style="background:#f0b90b;border:none;padding:10px;border-radius:10px;width:100%;color:black;font-weight:bold;margin-top:8px;">Применить код</button>
             <div style="margin-top:10px;">Приглашено: <span id="refCount">0</span></div>
-            <div style="font-size:0.7rem; color:#aaa;">+5% PPH за каждого друга 1 ур. | +2% за друзей друга</div>
+            <div style="font-size:0.7rem;color:#aaa;">+5% PPH за каждого друга</div>
         </div>
     </div>
 
@@ -398,471 +208,399 @@
     </div>
 </div>
 
-<div id="offlineModal" class="modal-overlay" style="display: none;">
-    <div class="modal">
-        <h3>⏳ Пока вас не было</h3>
-        <p>Вы заработали <span id="offlineAmount">0</span> $NODE</p>
-        <button class="close-btn" id="closeOfflineModal" style="background:#4facfe; border:none; padding:12px 25px; border-radius:20px; color:white; font-weight:bold; margin-top:15px;">Забрать</button>
-    </div>
-</div>
-
 <script>
     (function() {
-        // Telegram Web App ready
+        // ==================== КОНФИГУРАЦИЯ ====================
+        const ADMIN_ID = 7063549865; // ID администратора
+        let currentUserId = null;
+        let isAdmin = false;
+
+        // Telegram init
         if (window.Telegram?.WebApp) {
             window.Telegram.WebApp.ready();
             window.Telegram.WebApp.expand();
+            const initData = window.Telegram.WebApp.initDataUnsafe;
+            if (initData?.user) {
+                currentUserId = initData.user.id;
+                isAdmin = (currentUserId === ADMIN_ID);
+            }
+            // Получаем стартовый параметр (если есть)
+            if (initData?.start_param) {
+                localStorage.setItem('pendingRefCode', initData.start_param);
+            }
         }
 
-        // ========== КАРТОЧКИ ==========
+        // ==================== ДАННЫЕ КАРТОЧЕК ====================
         const cardsData = [
-            { id: 'hw1', name: 'Raspberry Pi Нода', category: 'hardware', baseCost: 10, baseProfit: 1 },
-            { id: 'hw2', name: 'SSD NVMe для Снапшотов', category: 'hardware', baseCost: 50, baseProfit: 5 },
-            { id: 'hw3', name: 'ОЗУ 32GB DDR4', category: 'hardware', baseCost: 120, baseProfit: 12 },
-            { id: 'hw4', name: 'Процессорный Кластер', category: 'hardware', baseCost: 300, baseProfit: 35 },
-            { id: 'hw5', name: 'Сетевая Карта 10Gbit', category: 'hardware', baseCost: 750, baseProfit: 80 },
-            { id: 'hw6', name: 'ИБП для Аптайма', category: 'hardware', baseCost: 1500, baseProfit: 160 },
-            { id: 'hw7', name: 'Охлаждение Ноды', category: 'hardware', baseCost: 3000, baseProfit: 320 },
-            { id: 'hw8', name: 'Статический IP-Адрес', category: 'hardware', baseCost: 5500, baseProfit: 600 },
-            { id: 'hw9', name: 'Выделенный Сервер', category: 'hardware', baseCost: 12000, baseProfit: 1300 },
-            { id: 'hw10', name: 'RAID-Массив 4xSSD', category: 'hardware', baseCost: 25000, baseProfit: 2700 },
-            { id: 'hw11', name: 'Оптоволоконный Канал', category: 'hardware', baseCost: 55000, baseProfit: 5800 },
-            { id: 'hw12', name: 'Резервный Генератор', category: 'hardware', baseCost: 120000, baseProfit: 12500 },
-            { id: 'hw13', name: 'Дата-центр (Колокейшн)', category: 'hardware', baseCost: 280000, baseProfit: 28000 },
-            { id: 'hw14', name: 'Ферма Валидаторов', category: 'hardware', baseCost: 650000, baseProfit: 62000 },
-            { id: 'hw15', name: 'Спутниковая Связь', category: 'hardware', baseCost: 1500000, baseProfit: 140000 },
-            { id: 'sw1', name: 'Обновление RPC-Ноды', category: 'software', baseCost: 25, baseProfit: 2 },
-            { id: 'sw2', name: 'Стейкинг Валидатора', category: 'software', baseCost: 75, baseProfit: 8 },
-            { id: 'sw3', name: 'MEV-Бот (v1)', category: 'software', baseCost: 200, baseProfit: 22 },
-            { id: 'sw4', name: 'Смарт-контракт Мост', category: 'software', baseCost: 500, baseProfit: 55 },
-            { id: 'sw5', name: 'Авто-рестейкинг', category: 'software', baseCost: 1200, baseProfit: 130 },
-            { id: 'sw6', name: 'Газ Оптимизатор', category: 'software', baseCost: 2800, baseProfit: 300 },
-            { id: 'sw7', name: 'Мониторинг Ноды (Grafana)', category: 'software', baseCost: 6500, baseProfit: 700 },
-            { id: 'sw8', name: 'Снапшот-Сервис', category: 'software', baseCost: 15000, baseProfit: 1600 },
-            { id: 'sw9', name: 'Консенсус Алгоритм (BFT)', category: 'software', baseCost: 35000, baseProfit: 3700 },
-            { id: 'sw10', name: 'Шардинг-Протокол', category: 'software', baseCost: 80000, baseProfit: 8500 },
-            { id: 'sw11', name: 'Криптография zk-SNARKs', category: 'software', baseCost: 180000, baseProfit: 19000 },
-            { id: 'sw12', name: 'Делегированный Стейк (DPoS)', category: 'software', baseCost: 400000, baseProfit: 42000 },
-            { id: 'sw13', name: 'Орбитальный Мост (Bridge)', category: 'software', baseCost: 900000, baseProfit: 95000 },
-            { id: 'sw14', name: 'Релеер Транзакций', category: 'software', baseCost: 2000000, baseProfit: 210000 },
-            { id: 'sw15', name: 'Нейро-Консенсус (AI)', category: 'software', baseCost: 5000000, baseProfit: 500000 },
-            { id: 'mk1', name: 'Twitter Инфлюенсер', category: 'marketing', baseCost: 40, baseProfit: 3 },
-            { id: 'mk2', name: 'Discord Комьюнити', category: 'marketing', baseCost: 150, baseProfit: 15 },
-            { id: 'mk3', name: 'YouTube Обзор Ноды', category: 'marketing', baseCost: 400, baseProfit: 42 },
-            { id: 'mk4', name: 'Telegram Амбассадор', category: 'marketing', baseCost: 1000, baseProfit: 105 },
-            { id: 'mk5', name: 'Партнерская Программа', category: 'marketing', baseCost: 2500, baseProfit: 260 },
-            { id: 'mk6', name: 'Аирдроп Кампания', category: 'marketing', baseCost: 6000, baseProfit: 630 },
-            { id: 'mk7', name: 'Реферальная Система', category: 'marketing', baseCost: 14000, baseProfit: 1500 },
-            { id: 'mk8', name: 'Медиа-Кит Проекта', category: 'marketing', baseCost: 32000, baseProfit: 3400 },
-            { id: 'mk9', name: 'Хакатон Спонсорство', category: 'marketing', baseCost: 75000, baseProfit: 8000 },
-            { id: 'mk10', name: 'Whitepaper 2.0', category: 'marketing', baseCost: 170000, baseProfit: 18000 },
-            { id: 'mk11', name: 'Листинг на CoinMarketCap', category: 'marketing', baseCost: 380000, baseProfit: 40000 },
-            { id: 'mk12', name: 'AMA Сессия (Twitter Space)', category: 'marketing', baseCost: 850000, baseProfit: 90000 },
-            { id: 'mk13', name: 'Кросс-чейн Партнерство', category: 'marketing', baseCost: 1900000, baseProfit: 200000 }
+            { id:'hw1', name:'Raspberry Pi Нода', category:'hardware', baseCost:10, baseProfit:1 },
+            { id:'hw2', name:'SSD NVMe для Снапшотов', category:'hardware', baseCost:50, baseProfit:5 },
+            { id:'hw3', name:'ОЗУ 32GB DDR4', category:'hardware', baseCost:120, baseProfit:12 },
+            { id:'hw4', name:'Процессорный Кластер', category:'hardware', baseCost:300, baseProfit:35 },
+            { id:'hw5', name:'Сетевая Карта 10Gbit', category:'hardware', baseCost:750, baseProfit:80 },
+            { id:'hw6', name:'ИБП для Аптайма', category:'hardware', baseCost:1500, baseProfit:160 },
+            { id:'hw7', name:'Охлаждение Ноды', category:'hardware', baseCost:3000, baseProfit:320 },
+            { id:'hw8', name:'Статический IP-Адрес', category:'hardware', baseCost:5500, baseProfit:600 },
+            { id:'hw9', name:'Выделенный Сервер', category:'hardware', baseCost:12000, baseProfit:1300 },
+            { id:'hw10', name:'RAID-Массив 4xSSD', category:'hardware', baseCost:25000, baseProfit:2700 },
+            { id:'hw11', name:'Оптоволоконный Канал', category:'hardware', baseCost:55000, baseProfit:5800 },
+            { id:'hw12', name:'Резервный Генератор', category:'hardware', baseCost:120000, baseProfit:12500 },
+            { id:'hw13', name:'Дата-центр (Колокейшн)', category:'hardware', baseCost:280000, baseProfit:28000 },
+            { id:'hw14', name:'Ферма Валидаторов', category:'hardware', baseCost:650000, baseProfit:62000 },
+            { id:'hw15', name:'Спутниковая Связь', category:'hardware', baseCost:1500000, baseProfit:140000 },
+            { id:'sw1', name:'Обновление RPC-Ноды', category:'software', baseCost:25, baseProfit:2 },
+            { id:'sw2', name:'Стейкинг Валидатора', category:'software', baseCost:75, baseProfit:8 },
+            { id:'sw3', name:'MEV-Бот (v1)', category:'software', baseCost:200, baseProfit:22 },
+            { id:'sw4', name:'Смарт-контракт Мост', category:'software', baseCost:500, baseProfit:55 },
+            { id:'sw5', name:'Авто-рестейкинг', category:'software', baseCost:1200, baseProfit:130 },
+            { id:'sw6', name:'Газ Оптимизатор', category:'software', baseCost:2800, baseProfit:300 },
+            { id:'sw7', name:'Мониторинг Ноды (Grafana)', category:'software', baseCost:6500, baseProfit:700 },
+            { id:'sw8', name:'Снапшот-Сервис', category:'software', baseCost:15000, baseProfit:1600 },
+            { id:'sw9', name:'Консенсус Алгоритм (BFT)', category:'software', baseCost:35000, baseProfit:3700 },
+            { id:'sw10', name:'Шардинг-Протокол', category:'software', baseCost:80000, baseProfit:8500 },
+            { id:'sw11', name:'Криптография zk-SNARKs', category:'software', baseCost:180000, baseProfit:19000 },
+            { id:'sw12', name:'Делегированный Стейк (DPoS)', category:'software', baseCost:400000, baseProfit:42000 },
+            { id:'sw13', name:'Орбитальный Мост (Bridge)', category:'software', baseCost:900000, baseProfit:95000 },
+            { id:'sw14', name:'Релеер Транзакций', category:'software', baseCost:2000000, baseProfit:210000 },
+            { id:'sw15', name:'Нейро-Консенсус (AI)', category:'software', baseCost:5000000, baseProfit:500000 },
+            { id:'mk1', name:'Twitter Инфлюенсер', category:'marketing', baseCost:40, baseProfit:3 },
+            { id:'mk2', name:'Discord Комьюнити', category:'marketing', baseCost:150, baseProfit:15 },
+            { id:'mk3', name:'YouTube Обзор Ноды', category:'marketing', baseCost:400, baseProfit:42 },
+            { id:'mk4', name:'Telegram Амбассадор', category:'marketing', baseCost:1000, baseProfit:105 },
+            { id:'mk5', name:'Партнерская Программа', category:'marketing', baseCost:2500, baseProfit:260 },
+            { id:'mk6', name:'Аирдроп Кампания', category:'marketing', baseCost:6000, baseProfit:630 },
+            { id:'mk7', name:'Реферальная Система', category:'marketing', baseCost:14000, baseProfit:1500 },
+            { id:'mk8', name:'Медиа-Кит Проекта', category:'marketing', baseCost:32000, baseProfit:3400 },
+            { id:'mk9', name:'Хакатон Спонсорство', category:'marketing', baseCost:75000, baseProfit:8000 },
+            { id:'mk10', name:'Whitepaper 2.0', category:'marketing', baseCost:170000, baseProfit:18000 },
+            { id:'mk11', name:'Листинг на CoinMarketCap', category:'marketing', baseCost:380000, baseProfit:40000 },
+            { id:'mk12', name:'AMA Сессия (Twitter Space)', category:'marketing', baseCost:850000, baseProfit:90000 },
+            { id:'mk13', name:'Кросс-чейн Партнерство', category:'marketing', baseCost:1900000, baseProfit:200000 }
         ];
-
-        // Секретные карты (открываются при 3 рефералах)
         const secretCards = [
-            { id: 'sc1', name: 'Генезис Ускоритель', category: 'secret', baseCost: 500000, baseProfit: 80000 },
-            { id: 'sc2', name: 'Квантовый Валидатор', category: 'secret', baseCost: 2000000, baseProfit: 300000 }
+            { id:'sc1', name:'Генезис Ускоритель', category:'secret', baseCost:500000, baseProfit:80000 },
+            { id:'sc2', name:'Квантовый Валидатор', category:'secret', baseCost:2000000, baseProfit:300000 }
         ];
-
-        // Лимитированные спецкарты будут генерироваться динамически
         let specialCards = [];
 
-        // ========== СОСТОЯНИЕ ==========
+        // ==================== СОСТОЯНИЕ ИГРЫ ====================
         const DEFAULT_STATE = {
-            balance: 100,
-            totalPPH: 0,
-            lastLogin: Date.now(),
-            energy: 1000,
-            lastEnergyUpdate: Date.now(),
+            balance: 100, totalPPH: 0, lastLogin: Date.now(),
+            energy: 1000, lastEnergyUpdate: Date.now(),
             cards: [],
-            dailyRewardDay: 0,
-            dailyRewardClaimed: false,
-            lastDailyRewardDate: null,
-            dailyComboDate: null,
-            dailyComboCards: [],
-            dailyComboClaimed: false,
+            dailyRewardDay: 0, dailyRewardClaimed: false, lastDailyRewardDate: null,
+            dailyComboDate: null, dailyComboCards: [], dailyComboClaimed: false,
             totalClicks: 0,
-            squadName: null,
-            referrals: 0,
-            referralCode: null,
-            // специальные карты дня
-            specialCardsDate: null,
-            specialCardsPurchased: [] // id купленных спецкарт, с временной меткой
+            squadName: null, referrals: 0, referralCode: null,
+            specialCardsDate: null, specialCardsPurchased: []
         };
-
         let gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
 
-        // DOM элементы
+        // ==================== DOM ЭЛЕМЕНТЫ ====================
         const balanceDisplay = document.getElementById('balanceDisplay');
         const pphDisplay = document.getElementById('pphDisplay');
         const energyFill = document.getElementById('energyFill');
         const energyText = document.getElementById('energyText');
-        const clickerBtn = document.getElementById('clickerBtn');
-        const cardsContainer = document.getElementById('cardsContainer');
         const leagueDisplay = document.getElementById('leagueDisplay');
+        const cardsContainer = document.getElementById('cardsContainer');
+        const clickerBtn = document.getElementById('clickerBtn');
         const squadNameInput = document.getElementById('squadNameInput');
         const joinSquadBtn = document.getElementById('joinSquadBtn');
         const squadInfo = document.getElementById('squadInfo');
         const squadLeaderboard = document.getElementById('squadLeaderboard');
         const refCountSpan = document.getElementById('refCount');
-        const refCodeDisplay = document.getElementById('refCodeDisplay');
-        const generateRefCodeBtn = document.getElementById('generateRefCodeBtn');
-        const simulateInviteBtn = document.getElementById('simulateInviteBtn');
+        const refLinkDisplay = document.getElementById('refLinkDisplay');
+        const generateRefLinkBtn = document.getElementById('generateRefLinkBtn');
+        const applyRefCodeBtn = document.getElementById('applyRefCodeBtn');
+        const refCodeInput = document.getElementById('refCodeInput');
+        const botUsernameInput = document.getElementById('botUsernameInput');
         const secretFilterBtn = document.getElementById('secretFilterBtn');
+        const adminPanel = document.getElementById('adminPanel');
 
-        // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
-        function formatNumber(num) {
-            if (num >= 1e6) return (num / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
-            if (num >= 1e3) return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
-            return Math.floor(num).toLocaleString('ru-RU');
+        // Покажем админ-панель если isAdmin
+        if (isAdmin) adminPanel.style.display = 'block';
+
+        // ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
+        function formatNumber(n) {
+            if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/, '')+'M';
+            if (n >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/, '')+'K';
+            return Math.floor(n).toLocaleString('ru-RU');
         }
-
         function getCardData(id) {
-            return cardsData.find(c => c.id === id) || secretCards.find(c => c.id === id) || specialCards.find(c => c.id === id);
+            return cardsData.find(c=>c.id===id) || secretCards.find(c=>c.id===id) || specialCards.find(c=>c.id===id);
         }
-
-        function getPlayerCard(id) {
-            return gameState.cards.find(c => c.id === id);
-        }
-
+        function getPlayerCard(id) { return gameState.cards.find(c=>c.id===id); }
         function getCardProfit(id, level) {
-            const card = getCardData(id);
-            if (!card || level < 1) return 0;
-            return card.baseProfit * level * (1 + 0.15 * (level - 1));
+            const c = getCardData(id); if(!c || level<1) return 0;
+            return c.baseProfit * level * (1 + 0.15*(level-1));
         }
-
         function calculateTotalPPH() {
-            let total = 0;
-            gameState.cards.forEach(c => {
-                total += getCardProfit(c.id, c.level);
-            });
-            // бонус от рефералов: 5% за каждого друга 1 уровня + 2% за друга второго уровня (симулируем просто как *0.05 за каждого)
-            const refBonus = gameState.referrals * 0.05; // 5% за каждого
-            gameState.totalPPH = total * (1 + refBonus);
+            let t = 0; gameState.cards.forEach(c=> t += getCardProfit(c.id, c.level));
+            gameState.totalPPH = t * (1 + gameState.referrals * 0.05);
         }
-
-        function getUpgradeCost(id, currentLevel) {
-            const card = getCardData(id);
-            if (!card) return Infinity;
-            return Math.floor(card.baseCost * Math.pow(1.5, currentLevel));
+        function getUpgradeCost(id, lvl) {
+            const c = getCardData(id); if(!c) return Infinity;
+            return Math.floor(c.baseCost * Math.pow(1.5, lvl));
         }
-
-        function saveGame() {
-            localStorage.setItem('nodeMinerPremium', JSON.stringify(gameState));
-        }
-
+        function saveGame() { localStorage.setItem('nodeMinerPremium', JSON.stringify(gameState)); }
         function loadGame() {
-            const saved = localStorage.getItem('nodeMinerPremium');
-            if (saved) {
-                try {
-                    gameState = Object.assign({}, DEFAULT_STATE, JSON.parse(saved));
-                } catch (e) {}
+            const s = localStorage.getItem('nodeMinerPremium');
+            if(s) try { gameState = Object.assign({}, DEFAULT_STATE, JSON.parse(s)); } catch(e){}
+            if(!Array.isArray(gameState.cards)) gameState.cards = [];
+            if(!Array.isArray(gameState.specialCardsPurchased)) gameState.specialCardsPurchased = [];
+            // Применяем отложенный реферальный код
+            const pending = localStorage.getItem('pendingRefCode');
+            if (pending) {
+                // имитация: если код совпадает с нашим referralCode, то считаем что нас пригласили
+                // но т.к. это локально, просто увеличим свой referrals для демо
+                if (gameState.referralCode && pending === gameState.referralCode) {
+                    gameState.referrals += 1;
+                }
+                localStorage.removeItem('pendingRefCode');
             }
-            if (!Array.isArray(gameState.cards)) gameState.cards = [];
-            if (!Array.isArray(gameState.specialCardsPurchased)) gameState.specialCardsPurchased = [];
             calculateTotalPPH();
         }
-
-        // Офлайн доход
         function processOfflineIncome() {
             const now = Date.now();
-            let delta = (now - gameState.lastLogin) / 1000;
-            if (delta < 0) delta = 0;
-            const maxDelta = 86400;
-            if (delta > maxDelta) delta = maxDelta;
-            if (delta > 0 && gameState.totalPPH > 0) {
-                const earned = (gameState.totalPPH / 3600) * delta;
-                gameState.balance += earned;
-                return earned;
-            }
-            return 0;
+            let delta = (now - gameState.lastLogin)/1000;
+            if(delta<0) delta=0; if(delta>86400) delta=86400;
+            if(delta>0 && gameState.totalPPH>0) {
+                const earned = (gameState.totalPPH/3600)*delta;
+                gameState.balance += earned; return earned;
+            } return 0;
         }
-
         function restoreEnergy() {
             const now = Date.now();
-            const delta = (now - gameState.lastEnergyUpdate) / 1000;
-            if (delta > 0) {
-                gameState.energy = Math.min(1000, gameState.energy + delta * 2);
+            const delta = (now - gameState.lastEnergyUpdate)/1000;
+            if(delta>0) {
+                gameState.energy = Math.min(1000, gameState.energy + delta*2);
                 gameState.lastEnergyUpdate = now;
             }
         }
-
-        // Ежедневные обновления
         function updateDailyProgress() {
             const today = new Date().toISOString().slice(0,10);
-            if (gameState.lastDailyRewardDate !== today) gameState.dailyRewardClaimed = false;
-            if (gameState.dailyComboDate !== today) {
-                gameState.dailyComboDate = today;
-                gameState.dailyComboClaimed = false;
+            if(gameState.lastDailyRewardDate !== today) gameState.dailyRewardClaimed = false;
+            if(gameState.dailyComboDate !== today) {
+                gameState.dailyComboDate = today; gameState.dailyComboClaimed = false;
                 const cats = ['hardware','software','marketing'];
-                gameState.dailyComboCards = cats.map(cat => {
-                    const pool = cardsData.filter(c => c.category === cat);
-                    return pool[Math.floor(Math.random() * pool.length)].id;
+                gameState.dailyComboCards = cats.map(cat=>{
+                    const pool = cardsData.filter(c=>c.category===cat);
+                    return pool[Math.floor(Math.random()*pool.length)].id;
                 });
             }
-            // Специальные карты дня
-            if (gameState.specialCardsDate !== today) {
-                gameState.specialCardsDate = today;
-                gameState.specialCardsPurchased = []; // сбрасываем покупки предыдущего дня
+            if(gameState.specialCardsDate !== today) {
+                gameState.specialCardsDate = today; gameState.specialCardsPurchased = [];
                 generateSpecialCards();
             }
-            // Удаляем просроченные спецкарты (если куплены не сегодня)
-            gameState.cards = gameState.cards.filter(c => {
-                if (c.id.startsWith('sp_')) {
-                    const spec = specialCards.find(s => s.id === c.id);
+            // удаляем просроченные спецкарты
+            gameState.cards = gameState.cards.filter(c=>{
+                if(c.id.startsWith('sp_')) {
+                    const spec = specialCards.find(s=>s.id===c.id);
                     return spec && gameState.specialCardsDate === today;
-                }
-                return true;
+                } return true;
             });
         }
-
         function generateSpecialCards() {
-            specialCards = [];
-            const names = ['Интервью с Дуровым', 'Листинг на Binance', 'Коллаб с Vitalik', 'NFT Airdrop', 'SEC одобрение'];
-            for (let i = 0; i < 3; i++) {
-                const id = 'sp_' + i;
-                specialCards.push({
-                    id: id,
-                    name: names[i],
-                    category: 'special',
-                    baseCost: 50000 + i * 30000,
-                    baseProfit: 10000 + i * 7000,
-                    expires: Date.now() + 86400000
-                });
-            }
+            specialCards = [
+                { id:'sp_0', name:'Интервью с Дуровым', category:'special', baseCost:50000, baseProfit:10000, expires:Date.now()+86400000 },
+                { id:'sp_1', name:'Листинг на Binance', category:'special', baseCost:80000, baseProfit:17000, expires:Date.now()+86400000 },
+                { id:'sp_2', name:'Коллаб с Vitalik', category:'special', baseCost:120000, baseProfit:25000, expires:Date.now()+86400000 }
+            ];
         }
-
         function getLeague(pph) {
-            if (pph >= 100000) return { name: '💎 Genesis', color: '#b44dff' };
-            if (pph >= 10000) return { name: '🥈 Validator', color: '#4facfe' };
-            if (pph >= 1000) return { name: '🥉 Mainnet', color: '#f0b90b' };
-            return { name: '🔹 Testnet', color: '#aaa' };
+            if(pph>=100000) return {name:'💎 Genesis',color:'#b44dff'};
+            if(pph>=10000) return {name:'🥈 Validator',color:'#4facfe'};
+            if(pph>=1000) return {name:'🥉 Mainnet',color:'#f0b90b'};
+            return {name:'🔹 Testnet',color:'#aaa'};
         }
-
-        function updateLeagueUI() {
-            const league = getLeague(gameState.totalPPH);
-            leagueDisplay.textContent = league.name;
-            leagueDisplay.style.color = league.color;
-            // меняем свечение кнопки соответственно
-            clickerBtn.style.boxShadow = `0 0 60px ${league.color}, 0 15px 30px black`;
-        }
-
-        // ========== РЕНДЕРИНГ ==========
         function updateUI() {
             balanceDisplay.textContent = formatNumber(gameState.balance);
             pphDisplay.textContent = formatNumber(gameState.totalPPH);
-            energyFill.style.width = (gameState.energy / 10) + '%';
-            energyText.textContent = Math.floor(gameState.energy) + '/1000';
-            updateLeagueUI();
+            energyFill.style.width = (gameState.energy/10)+'%';
+            energyText.textContent = Math.floor(gameState.energy)+'/1000';
+            const league = getLeague(gameState.totalPPH);
+            leagueDisplay.textContent = league.name;
+            leagueDisplay.style.color = league.color;
+            clickerBtn.style.boxShadow = `0 0 60px ${league.color}, 0 15px 30px black`;
             refCountSpan.textContent = gameState.referrals;
-            if (gameState.referrals >= 3) secretFilterBtn.style.display = 'inline-block';
-            else secretFilterBtn.style.display = 'none';
+            secretFilterBtn.style.display = gameState.referrals >= 3 ? 'inline-block' : 'none';
         }
 
-        function renderShop(category = 'all') {
-            let allCards = [...cardsData];
-            if (category === 'secret') allCards = [...secretCards];
-            else if (category === 'special') allCards = [...specialCards];
-            else if (category !== 'all') allCards = cardsData.filter(c => c.category === category);
-            else allCards = [...cardsData, ...specialCards, ...(gameState.referrals >= 3 ? secretCards : [])];
-
-            cardsContainer.innerHTML = allCards.map(card => {
-                const playerCard = getPlayerCard(card.id);
-                const level = playerCard ? playerCard.level : 0;
-                const profit = getCardProfit(card.id, level);
-                const cost = getUpgradeCost(card.id, level);
-                const canBuy = gameState.balance >= cost;
-                const isSpecial = card.category === 'special';
-                const expiresText = isSpecial ? `<div class="special-timer">До конца: ${new Date(card.expires).toLocaleTimeString()}</div>` : '';
-                return `
-                    <div class="card-item">
-                        <strong>${card.name}</strong> ${expiresText}
-                        <div>Прибыль: +${formatNumber(profit)}/ч</div>
-                        <button class="upgrade-btn" data-id="${card.id}" ${!canBuy ? 'disabled' : ''}>
-                            ${level === 0 ? 'Купить' : 'Апгрейд'} (${formatNumber(cost)})
-                        </button>
-                    </div>
-                `;
+        // ==================== РЕНДЕРИНГ МАГАЗИНА ====================
+        function renderShop(cat='all') {
+            let all = [...cardsData];
+            if(cat==='secret') all = [...secretCards];
+            else if(cat==='special') all = [...specialCards];
+            else if(cat!=='all') all = cardsData.filter(c=>c.category===cat);
+            else all = [...cardsData, ...specialCards, ...(gameState.referrals>=3?secretCards:[])];
+            cardsContainer.innerHTML = all.map(card=>{
+                const pc = getPlayerCard(card.id); const lvl = pc?pc.level:0;
+                const profit = getCardProfit(card.id, lvl); const cost = getUpgradeCost(card.id, lvl);
+                const can = gameState.balance >= cost;
+                const tmr = card.expires ? `<div class="special-timer">До конца: ${new Date(card.expires).toLocaleTimeString()}</div>` : '';
+                return `<div class="card-item"><strong>${card.name}</strong> ${tmr}
+                    <div>Прибыль: +${formatNumber(profit)}/ч</div>
+                    <button class="upgrade-btn" data-id="${card.id}" ${!can?'disabled':''}>
+                        ${lvl===0?'Купить':'Апгрейд'} (${formatNumber(cost)})</button></div>`;
             }).join('');
-
-            document.querySelectorAll('.upgrade-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = e.target.dataset.id;
-                    buyUpgrade(id);
-                });
+            document.querySelectorAll('.upgrade-btn').forEach(b=>{
+                b.addEventListener('click', (e)=> buyUpgrade(e.target.dataset.id));
             });
         }
-
         function buyUpgrade(cardId) {
-            const playerCard = getPlayerCard(cardId);
-            const level = playerCard ? playerCard.level : 0;
-            const cost = getUpgradeCost(cardId, level);
-            if (gameState.balance < cost) return;
-            // проверка спецкарты на доступность
+            const pc = getPlayerCard(cardId); const lvl = pc?pc.level:0;
+            const cost = getUpgradeCost(cardId, lvl);
+            if(gameState.balance < cost) return;
             const card = getCardData(cardId);
-            if (card?.category === 'special' && gameState.specialCardsDate !== new Date().toISOString().slice(0,10)) {
-                alert('Срок действия карты истёк!');
-                return;
+            if(card?.category==='special' && gameState.specialCardsDate !== new Date().toISOString().slice(0,10)) {
+                alert('Срок действия истёк!'); return;
             }
             gameState.balance -= cost;
-            if (!playerCard) {
-                gameState.cards.push({ id: cardId, level: 1 });
-            } else {
-                playerCard.level++;
-            }
-            calculateTotalPPH();
-            saveGame();
-            updateUI();
-            renderShop(document.querySelector('.filter-btn.active')?.dataset.category || 'all');
+            if(!pc) gameState.cards.push({id:cardId, level:1});
+            else pc.level++;
+            calculateTotalPPH(); saveGame(); updateUI();
+            const activeCat = document.querySelector('.filter-btn.active')?.dataset.category || 'all';
+            renderShop(activeCat);
         }
 
-        function claimDailyReward() {
-            if (gameState.dailyRewardClaimed) return;
-            const rewards = [50,150,400,1000,3000,8000,25000];
-            const reward = rewards[gameState.dailyRewardDay];
-            gameState.balance += reward;
-            gameState.dailyRewardClaimed = true;
-            gameState.lastDailyRewardDate = new Date().toISOString().slice(0,10);
-            gameState.dailyRewardDay = (gameState.dailyRewardDay + 1) % 7;
-            saveGame();
-            updateUI();
-            renderDailyReward();
-        }
-
+        // ==================== ДЕЙЛИКИ ====================
         function renderDailyReward() {
             const rewards = [50,150,400,1000,3000,8000,25000];
             const today = new Date().toISOString().slice(0,10);
-            const claimed = gameState.dailyRewardClaimed && gameState.lastDailyRewardDate === today;
+            const claimed = gameState.dailyRewardClaimed && gameState.lastDailyRewardDate===today;
             let html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px;">';
-            for (let i=0; i<7; i++) {
+            for(let i=0;i<7;i++) {
                 let cls = 'day-cell';
-                if (i < gameState.dailyRewardDay || (i === gameState.dailyRewardDay && claimed)) cls += ' claimed';
-                if (i === gameState.dailyRewardDay && !claimed) cls += ' today';
+                if(i<gameState.dailyRewardDay || (i===gameState.dailyRewardDay && claimed)) cls += ' claimed';
+                if(i===gameState.dailyRewardDay && !claimed) cls += ' today';
                 html += `<div class="${cls}"><span>День${i+1}</span><span>${formatNumber(rewards[i])}</span></div>`;
             }
-            html += '</div>';
-            html += `<button class="claim-daily-btn" ${claimed ? 'disabled' : ''}>${claimed ? 'Получено' : 'Забрать'}</button>`;
+            html += '</div><button class="claim-daily-btn" '+ (claimed?'disabled':'') +'>'+ (claimed?'Получено':'Забрать') +'</button>';
             document.getElementById('dailyRewardBlock').innerHTML = html;
-            document.querySelector('.claim-daily-btn')?.addEventListener('click', claimDailyReward);
-        }
-
-        function claimDailyCombo() {
-            if (gameState.dailyComboClaimed || !checkComboCompleted()) return;
-            gameState.balance += 50000;
-            gameState.dailyComboClaimed = true;
-            saveGame();
-            updateUI();
-            renderCombo();
-        }
-
-        function checkComboCompleted() {
-            return gameState.dailyComboCards.every(id => {
-                const pc = getPlayerCard(id);
-                return pc && pc.level >= 1;
+            document.querySelector('.claim-daily-btn')?.addEventListener('click', ()=>{
+                if(gameState.dailyRewardClaimed) return;
+                const r = rewards[gameState.dailyRewardDay];
+                gameState.balance += r;
+                gameState.dailyRewardClaimed = true;
+                gameState.lastDailyRewardDate = new Date().toISOString().slice(0,10);
+                gameState.dailyRewardDay = (gameState.dailyRewardDay+1)%7;
+                saveGame(); updateUI(); renderDailyReward();
             });
         }
-
         function renderCombo() {
             const combo = gameState.dailyComboCards;
             let html = '<h4>🔥 Комбо дня</h4><div style="display:flex;gap:8px;margin:10px 0;">';
-            combo.forEach(id => {
-                const card = getCardData(id);
-                const has = getPlayerCard(id)?.level >= 1;
-                html += `<div class="combo-card ${has ? 'completed' : ''}">${card?.name || id}</div>`;
+            combo.forEach(id=>{
+                const card = getCardData(id); const has = getPlayerCard(id)?.level>=1;
+                html += `<div class="combo-card ${has?'completed':''}">${card?.name||id}</div>`;
             });
             html += '</div>';
-            const completed = checkComboCompleted();
-            html += `<button class="claim-combo-btn" ${!completed || gameState.dailyComboClaimed ? 'disabled' : ''}>${gameState.dailyComboClaimed ? 'Получено' : 'Забрать 50K'}</button>`;
+            const completed = combo.every(id=> getPlayerCard(id)?.level>=1);
+            html += `<button class="claim-combo-btn" ${(!completed||gameState.dailyComboClaimed)?'disabled':''}>${gameState.dailyComboClaimed?'Получено':'Забрать 50K'}</button>`;
             document.getElementById('comboBlock').innerHTML = html;
-            document.querySelector('.claim-combo-btn')?.addEventListener('click', claimDailyCombo);
+            document.querySelector('.claim-combo-btn')?.addEventListener('click', ()=>{
+                if(!completed || gameState.dailyComboClaimed) return;
+                gameState.balance += 50000; gameState.dailyComboClaimed = true;
+                saveGame(); updateUI(); renderCombo();
+            });
         }
 
-        // Сквады
+        // ==================== СКВАДЫ ====================
         function renderSquad() {
-            if (gameState.squadName) {
-                squadInfo.innerHTML = `Ваш сквад: <strong>${gameState.squadName}</strong><br>Ваш PPH: ${formatNumber(gameState.totalPPH)}`;
-            } else {
-                squadInfo.innerHTML = 'Вы не в скваде';
-            }
-            // Симулированный рейтинг
+            if(gameState.squadName) squadInfo.innerHTML = `Сквад: <strong>${gameState.squadName}</strong><br>Ваш PPH: ${formatNumber(gameState.totalPPH)}`;
+            else squadInfo.innerHTML = 'Вы не в скваде';
             const squads = [
-                { name: 'Crypto Whales', pph: 500000 + Math.random()*200000 },
-                { name: 'Node Warriors', pph: 300000 + Math.random()*150000 },
-                { name: 'Mainnet Kings', pph: 200000 + Math.random()*100000 },
-                { name: gameState.squadName || 'Ваш сквад', pph: gameState.totalPPH + Math.random()*50000 }
+                {name:'Crypto Whales', pph:500000+Math.random()*200000},
+                {name:'Node Warriors', pph:300000+Math.random()*150000},
+                {name:'Mainnet Kings', pph:200000+Math.random()*100000},
+                {name: gameState.squadName||'Ваш сквад', pph: gameState.totalPPH+Math.random()*50000}
             ];
-            squads.sort((a,b) => b.pph - a.pph);
-            squadLeaderboard.innerHTML = squads.map((s,i) => `${i+1}. ${s.name} — ${formatNumber(s.pph)} PPH`).join('<br>');
+            squads.sort((a,b)=>b.pph-a.pph);
+            squadLeaderboard.innerHTML = squads.map((s,i)=>`${i+1}. ${s.name} — ${formatNumber(s.pph)} PPH`).join('<br>');
+        }
+        joinSquadBtn.addEventListener('click', ()=>{
+            const n = squadNameInput.value.trim(); if(!n) return;
+            gameState.squadName = n; saveGame(); renderSquad();
+        });
+
+        // ==================== РЕФЕРАЛЫ ====================
+        generateRefLinkBtn.addEventListener('click', ()=>{
+            const bot = botUsernameInput.value.trim() || 'YourBot';
+            gameState.referralCode = 'REF'+Math.random().toString(36).substring(2,8).toUpperCase();
+            const link = `https://t.me/${bot}?start=${gameState.referralCode}`;
+            refLinkDisplay.textContent = link;
+            saveGame();
+        });
+        applyRefCodeBtn.addEventListener('click', ()=>{
+            const code = refCodeInput.value.trim(); if(!code) return;
+            // Для демо: любой код увеличивает счётчик (кроме своего)
+            if(code === gameState.referralCode) { alert('Нельзя использовать свой код!'); return; }
+            gameState.referrals += 1;
+            calculateTotalPPH(); saveGame(); updateUI(); renderShop();
+            refCodeInput.value = '';
+            alert('Код принят! +1 реферал');
+        });
+
+        // ==================== АДМИН-ПАНЕЛЬ ====================
+        if(isAdmin) {
+            document.getElementById('adminAddBalance').addEventListener('click', ()=>{
+                gameState.balance += 100000; saveGame(); updateUI();
+            });
+            document.getElementById('adminReset').addEventListener('click', ()=>{
+                gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+                saveGame(); updateUI(); renderShop(); renderDailyReward(); renderCombo(); renderSquad();
+            });
+            document.getElementById('adminSetPPH').addEventListener('click', ()=>{
+                // убираем все карты, добавляем одну мощную
+                gameState.cards = [{id:'hw15', level:10}];
+                calculateTotalPPH(); saveGame(); updateUI(); renderShop();
+            });
+            document.getElementById('adminUnlockAll').addEventListener('click', ()=>{
+                cardsData.forEach(c=>{
+                    const exist = getPlayerCard(c.id);
+                    if(exist) exist.level = 1;
+                    else gameState.cards.push({id:c.id, level:1});
+                });
+                calculateTotalPPH(); saveGame(); updateUI(); renderShop();
+            });
         }
 
-        joinSquadBtn.addEventListener('click', () => {
-            const name = squadNameInput.value.trim();
-            if (!name) return;
-            gameState.squadName = name;
-            saveGame();
-            renderSquad();
-        });
-
-        // Рефералы
-        generateRefCodeBtn.addEventListener('click', () => {
-            gameState.referralCode = 'REF' + Math.random().toString(36).substring(2,8).toUpperCase();
-            refCodeDisplay.textContent = 'Код: ' + gameState.referralCode;
-            saveGame();
-        });
-
-        simulateInviteBtn.addEventListener('click', () => {
-            gameState.referrals += 1;
-            calculateTotalPPH();
-            saveGame();
-            updateUI();
-            renderShop();
-            if (gameState.referrals >= 3) alert('Открыта секретная категория карт!');
-        });
-
-        // Кнопка кликера
-        clickerBtn.addEventListener('click', () => {
-            if (gameState.energy < 1) return;
-            gameState.energy--;
-            gameState.totalClicks++;
-            const clickValue = 1 + (gameState.totalPPH / 3600) * 10;
-            gameState.balance += clickValue;
-            saveGame();
-            updateUI();
-            // частица
+        // ==================== КЛИКЕР ====================
+        clickerBtn.addEventListener('click', ()=>{
+            if(gameState.energy<1) return;
+            gameState.energy--; gameState.totalClicks++;
+            const val = 1 + (gameState.totalPPH/3600)*10;
+            gameState.balance += val;
+            saveGame(); updateUI();
             const r = clickerBtn.getBoundingClientRect();
             const p = document.createElement('div');
-            p.style.cssText = `position:fixed;left:${r.left+r.width/2-20}px;top:${r.top}px;color:#f0b90b;font-weight:bold;pointer-events:none;animation:floatUp 1s forwards;`;
-            p.textContent = '+' + formatNumber(clickValue);
+            p.style.cssText=`position:fixed;left:${r.left+r.width/2-20}px;top:${r.top}px;color:#f0b90b;font-weight:bold;pointer-events:none;animation:floatUp 1s forwards;z-index:999;`;
+            p.textContent = '+'+formatNumber(val);
             document.body.appendChild(p);
-            setTimeout(() => p.remove(), 1000);
+            setTimeout(()=>p.remove(),1000);
         });
 
-        // Навигация
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        // ==================== НАВИГАЦИЯ ====================
+        document.querySelectorAll('.nav-btn').forEach(btn=>{
+            btn.addEventListener('click', ()=>{
+                document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
                 const tabId = btn.dataset.tab;
                 document.getElementById(tabId).classList.add('active');
                 btn.classList.add('active');
-                if (tabId === 'shopTab') renderShop();
-                if (tabId === 'comboTab') { renderDailyReward(); renderCombo(); }
-                if (tabId === 'squadTab') renderSquad();
+                if(tabId==='shopTab') renderShop();
+                if(tabId==='comboTab') { renderDailyReward(); renderCombo(); }
+                if(tabId==='squadTab') renderSquad();
             });
         });
-
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-btn').forEach(btn=>{
+            btn.addEventListener('click', ()=>{
+                document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
                 btn.classList.add('active');
                 renderShop(btn.dataset.category);
             });
         });
 
-        // Инициализация
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
         function init() {
             loadGame();
             restoreEnergy();
@@ -876,20 +614,12 @@
             renderDailyReward();
             renderCombo();
             renderSquad();
-            if (offlineEarned > 0) {
-                document.getElementById('offlineAmount').textContent = formatNumber(offlineEarned);
-                document.getElementById('offlineModal').style.display = 'flex';
+            if(offlineEarned > 0) {
+                // можно показать модалку, но пока просто алерт
+                alert(`Пока вас не было, заработано ${formatNumber(offlineEarned)} $NODE`);
             }
-            setInterval(() => {
-                restoreEnergy();
-                updateUI();
-            }, 1000);
+            setInterval(()=>{ restoreEnergy(); updateUI(); }, 1000);
         }
-
-        document.getElementById('closeOfflineModal').addEventListener('click', () => {
-            document.getElementById('offlineModal').style.display = 'none';
-        });
-
         init();
     })();
 </script>
