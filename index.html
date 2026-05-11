@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Duck Clicker · Mini App</title>
+  <title>Duck Evolution · Mini App</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     * {
@@ -20,83 +20,97 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 16px;
+      padding: 12px;
       margin: 0;
+      overflow-x: hidden;
     }
     .game-container {
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       background: linear-gradient(145deg, #1a1f2b 0%, #10141c 100%);
       border-radius: 48px;
-      padding: 28px 20px 32px;
+      padding: 24px 18px 28px;
       box-shadow: 0 25px 50px -10px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.08);
       display: flex;
       flex-direction: column;
       align-items: center;
-      border: 1px solid rgba(120, 140, 170, 0.2);
+      border: 1px solid rgba(120, 140, 170, 0.25);
     }
     .balance-section {
       background: #1e2530;
       border-radius: 60px;
-      padding: 14px 32px;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.6), 0 4px 10px rgba(0,0,0,0.4);
-      margin-bottom: 20px;
+      padding: 12px 32px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.5);
+      margin-bottom: 18px;
       border: 1px solid rgba(255,200,80,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      width: fit-content;
     }
     .coin-icon {
       font-size: 26px;
     }
     .balance-amount {
-      font-size: 38px;
+      font-size: 40px;
       font-weight: 800;
       color: #f8e3a0;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.7);
       letter-spacing: 1px;
     }
     .duck-area {
-      margin: 10px 0 20px;
+      margin: 8px 0 18px;
       cursor: pointer;
       position: relative;
       transition: transform 0.1s ease;
       background: radial-gradient(circle at 50% 30%, #2a3340, #141b24);
       border-radius: 80px;
-      padding: 25px 40px;
+      padding: 20px 40px;
       box-shadow: 0 12px 28px rgba(0,0,0,0.6), inset 0 -4px 6px rgba(0,0,0,0.5);
       border: 2px solid #4a5462;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .duck-area:active {
-      transform: scale(0.93);
+      transform: scale(0.94);
     }
     .duck-emoji {
-      font-size: 100px;
+      font-size: 110px;
       display: block;
-      filter: drop-shadow(0 12px 14px rgba(0,0,0,0.6)) drop-shadow(0 0 12px #ffd966);
+      filter: drop-shadow(0 12px 14px rgba(0,0,0,0.7)) drop-shadow(0 0 14px #ffd966);
       transition: all 0.15s;
       line-height: 1;
     }
     .duck-area:active .duck-emoji {
-      transform: translateY(-6px) scale(1.07);
-      filter: drop-shadow(0 18px 18px rgba(0,0,0,0.7)) drop-shadow(0 0 20px #fbbf24);
+      transform: translateY(-6px) scale(1.08);
+      filter: drop-shadow(0 18px 18px rgba(0,0,0,0.8)) drop-shadow(0 0 22px #fbbf24);
     }
     .click-hint {
       color: #a0b3cc;
       margin-top: 8px;
       font-size: 14px;
       font-weight: 500;
-      letter-spacing: 0.4px;
-      text-align: center;
+      letter-spacing: 0.3px;
+    }
+    .passive-income-badge {
+      background: #2d3a4a;
+      border-radius: 24px;
+      padding: 6px 16px;
+      color: #d4e0f0;
+      font-size: 13px;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid #5a6a7e;
     }
     .energy-bar-container {
       width: 100%;
       background: #1f2937;
       border-radius: 30px;
       height: 22px;
-      margin: 12px 0 18px;
+      margin: 10px 0 16px;
       box-shadow: inset 0 3px 7px rgba(0,0,0,0.7);
       border: 1px solid #3c4455;
       overflow: hidden;
@@ -109,7 +123,6 @@
       border-radius: 30px;
       box-shadow: 0 0 12px #f59e0b;
       transition: width 0.2s ease-out;
-      position: relative;
     }
     .energy-text {
       position: absolute;
@@ -120,14 +133,13 @@
       font-weight: 700;
       color: #0b0f15;
       text-shadow: 0 1px 0 rgba(255,255,255,0.4);
-      letter-spacing: 0.5px;
       white-space: nowrap;
     }
     .actions {
       width: 100%;
       display: flex;
       gap: 12px;
-      margin-top: 8px;
+      margin-top: 6px;
     }
     .btn {
       background: #2d3748;
@@ -135,14 +147,14 @@
       border-radius: 40px;
       padding: 16px 0;
       font-weight: 700;
-      font-size: 18px;
+      font-size: 17px;
       color: #e2e8f0;
       background: linear-gradient(180deg, #323e50 0%, #1f2937 100%);
       box-shadow: 0 8px 16px -4px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.1);
       flex: 1;
       transition: all 0.15s;
       cursor: pointer;
-      letter-spacing: 0.6px;
+      letter-spacing: 0.5px;
       border: 1px solid #4b5563;
       display: flex;
       align-items: center;
@@ -158,7 +170,7 @@
       border-color: #a78bfa;
       color: #ede9fe;
     }
-    /* Модальное окно магазина */
+    /* Модальное окно */
     .modal {
       display: none;
       position: fixed;
@@ -167,14 +179,14 @@
       backdrop-filter: blur(6px);
       align-items: center;
       justify-content: center;
-      z-index: 100;
+      z-index: 200;
     }
     .modal.active {
       display: flex;
     }
     .modal-content {
       background: #1a202c;
-      max-width: 340px;
+      max-width: 350px;
       width: 85%;
       border-radius: 44px;
       padding: 28px 20px 28px;
@@ -182,10 +194,12 @@
       box-shadow: 0 35px 55px rgba(0,0,0,0.8);
       text-align: center;
       color: #f1f5f9;
+      max-height: 85vh;
+      overflow-y: auto;
     }
     .modal-content h2 {
       font-size: 26px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       color: #fbbf24;
     }
     .shop-item {
@@ -197,9 +211,12 @@
       justify-content: space-between;
       align-items: center;
       border: 1px solid #434f60;
+      flex-wrap: wrap;
+      gap: 8px;
     }
     .upgrade-info {
       text-align: left;
+      flex: 1;
     }
     .upgrade-name {
       font-weight: 700;
@@ -220,26 +237,43 @@
       box-shadow: 0 6px 12px rgba(245,158,11,0.4);
       cursor: pointer;
       transition: 0.12s;
+      white-space: nowrap;
     }
     .buy-btn:active {
       transform: scale(0.94);
     }
     .close-btn {
       margin-top: 16px;
-      background: #3f4b5c;
+      background: #2d3748;
       border-radius: 40px;
       padding: 14px;
       font-weight: bold;
       width: 100%;
       border: none;
       color: white;
-      background: #2d3748;
       cursor: pointer;
+      background: linear-gradient(180deg, #3f4b5c 0%, #252e3b 100%);
     }
     .per-tap-indicator {
       font-size: 13px;
       color: #cdd9f0;
       margin-bottom: 4px;
+    }
+    /* Всплывающие цифры */
+    .float-text {
+      position: fixed;
+      pointer-events: none;
+      font-weight: 800;
+      color: #fde047;
+      text-shadow: 0 0 12px #f59e0b, 0 2px 6px black;
+      font-size: 28px;
+      z-index: 999;
+      animation: floatUp 0.7s ease-out forwards;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+      70% { opacity: 0.8; transform: translate(-50%, -45px) scale(1.2); }
+      100% { opacity: 0; transform: translate(-50%, -80px) scale(0.6); }
     }
   </style>
 </head>
@@ -251,10 +285,15 @@
   </div>
   <div class="per-tap-indicator" id="perTapDisplay">🦆 +1 за клик</div>
 
-  <!-- Большая утка -->
+  <!-- Большая утка (эволюционирует) -->
   <div class="duck-area" id="duckButton">
-    <span class="duck-emoji">🦆</span>
+    <span class="duck-emoji" id="duckEmoji">🐣</span>
     <div class="click-hint">КЛИКАЙ УТКУ</div>
+  </div>
+
+  <!-- Отображение пассивного дохода -->
+  <div class="passive-income-badge" id="passiveBadge" style="display: none;">
+    <span>⏳</span> <span id="passiveAmount">0</span> монет/сек
   </div>
 
   <!-- Прогресс-бар энергии -->
@@ -273,243 +312,338 @@
 <div class="modal" id="shopModal">
   <div class="modal-content">
     <h2>🦆 Утиный магазин</h2>
+
+    <!-- Улучшение клика -->
     <div class="shop-item">
       <div class="upgrade-info">
         <div class="upgrade-name">⚡ Улучшение клика</div>
-        <div class="upgrade-desc">+1 монета за тап (сейчас: <span id="currentLevel">1</span>)</div>
+        <div class="upgrade-desc">+1 монета за тап (ур. <span id="currentClickLevel">1</span>)</div>
       </div>
       <button class="buy-btn" id="buyUpgradeBtn">💰 <span id="upgradeCost">50</span></button>
     </div>
-    <p style="font-size:14px; margin:8px 0; color:#a0b3cc;">Текущий бонус: <span id="bonusPerTap">1</span> монет</p>
+
+    <!-- Авто-сборщик -->
+    <div class="shop-item">
+      <div class="upgrade-info">
+        <div class="upgrade-name">🤖 Авто-сборщик</div>
+        <div class="upgrade-desc">+1 монета/сек (ур. <span id="autoLevelDisplay">0</span>)</div>
+      </div>
+      <button class="buy-btn" id="buyAutoBtn">💰 <span id="autoCost">200</span></button>
+    </div>
+
+    <p style="font-size:14px; margin:8px 0; color:#a0b3cc;">
+      Текущий бонус за клик: <span id="bonusPerTap">1</span> 🦆<br>
+      Пассивный доход: <span id="passiveIncomeDisplay">0</span> монет/сек
+    </p>
     <button class="close-btn" id="closeShopBtn">Закрыть</button>
   </div>
 </div>
 
 <script>
   (function() {
-    // ---------- Telegram Mini App инициализация ----------
-    let tg = window.Telegram?.WebApp;
+    // ---------- Telegram Mini App ----------
+    const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.ready();
-      tg.expand();
-      // Установим цвет фона верхней панели в тон темной теме
+      tg.expand(); // на весь экран
       tg.setHeaderColor('#0b0f15');
       tg.setBackgroundColor('#0b0f15');
+      if (tg.enableClosingConfirmation) tg.enableClosingConfirmation();
     }
 
     // ---------- Игровые переменные ----------
     let coins = 0;
     let energy = 100;
     const MAX_ENERGY = 100;
-    // Уровень улучшения клика (начинается с 1 монеты за клик)
-    let clickLevel = 1;
-    // Базовая стоимость улучшения
-    let upgradeBaseCost = 50;
+    let clickLevel = 1;            // стартовый бонус за клик
+    let passiveLevel = 0;         // уровень автосборщика
+    let passiveIncome = 0;       // монет/сек (равен passiveLevel)
+    const ENERGY_REGEN = 2;      // восстановление энергии в секунду
 
-    // Восстановление энергии: 2 единицы в секунду
-    const ENERGY_REGEN_PER_SECOND = 2;
-    let lastTimestamp = Date.now();
+    // Стоимости улучшений
+    const CLICK_UPGRADE_BASE = 50;
+    const AUTO_UPGRADE_BASE = 200;
 
-    // Ссылки на DOM элементы
+    // Эволюция утки: пороги монет и соответствующие эмодзи
+    const evolutionStages = [
+      { threshold: 0, emoji: '🐣' },
+      { threshold: 100, emoji: '🐤' },
+      { threshold: 500, emoji: '🦆' },
+      { threshold: 2000, emoji: '🦢' },
+      { threshold: 10000, emoji: '🦩' },
+      { threshold: 50000, emoji: '🦚' },
+      { threshold: 250000, emoji: '🦜' },
+      { threshold: 1000000, emoji: '🦅' },
+      { threshold: 5000000, emoji: '🐉' }
+    ];
+
+    // DOM элементы
     const coinDisplay = document.getElementById('coinDisplay');
     const perTapDisplay = document.getElementById('perTapDisplay');
     const duckButton = document.getElementById('duckButton');
+    const duckEmoji = document.getElementById('duckEmoji');
     const energyFill = document.getElementById('energyFill');
     const energyText = document.getElementById('energyText');
-    const shopOpenBtn = document.getElementById('shopOpenBtn');
+    const passiveBadge = document.getElementById('passiveBadge');
+    const passiveAmountSpan = document.getElementById('passiveAmount');
     const shopModal = document.getElementById('shopModal');
     const closeShopBtn = document.getElementById('closeShopBtn');
-    const buyUpgradeBtn = document.getElementById('buyUpgradeBtn');
     const upgradeCostSpan = document.getElementById('upgradeCost');
-    const currentLevelSpan = document.getElementById('currentLevel');
+    const currentClickLevelSpan = document.getElementById('currentClickLevel');
     const bonusPerTapSpan = document.getElementById('bonusPerTap');
-    const tgShareBtn = document.getElementById('tgShareBtn');
+    const autoCostSpan = document.getElementById('autoCost');
+    const autoLevelDisplay = document.getElementById('autoLevelDisplay');
+    const passiveIncomeDisplay = document.getElementById('passiveIncomeDisplay');
 
-    // ---------- Загрузка сохранения из localStorage ----------
+    // Звук
+    let audioCtx = null;
+    function initAudio() {
+      if (audioCtx) return;
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      } catch (e) {
+        console.warn('Web Audio API не поддерживается');
+      }
+    }
+    function playQuack() {
+      if (!audioCtx) return;
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(380, now);
+      osc.frequency.exponentialRampToValueAtTime(190, now + 0.12);
+      gain.gain.setValueAtTime(0.25, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.2);
+    }
+
+    // ---------- Сохранение ----------
     function loadGame() {
       try {
-        const saved = localStorage.getItem('duck_clicker_save');
+        const saved = localStorage.getItem('duck_evo_save');
         if (saved) {
           const data = JSON.parse(saved);
           coins = data.coins ?? 0;
           energy = data.energy ?? MAX_ENERGY;
           clickLevel = data.clickLevel ?? 1;
-          upgradeBaseCost = data.upgradeBaseCost ?? 50;
-          // Корректировка, чтобы энергия не превышала максимум
+          passiveLevel = data.passiveLevel ?? 0;
+          passiveIncome = passiveLevel; // чтобы не расходилось
           if (energy > MAX_ENERGY) energy = MAX_ENERGY;
           if (energy < 0) energy = 0;
         }
-      } catch (e) {
-        console.warn('Ошибка загрузки сохранения', e);
-      }
+      } catch (e) {}
     }
-
     function saveGame() {
       try {
-        const data = {
-          coins: coins,
-          energy: energy,
-          clickLevel: clickLevel,
-          upgradeBaseCost: upgradeBaseCost
-        };
-        localStorage.setItem('duck_clicker_save', JSON.stringify(data));
+        localStorage.setItem('duck_evo_save', JSON.stringify({
+          coins, energy, clickLevel, passiveLevel
+        }));
       } catch (e) {}
     }
 
-    // ---------- Обновление интерфейса ----------
+    // ---------- Эволюция утки ----------
+    function getCurrentDuckEmoji() {
+      let currentEmoji = '🐣';
+      for (let i = evolutionStages.length - 1; i >= 0; i--) {
+        if (coins >= evolutionStages[i].threshold) {
+          currentEmoji = evolutionStages[i].emoji;
+          break;
+        }
+      }
+      return currentEmoji;
+    }
+
+    // ---------- Всплывающие цифры ----------
+    function showFloatingText(x, y, text) {
+      const el = document.createElement('div');
+      el.className = 'float-text';
+      el.textContent = text;
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      document.body.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    }
+
+    // ---------- Обновление UI ----------
     function updateUI() {
       coinDisplay.textContent = Math.floor(coins);
       perTapDisplay.textContent = `🦆 +${clickLevel} за клик`;
-      currentLevelSpan.textContent = clickLevel;
+      currentClickLevelSpan.textContent = clickLevel;
       bonusPerTapSpan.textContent = clickLevel;
+      autoLevelDisplay.textContent = passiveLevel;
+      passiveIncomeDisplay.textContent = passiveIncome.toFixed(1);
 
-      // Прогресс-бар энергии
+      // Отображение пассивного дохода
+      if (passiveIncome > 0) {
+        passiveBadge.style.display = 'flex';
+        passiveAmountSpan.textContent = passiveIncome.toFixed(1);
+      } else {
+        passiveBadge.style.display = 'none';
+      }
+
+      // Энергия
       const percent = (energy / MAX_ENERGY) * 100;
       energyFill.style.width = `${percent}%`;
       energyText.textContent = `${Math.floor(energy)}/${MAX_ENERGY}`;
 
-      // Стоимость улучшения (растёт с уровнем)
-      const cost = getUpgradeCost();
-      upgradeCostSpan.textContent = cost;
+      // Стоимости
+      upgradeCostSpan.textContent = getClickUpgradeCost();
+      autoCostSpan.textContent = getAutoUpgradeCost();
+
+      // Эволюция утки
+      duckEmoji.textContent = getCurrentDuckEmoji();
     }
 
-    function getUpgradeCost() {
-      // Формула: базовая стоимость * уровень (линейный рост)
-      return upgradeBaseCost * clickLevel;
+    function getClickUpgradeCost() {
+      return CLICK_UPGRADE_BASE * clickLevel;
+    }
+    function getAutoUpgradeCost() {
+      return AUTO_UPGRADE_BASE * (passiveLevel + 1);
     }
 
-    // ---------- Механика клика по утке ----------
+    // ---------- Клик по утке ----------
     function handleDuckClick(e) {
-      // Проверяем, хватает ли энергии (минимум 1 единица для клика)
       if (energy < 1) {
-        // Визуальная обратная связь: показываем, что энергии нет
-        duckButton.style.transform = 'scale(0.98)';
-        setTimeout(() => { duckButton.style.transform = ''; }, 120);
-        if (tg?.HapticFeedback) {
-          tg.HapticFeedback.notificationOccurred('error');
-        }
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
         return;
       }
 
-      // Тратим 1 энергию за клик
+      // Тратим энергию
       energy = Math.max(0, energy - 1);
-      // Начисляем монеты согласно уровню улучшения
       coins += clickLevel;
 
-      // Визуальный и тактильный отклик
-      if (tg?.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred('light');
+      // Координаты для всплывающего текста
+      let clientX, clientY;
+      if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else if (e.changedTouches && e.changedTouches.length > 0) {
+        clientX = e.changedTouches[0].clientX;
+        clientY = e.changedTouches[0].clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
       }
+      showFloatingText(clientX, clientY - 20, `+${clickLevel}`);
 
-      // Небольшая анимация уже через CSS :active, добавим быстрое восстановление стиля
+      // Звук и тактильный отклик
+      playQuack();
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+
       updateUI();
       saveGame();
     }
 
-    // ---------- Восстановление энергии со временем ----------
-    function regenerateEnergy(now) {
-      if (lastTimestamp === 0) {
-        lastTimestamp = now;
+    // ---------- Покупка улучшения клика ----------
+    function buyClickUpgrade() {
+      const cost = getClickUpgradeCost();
+      if (coins < cost) {
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
         return;
       }
-      const deltaSeconds = (now - lastTimestamp) / 1000;
-      if (deltaSeconds > 0 && energy < MAX_ENERGY) {
-        const regenAmount = deltaSeconds * ENERGY_REGEN_PER_SECOND;
-        energy = Math.min(MAX_ENERGY, energy + regenAmount);
+      coins -= cost;
+      clickLevel++;
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      updateUI();
+      saveGame();
+    }
+
+    // ---------- Покупка автосборщика ----------
+    function buyAutoUpgrade() {
+      const cost = getAutoUpgradeCost();
+      if (coins < cost) {
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+        return;
+      }
+      coins -= cost;
+      passiveLevel++;
+      passiveIncome = passiveLevel; // каждый уровень +1 монета/сек
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      updateUI();
+      saveGame();
+    }
+
+    // ---------- Регенерация и пассивный доход ----------
+    let lastTimestamp = Date.now();
+    function gameLoop() {
+      const now = Date.now();
+      const deltaSec = (now - lastTimestamp) / 1000;
+      if (deltaSec > 0) {
+        // Регенерация энергии
+        if (energy < MAX_ENERGY) {
+          energy = Math.min(MAX_ENERGY, energy + ENERGY_REGEN * deltaSec);
+        }
+        // Пассивный доход
+        if (passiveIncome > 0 && deltaSec > 0) {
+          coins += passiveIncome * deltaSec;
+        }
         updateUI();
         saveGame();
       }
       lastTimestamp = now;
-    }
-
-    // Игровой цикл для регенерации
-    function gameLoop() {
-      const now = Date.now();
-      regenerateEnergy(now);
       requestAnimationFrame(gameLoop);
     }
 
-    // ---------- Магазин: покупка улучшения ----------
-    function buyUpgrade() {
-      const cost = getUpgradeCost();
-      if (coins < cost) {
-        if (tg?.HapticFeedback) {
-          tg.HapticFeedback.notificationOccurred('error');
-        }
-        alert('🦆 Не хватает монет! Кликай утку активнее.');
-        return;
-      }
-
-      coins -= cost;
-      clickLevel += 1;
-
-      if (tg?.HapticFeedback) {
-        tg.HapticFeedback.notificationOccurred('success');
-      }
-
-      updateUI();
-      saveGame();
-    }
-
-    // ---------- Управление модальным окном ----------
+    // ---------- Модальное окно ----------
     function openShop() {
       shopModal.classList.add('active');
       updateUI();
     }
-
     function closeShop() {
       shopModal.classList.remove('active');
     }
 
-    // ---------- Поделиться (Telegram / соцсети) ----------
+    // ---------- Поделиться ----------
     function shareGame() {
-      const shareText = `🦆 Утиный кликер! Заработай монеты и прокачай утку. Присоединяйся!`;
-      const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(shareText)}`;
-
+      const url = encodeURIComponent(window.location.href);
+      const text = encodeURIComponent('🦆 Duck Evolution – кликай утку, развивайся и зарабатывай!');
       if (tg) {
-        // Пытаемся открыть через Telegram (в Mini App может работать ограниченно, но ссылка откроется)
-        tg.openLink(shareUrl);
+        tg.openLink(`https://t.me/share/url?url=${url}&text=${text}`);
       } else {
-        // Фолбэк для браузера
-        window.open(shareUrl, '_blank');
+        window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
       }
     }
 
-    // ---------- Привязка событий ----------
+    // ---------- Инициализация событий ----------
+    // Обработчики клика
     duckButton.addEventListener('click', handleDuckClick);
-    // Также поддерживаем touch для мобильных (не дублирует клик)
     duckButton.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // чтобы не было двойного срабатывания на некоторых устройствах
+      e.preventDefault();
       handleDuckClick(e);
     });
 
-    shopOpenBtn.addEventListener('click', openShop);
+    // Кнопки магазина
+    document.getElementById('shopOpenBtn').addEventListener('click', openShop);
     closeShopBtn.addEventListener('click', closeShop);
-    buyUpgradeBtn.addEventListener('click', buyUpgrade);
+    document.getElementById('buyUpgradeBtn').addEventListener('click', buyClickUpgrade);
+    document.getElementById('buyAutoBtn').addEventListener('click', buyAutoUpgrade);
 
-    // Закрытие магазина при клике вне модального контента
-    shopModal.addEventListener('click', function(e) {
-      if (e.target === shopModal) {
-        closeShop();
-      }
+    // Закрытие магазина по клику вне контента
+    shopModal.addEventListener('click', (e) => {
+      if (e.target === shopModal) closeShop();
     });
 
-    tgShareBtn.addEventListener('click', shareGame);
+    // Поделиться
+    document.getElementById('tgShareBtn').addEventListener('click', shareGame);
 
-    // ---------- Старт игры ----------
+    // Аудиоконтекст создаётся при первом взаимодействии (политика браузеров)
+    document.body.addEventListener('touchstart', initAudio, { once: true });
+    document.body.addEventListener('click', initAudio, { once: true });
+
+    // Старт
     loadGame();
     updateUI();
     lastTimestamp = Date.now();
     requestAnimationFrame(gameLoop);
 
-    // Дополнительно: синхронизация с Telegram, если нужно показать MainButton (опционально)
-    if (tg?.MainButton) {
-      // Можно не показывать, но если нужно - раскомментируй:
-      // tg.MainButton.setText('🦆 Играть').show().onClick(() => window.scrollTo(0,0));
-    }
-
-    // Предотвращение случайного релоада при свайпах вниз (оставим как есть)
-    console.log('🦆 Утиный кликер запущен! Telegram Mini App готов.');
+    console.log('🦆 Duck Evolution запущен!');
   })();
 </script>
 </body>
