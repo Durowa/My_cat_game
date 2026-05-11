@@ -1,627 +1,516 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>NODE Miner • Premium</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at 50% 20%, #1a2a6c, #000);
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .app-container { width: 100%; max-width: 420px; min-height: 100vh; display: flex; flex-direction: column; }
-        .glass-panel {
-            background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 20px; margin: 10px 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-        }
-        .top-panel {
-            display: flex; flex-direction: column; align-items: center; padding: 25px 16px 15px;
-            background: transparent; backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .balance-amount {
-            font-size: 3.8rem; font-weight: 800; color: #fff;
-            text-shadow: 0 0 30px rgba(79,172,254,0.7); margin: 10px 0;
-        }
-        .pph-badge {
-            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.15); border-radius: 30px;
-            padding: 8px 20px; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #ccc;
-        }
-        .pph-value { color: #f0b90b; font-weight: 700; text-shadow: 0 0 10px #f0b90b; }
-        .clicker-holder { display: flex; flex-direction: column; align-items: center; margin: 20px 0; }
-        .clicker-button {
-            width: 200px; height: 200px; border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, #ffd966, #b8860b);
-            border: 4px solid rgba(255,215,0,0.6);
-            box-shadow: 0 0 60px rgba(79,172,254,0.8), 0 15px 30px rgba(0,0,0,0.7);
-            cursor: pointer; font-size: 5rem; color: white; text-shadow: 0 0 25px white;
-            display: flex; align-items: center; justify-content: center;
-            transition: transform 0.1s; animation: floatGlow 3s infinite;
-        }
-        .clicker-button:active { transform: scale(0.9); box-shadow: 0 0 100px #4facfe; }
-        @keyframes floatGlow {
-            0% { box-shadow: 0 0 40px rgba(79,172,254,0.6); }
-            50% { box-shadow: 0 0 80px rgba(79,172,254,1); }
-            100% { box-shadow: 0 0 40px rgba(79,172,254,0.6); }
-        }
-        .energy-container { display: flex; align-items: center; gap: 10px; width: 100%; margin-top: 25px; }
-        .energy-icon { font-size: 1.4rem; filter: drop-shadow(0 0 6px #f0b90b); }
-        .energy-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-        .energy-fill {
-            height: 100%; width: 100%; background: linear-gradient(90deg, #f1c40f, #e67e22);
-            box-shadow: 0 0 15px #f39c12; transition: width 0.3s;
-        }
-        .tab-content { display: none; padding: 10px 16px 100px; flex: 1; overflow-y: auto; }
-        .tab-content.active { display: block; }
-        .bottom-nav {
-            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 24px); max-width: 400px;
-            background: rgba(20,30,50,0.7); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 30px;
-            display: flex; justify-content: space-around; padding: 8px 5px; z-index: 100;
-        }
-        .nav-btn {
-            background: transparent; border: none; color: #aaa;
-            display: flex; flex-direction: column; align-items: center; font-size: 0.6rem;
-            font-weight: 600; padding: 6px 12px; border-radius: 20px; transition: 0.2s; cursor: pointer;
-        }
-        .nav-btn.active { color: white; background: rgba(79,172,254,0.2); text-shadow: 0 0 10px #4facfe; }
-        .nav-icon { font-size: 1.3rem; margin-bottom: 2px; }
-        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-        .card-item {
-            background: rgba(255,255,255,0.03); backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 16px;
-        }
-        .upgrade-btn {
-            background: #4facfe; border: none; padding: 10px; border-radius: 12px;
-            font-weight: bold; color: white; width: 100%; margin-top: 8px; cursor: pointer;
-            box-shadow: 0 0 15px #4facfe;
-        }
-        .special-timer { color: #ff4d6a; font-weight: bold; font-size: 0.8rem; }
-        .filter-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: #aaa; padding: 8px 14px; border-radius: 20px; font-size: 0.8rem;
-            cursor: pointer; white-space: nowrap; backdrop-filter: blur(5px);
-        }
-        .filter-btn.active { background: rgba(79,172,254,0.25); color: white; border-color: #4facfe; }
-        .claim-daily-btn, .claim-combo-btn {
-            background: #00c853; border: none; padding: 12px; border-radius: 12px;
-            color: white; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer;
-        }
-        .claim-combo-btn { background: #f0b90b; }
-        .day-cell {
-            aspect-ratio: 1; background: rgba(255,255,255,0.03); border-radius: 10px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 0.65rem; border: 1px solid transparent;
-        }
-        .day-cell.today { border-color: #f0b90b; background: rgba(240,185,11,0.1); }
-        .combo-card { background: rgba(255,255,255,0.05); border-radius: 14px; padding: 12px; text-align: center; font-size: 0.8rem; }
-        .combo-card.completed { border: 2px solid #00e676; }
-        .admin-panel {
-            background: rgba(255,0,0,0.2); border: 1px solid #ff4d6a; border-radius: 16px;
-            padding: 15px; margin: 10px 16px; display: none;
-        }
-        .admin-btn {
-            background: #ff4d6a; border: none; color: white; padding: 8px 12px;
-            border-radius: 8px; margin: 5px 3px; font-size: 0.75rem; cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Duck Clicker · Mini App</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    body {
+      background: #0b0f15;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      margin: 0;
+    }
+    .game-container {
+      width: 100%;
+      max-width: 400px;
+      background: linear-gradient(145deg, #1a1f2b 0%, #10141c 100%);
+      border-radius: 48px;
+      padding: 28px 20px 32px;
+      box-shadow: 0 25px 50px -10px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid rgba(120, 140, 170, 0.2);
+    }
+    .balance-section {
+      background: #1e2530;
+      border-radius: 60px;
+      padding: 14px 32px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.6), 0 4px 10px rgba(0,0,0,0.4);
+      margin-bottom: 20px;
+      border: 1px solid rgba(255,200,80,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: fit-content;
+    }
+    .coin-icon {
+      font-size: 26px;
+    }
+    .balance-amount {
+      font-size: 38px;
+      font-weight: 800;
+      color: #f8e3a0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+      letter-spacing: 1px;
+    }
+    .duck-area {
+      margin: 10px 0 20px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.1s ease;
+      background: radial-gradient(circle at 50% 30%, #2a3340, #141b24);
+      border-radius: 80px;
+      padding: 25px 40px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.6), inset 0 -4px 6px rgba(0,0,0,0.5);
+      border: 2px solid #4a5462;
+    }
+    .duck-area:active {
+      transform: scale(0.93);
+    }
+    .duck-emoji {
+      font-size: 100px;
+      display: block;
+      filter: drop-shadow(0 12px 14px rgba(0,0,0,0.6)) drop-shadow(0 0 12px #ffd966);
+      transition: all 0.15s;
+      line-height: 1;
+    }
+    .duck-area:active .duck-emoji {
+      transform: translateY(-6px) scale(1.07);
+      filter: drop-shadow(0 18px 18px rgba(0,0,0,0.7)) drop-shadow(0 0 20px #fbbf24);
+    }
+    .click-hint {
+      color: #a0b3cc;
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-align: center;
+    }
+    .energy-bar-container {
+      width: 100%;
+      background: #1f2937;
+      border-radius: 30px;
+      height: 22px;
+      margin: 12px 0 18px;
+      box-shadow: inset 0 3px 7px rgba(0,0,0,0.7);
+      border: 1px solid #3c4455;
+      overflow: hidden;
+      position: relative;
+    }
+    .energy-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b, #d97706);
+      border-radius: 30px;
+      box-shadow: 0 0 12px #f59e0b;
+      transition: width 0.2s ease-out;
+      position: relative;
+    }
+    .energy-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 12px;
+      font-weight: 700;
+      color: #0b0f15;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    .actions {
+      width: 100%;
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .btn {
+      background: #2d3748;
+      border: none;
+      border-radius: 40px;
+      padding: 16px 0;
+      font-weight: 700;
+      font-size: 18px;
+      color: #e2e8f0;
+      background: linear-gradient(180deg, #323e50 0%, #1f2937 100%);
+      box-shadow: 0 8px 16px -4px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.1);
+      flex: 1;
+      transition: all 0.15s;
+      cursor: pointer;
+      letter-spacing: 0.6px;
+      border: 1px solid #4b5563;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+      background: linear-gradient(180deg, #1f2937 0%, #161e2a 100%);
+    }
+    .shop-btn {
+      background: linear-gradient(180deg, #4b3a5c 0%, #2d2138 100%);
+      border-color: #a78bfa;
+      color: #ede9fe;
+    }
+    /* Модальное окно магазина */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #1a202c;
+      max-width: 340px;
+      width: 85%;
+      border-radius: 44px;
+      padding: 28px 20px 28px;
+      border: 1px solid #5a6377;
+      box-shadow: 0 35px 55px rgba(0,0,0,0.8);
+      text-align: center;
+      color: #f1f5f9;
+    }
+    .modal-content h2 {
+      font-size: 26px;
+      margin-bottom: 20px;
+      color: #fbbf24;
+    }
+    .shop-item {
+      background: #232b38;
+      border-radius: 28px;
+      padding: 18px;
+      margin: 14px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #434f60;
+    }
+    .upgrade-info {
+      text-align: left;
+    }
+    .upgrade-name {
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .upgrade-desc {
+      font-size: 13px;
+      color: #b9c7dd;
+    }
+    .buy-btn {
+      background: #f59e0b;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 18px;
+      font-weight: bold;
+      color: #0f172a;
+      background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+      box-shadow: 0 6px 12px rgba(245,158,11,0.4);
+      cursor: pointer;
+      transition: 0.12s;
+    }
+    .buy-btn:active {
+      transform: scale(0.94);
+    }
+    .close-btn {
+      margin-top: 16px;
+      background: #3f4b5c;
+      border-radius: 40px;
+      padding: 14px;
+      font-weight: bold;
+      width: 100%;
+      border: none;
+      color: white;
+      background: #2d3748;
+      cursor: pointer;
+    }
+    .per-tap-indicator {
+      font-size: 13px;
+      color: #cdd9f0;
+      margin-bottom: 4px;
+    }
+  </style>
 </head>
 <body>
-<div class="app-container">
-    <div class="top-panel">
-        <div style="font-size:0.7rem;letter-spacing:2px;color:#aaa;">$NODE</div>
-        <div class="balance-amount" id="balanceDisplay">0</div>
-        <div class="pph-badge">
-            <span>⚡ Прибыль в час</span>
-            <span class="pph-value" id="pphDisplay">0</span>
-        </div>
-        <div style="margin-top:5px;font-size:0.8rem;" id="leagueDisplay">🥉 Testnet</div>
-    </div>
+<div class="game-container">
+  <div class="balance-section">
+    <span class="coin-icon">🪙</span>
+    <span class="balance-amount" id="coinDisplay">0</span>
+  </div>
+  <div class="per-tap-indicator" id="perTapDisplay">🦆 +1 за клик</div>
 
-    <!-- Админ-панель (видна только админу) -->
-    <div class="admin-panel" id="adminPanel">
-        <strong>🔧 Админ-панель</strong>
-        <div>
-            <button class="admin-btn" id="adminAddBalance">+100k NODE</button>
-            <button class="admin-btn" id="adminReset">Сброс</button>
-            <button class="admin-btn" id="adminSetPPH">PPH 1M</button>
-            <button class="admin-btn" id="adminUnlockAll">Открыть всё</button>
-        </div>
-    </div>
+  <!-- Большая утка -->
+  <div class="duck-area" id="duckButton">
+    <span class="duck-emoji">🦆</span>
+    <div class="click-hint">КЛИКАЙ УТКУ</div>
+  </div>
 
-    <div class="tab-content active" id="miningTab">
-        <div class="clicker-holder">
-            <button class="clicker-button" id="clickerBtn">⚛️</button>
-        </div>
-        <div class="energy-container">
-            <span class="energy-icon">⚡</span>
-            <div class="energy-bar"><div class="energy-fill" id="energyFill" style="width:100%;"></div></div>
-            <span id="energyText" style="font-size:0.8rem;">1000/1000</span>
-        </div>
-    </div>
+  <!-- Прогресс-бар энергии -->
+  <div class="energy-bar-container">
+    <div class="energy-fill" id="energyFill" style="width: 100%;"></div>
+    <div class="energy-text" id="energyText">100/100</div>
+  </div>
 
-    <div class="tab-content" id="shopTab">
-        <div style="display:flex;gap:8px;margin-bottom:15px;overflow-x:auto;" id="filterBar">
-            <button class="filter-btn active" data-category="all">Все</button>
-            <button class="filter-btn" data-category="hardware">Железо</button>
-            <button class="filter-btn" data-category="software">Софт</button>
-            <button class="filter-btn" data-category="marketing">Маркетинг</button>
-            <button class="filter-btn" data-category="special">⭐ Спец</button>
-            <button class="filter-btn" data-category="secret" id="secretFilterBtn" style="display:none;">🔒 Секрет</button>
-        </div>
-        <div class="cards-grid" id="cardsContainer"></div>
-    </div>
+  <div class="actions">
+    <button class="btn" id="shopOpenBtn">🛒 Магазин</button>
+    <button class="btn shop-btn" id="tgShareBtn">📤 Поделиться</button>
+  </div>
+</div>
 
-    <div class="tab-content" id="comboTab">
-        <div class="glass-panel" id="dailyRewardBlock"></div>
-        <div class="glass-panel" id="comboBlock"></div>
+<!-- Модальное окно магазина -->
+<div class="modal" id="shopModal">
+  <div class="modal-content">
+    <h2>🦆 Утиный магазин</h2>
+    <div class="shop-item">
+      <div class="upgrade-info">
+        <div class="upgrade-name">⚡ Улучшение клика</div>
+        <div class="upgrade-desc">+1 монета за тап (сейчас: <span id="currentLevel">1</span>)</div>
+      </div>
+      <button class="buy-btn" id="buyUpgradeBtn">💰 <span id="upgradeCost">50</span></button>
     </div>
-
-    <div class="tab-content" id="squadTab">
-        <div class="glass-panel">
-            <h3>👥 Сквад</h3>
-            <input type="text" id="squadNameInput" placeholder="Название сквада" style="width:100%;padding:10px;border-radius:10px;border:none;margin:10px 0;background:rgba(255,255,255,0.1);color:white;">
-            <button id="joinSquadBtn" style="background:#4facfe;border:none;padding:10px;border-radius:10px;width:100%;color:white;font-weight:bold;">Вступить / Создать</button>
-            <div style="margin-top:10px;" id="squadInfo"></div>
-            <div style="margin-top:20px;"><strong>🏆 Рейтинг сквадов</strong></div>
-            <div id="squadLeaderboard" style="font-size:0.8rem;margin-top:10px;"></div>
-        </div>
-    </div>
-
-    <div class="tab-content" id="refTab">
-        <div class="glass-panel">
-            <h3>🔗 Рефералы</h3>
-            <p style="font-size:0.8rem;">Пригласи 3 друзей — открой секретные карты!</p>
-            <div style="margin:10px 0;">
-                <label style="font-size:0.8rem;">Username бота (без @):</label>
-                <input type="text" id="botUsernameInput" placeholder="your_bot" style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(255,255,255,0.1);color:white;">
-            </div>
-            <button id="generateRefLinkBtn" style="background:#4facfe;border:none;padding:10px;border-radius:10px;width:100%;color:white;font-weight:bold;">Создать реферальную ссылку</button>
-            <div id="refLinkDisplay" style="word-break:break-all;margin:10px 0;font-size:0.8rem;"></div>
-            <input type="text" id="refCodeInput" placeholder="Введите код друга" style="width:100%;padding:10px;border-radius:10px;border:none;margin-top:10px;background:rgba(255,255,255,0.1);color:white;">
-            <button id="applyRefCodeBtn" style="background:#f0b90b;border:none;padding:10px;border-radius:10px;width:100%;color:black;font-weight:bold;margin-top:8px;">Применить код</button>
-            <div style="margin-top:10px;">Приглашено: <span id="refCount">0</span></div>
-            <div style="font-size:0.7rem;color:#aaa;">+5% PPH за каждого друга</div>
-        </div>
-    </div>
-
-    <div class="bottom-nav">
-        <button class="nav-btn active" data-tab="miningTab"><span class="nav-icon">⛏️</span>Майнинг</button>
-        <button class="nav-btn" data-tab="shopTab"><span class="nav-icon">🛒</span>Магазин</button>
-        <button class="nav-btn" data-tab="comboTab"><span class="nav-icon">🎯</span>Комбо</button>
-        <button class="nav-btn" data-tab="squadTab"><span class="nav-icon">👥</span>Сквад</button>
-        <button class="nav-btn" data-tab="refTab"><span class="nav-icon">🔗</span>Рефералы</button>
-    </div>
+    <p style="font-size:14px; margin:8px 0; color:#a0b3cc;">Текущий бонус: <span id="bonusPerTap">1</span> монет</p>
+    <button class="close-btn" id="closeShopBtn">Закрыть</button>
+  </div>
 </div>
 
 <script>
-    (function() {
-        // ==================== КОНФИГУРАЦИЯ ====================
-        const ADMIN_ID = 7063549865; // ID администратора
-        let currentUserId = null;
-        let isAdmin = false;
+  (function() {
+    // ---------- Telegram Mini App инициализация ----------
+    let tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      // Установим цвет фона верхней панели в тон темной теме
+      tg.setHeaderColor('#0b0f15');
+      tg.setBackgroundColor('#0b0f15');
+    }
 
-        // Telegram init
-        if (window.Telegram?.WebApp) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
-            const initData = window.Telegram.WebApp.initDataUnsafe;
-            if (initData?.user) {
-                currentUserId = initData.user.id;
-                isAdmin = (currentUserId === ADMIN_ID);
-            }
-            // Получаем стартовый параметр (если есть)
-            if (initData?.start_param) {
-                localStorage.setItem('pendingRefCode', initData.start_param);
-            }
+    // ---------- Игровые переменные ----------
+    let coins = 0;
+    let energy = 100;
+    const MAX_ENERGY = 100;
+    // Уровень улучшения клика (начинается с 1 монеты за клик)
+    let clickLevel = 1;
+    // Базовая стоимость улучшения
+    let upgradeBaseCost = 50;
+
+    // Восстановление энергии: 2 единицы в секунду
+    const ENERGY_REGEN_PER_SECOND = 2;
+    let lastTimestamp = Date.now();
+
+    // Ссылки на DOM элементы
+    const coinDisplay = document.getElementById('coinDisplay');
+    const perTapDisplay = document.getElementById('perTapDisplay');
+    const duckButton = document.getElementById('duckButton');
+    const energyFill = document.getElementById('energyFill');
+    const energyText = document.getElementById('energyText');
+    const shopOpenBtn = document.getElementById('shopOpenBtn');
+    const shopModal = document.getElementById('shopModal');
+    const closeShopBtn = document.getElementById('closeShopBtn');
+    const buyUpgradeBtn = document.getElementById('buyUpgradeBtn');
+    const upgradeCostSpan = document.getElementById('upgradeCost');
+    const currentLevelSpan = document.getElementById('currentLevel');
+    const bonusPerTapSpan = document.getElementById('bonusPerTap');
+    const tgShareBtn = document.getElementById('tgShareBtn');
+
+    // ---------- Загрузка сохранения из localStorage ----------
+    function loadGame() {
+      try {
+        const saved = localStorage.getItem('duck_clicker_save');
+        if (saved) {
+          const data = JSON.parse(saved);
+          coins = data.coins ?? 0;
+          energy = data.energy ?? MAX_ENERGY;
+          clickLevel = data.clickLevel ?? 1;
+          upgradeBaseCost = data.upgradeBaseCost ?? 50;
+          // Корректировка, чтобы энергия не превышала максимум
+          if (energy > MAX_ENERGY) energy = MAX_ENERGY;
+          if (energy < 0) energy = 0;
         }
+      } catch (e) {
+        console.warn('Ошибка загрузки сохранения', e);
+      }
+    }
 
-        // ==================== ДАННЫЕ КАРТОЧЕК ====================
-        const cardsData = [
-            { id:'hw1', name:'Raspberry Pi Нода', category:'hardware', baseCost:10, baseProfit:1 },
-            { id:'hw2', name:'SSD NVMe для Снапшотов', category:'hardware', baseCost:50, baseProfit:5 },
-            { id:'hw3', name:'ОЗУ 32GB DDR4', category:'hardware', baseCost:120, baseProfit:12 },
-            { id:'hw4', name:'Процессорный Кластер', category:'hardware', baseCost:300, baseProfit:35 },
-            { id:'hw5', name:'Сетевая Карта 10Gbit', category:'hardware', baseCost:750, baseProfit:80 },
-            { id:'hw6', name:'ИБП для Аптайма', category:'hardware', baseCost:1500, baseProfit:160 },
-            { id:'hw7', name:'Охлаждение Ноды', category:'hardware', baseCost:3000, baseProfit:320 },
-            { id:'hw8', name:'Статический IP-Адрес', category:'hardware', baseCost:5500, baseProfit:600 },
-            { id:'hw9', name:'Выделенный Сервер', category:'hardware', baseCost:12000, baseProfit:1300 },
-            { id:'hw10', name:'RAID-Массив 4xSSD', category:'hardware', baseCost:25000, baseProfit:2700 },
-            { id:'hw11', name:'Оптоволоконный Канал', category:'hardware', baseCost:55000, baseProfit:5800 },
-            { id:'hw12', name:'Резервный Генератор', category:'hardware', baseCost:120000, baseProfit:12500 },
-            { id:'hw13', name:'Дата-центр (Колокейшн)', category:'hardware', baseCost:280000, baseProfit:28000 },
-            { id:'hw14', name:'Ферма Валидаторов', category:'hardware', baseCost:650000, baseProfit:62000 },
-            { id:'hw15', name:'Спутниковая Связь', category:'hardware', baseCost:1500000, baseProfit:140000 },
-            { id:'sw1', name:'Обновление RPC-Ноды', category:'software', baseCost:25, baseProfit:2 },
-            { id:'sw2', name:'Стейкинг Валидатора', category:'software', baseCost:75, baseProfit:8 },
-            { id:'sw3', name:'MEV-Бот (v1)', category:'software', baseCost:200, baseProfit:22 },
-            { id:'sw4', name:'Смарт-контракт Мост', category:'software', baseCost:500, baseProfit:55 },
-            { id:'sw5', name:'Авто-рестейкинг', category:'software', baseCost:1200, baseProfit:130 },
-            { id:'sw6', name:'Газ Оптимизатор', category:'software', baseCost:2800, baseProfit:300 },
-            { id:'sw7', name:'Мониторинг Ноды (Grafana)', category:'software', baseCost:6500, baseProfit:700 },
-            { id:'sw8', name:'Снапшот-Сервис', category:'software', baseCost:15000, baseProfit:1600 },
-            { id:'sw9', name:'Консенсус Алгоритм (BFT)', category:'software', baseCost:35000, baseProfit:3700 },
-            { id:'sw10', name:'Шардинг-Протокол', category:'software', baseCost:80000, baseProfit:8500 },
-            { id:'sw11', name:'Криптография zk-SNARKs', category:'software', baseCost:180000, baseProfit:19000 },
-            { id:'sw12', name:'Делегированный Стейк (DPoS)', category:'software', baseCost:400000, baseProfit:42000 },
-            { id:'sw13', name:'Орбитальный Мост (Bridge)', category:'software', baseCost:900000, baseProfit:95000 },
-            { id:'sw14', name:'Релеер Транзакций', category:'software', baseCost:2000000, baseProfit:210000 },
-            { id:'sw15', name:'Нейро-Консенсус (AI)', category:'software', baseCost:5000000, baseProfit:500000 },
-            { id:'mk1', name:'Twitter Инфлюенсер', category:'marketing', baseCost:40, baseProfit:3 },
-            { id:'mk2', name:'Discord Комьюнити', category:'marketing', baseCost:150, baseProfit:15 },
-            { id:'mk3', name:'YouTube Обзор Ноды', category:'marketing', baseCost:400, baseProfit:42 },
-            { id:'mk4', name:'Telegram Амбассадор', category:'marketing', baseCost:1000, baseProfit:105 },
-            { id:'mk5', name:'Партнерская Программа', category:'marketing', baseCost:2500, baseProfit:260 },
-            { id:'mk6', name:'Аирдроп Кампания', category:'marketing', baseCost:6000, baseProfit:630 },
-            { id:'mk7', name:'Реферальная Система', category:'marketing', baseCost:14000, baseProfit:1500 },
-            { id:'mk8', name:'Медиа-Кит Проекта', category:'marketing', baseCost:32000, baseProfit:3400 },
-            { id:'mk9', name:'Хакатон Спонсорство', category:'marketing', baseCost:75000, baseProfit:8000 },
-            { id:'mk10', name:'Whitepaper 2.0', category:'marketing', baseCost:170000, baseProfit:18000 },
-            { id:'mk11', name:'Листинг на CoinMarketCap', category:'marketing', baseCost:380000, baseProfit:40000 },
-            { id:'mk12', name:'AMA Сессия (Twitter Space)', category:'marketing', baseCost:850000, baseProfit:90000 },
-            { id:'mk13', name:'Кросс-чейн Партнерство', category:'marketing', baseCost:1900000, baseProfit:200000 }
-        ];
-        const secretCards = [
-            { id:'sc1', name:'Генезис Ускоритель', category:'secret', baseCost:500000, baseProfit:80000 },
-            { id:'sc2', name:'Квантовый Валидатор', category:'secret', baseCost:2000000, baseProfit:300000 }
-        ];
-        let specialCards = [];
-
-        // ==================== СОСТОЯНИЕ ИГРЫ ====================
-        const DEFAULT_STATE = {
-            balance: 100, totalPPH: 0, lastLogin: Date.now(),
-            energy: 1000, lastEnergyUpdate: Date.now(),
-            cards: [],
-            dailyRewardDay: 0, dailyRewardClaimed: false, lastDailyRewardDate: null,
-            dailyComboDate: null, dailyComboCards: [], dailyComboClaimed: false,
-            totalClicks: 0,
-            squadName: null, referrals: 0, referralCode: null,
-            specialCardsDate: null, specialCardsPurchased: []
+    function saveGame() {
+      try {
+        const data = {
+          coins: coins,
+          energy: energy,
+          clickLevel: clickLevel,
+          upgradeBaseCost: upgradeBaseCost
         };
-        let gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+        localStorage.setItem('duck_clicker_save', JSON.stringify(data));
+      } catch (e) {}
+    }
 
-        // ==================== DOM ЭЛЕМЕНТЫ ====================
-        const balanceDisplay = document.getElementById('balanceDisplay');
-        const pphDisplay = document.getElementById('pphDisplay');
-        const energyFill = document.getElementById('energyFill');
-        const energyText = document.getElementById('energyText');
-        const leagueDisplay = document.getElementById('leagueDisplay');
-        const cardsContainer = document.getElementById('cardsContainer');
-        const clickerBtn = document.getElementById('clickerBtn');
-        const squadNameInput = document.getElementById('squadNameInput');
-        const joinSquadBtn = document.getElementById('joinSquadBtn');
-        const squadInfo = document.getElementById('squadInfo');
-        const squadLeaderboard = document.getElementById('squadLeaderboard');
-        const refCountSpan = document.getElementById('refCount');
-        const refLinkDisplay = document.getElementById('refLinkDisplay');
-        const generateRefLinkBtn = document.getElementById('generateRefLinkBtn');
-        const applyRefCodeBtn = document.getElementById('applyRefCodeBtn');
-        const refCodeInput = document.getElementById('refCodeInput');
-        const botUsernameInput = document.getElementById('botUsernameInput');
-        const secretFilterBtn = document.getElementById('secretFilterBtn');
-        const adminPanel = document.getElementById('adminPanel');
+    // ---------- Обновление интерфейса ----------
+    function updateUI() {
+      coinDisplay.textContent = Math.floor(coins);
+      perTapDisplay.textContent = `🦆 +${clickLevel} за клик`;
+      currentLevelSpan.textContent = clickLevel;
+      bonusPerTapSpan.textContent = clickLevel;
 
-        // Покажем админ-панель если isAdmin
-        if (isAdmin) adminPanel.style.display = 'block';
+      // Прогресс-бар энергии
+      const percent = (energy / MAX_ENERGY) * 100;
+      energyFill.style.width = `${percent}%`;
+      energyText.textContent = `${Math.floor(energy)}/${MAX_ENERGY}`;
 
-        // ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
-        function formatNumber(n) {
-            if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/, '')+'M';
-            if (n >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/, '')+'K';
-            return Math.floor(n).toLocaleString('ru-RU');
-        }
-        function getCardData(id) {
-            return cardsData.find(c=>c.id===id) || secretCards.find(c=>c.id===id) || specialCards.find(c=>c.id===id);
-        }
-        function getPlayerCard(id) { return gameState.cards.find(c=>c.id===id); }
-        function getCardProfit(id, level) {
-            const c = getCardData(id); if(!c || level<1) return 0;
-            return c.baseProfit * level * (1 + 0.15*(level-1));
-        }
-        function calculateTotalPPH() {
-            let t = 0; gameState.cards.forEach(c=> t += getCardProfit(c.id, c.level));
-            gameState.totalPPH = t * (1 + gameState.referrals * 0.05);
-        }
-        function getUpgradeCost(id, lvl) {
-            const c = getCardData(id); if(!c) return Infinity;
-            return Math.floor(c.baseCost * Math.pow(1.5, lvl));
-        }
-        function saveGame() { localStorage.setItem('nodeMinerPremium', JSON.stringify(gameState)); }
-        function loadGame() {
-            const s = localStorage.getItem('nodeMinerPremium');
-            if(s) try { gameState = Object.assign({}, DEFAULT_STATE, JSON.parse(s)); } catch(e){}
-            if(!Array.isArray(gameState.cards)) gameState.cards = [];
-            if(!Array.isArray(gameState.specialCardsPurchased)) gameState.specialCardsPurchased = [];
-            // Применяем отложенный реферальный код
-            const pending = localStorage.getItem('pendingRefCode');
-            if (pending) {
-                // имитация: если код совпадает с нашим referralCode, то считаем что нас пригласили
-                // но т.к. это локально, просто увеличим свой referrals для демо
-                if (gameState.referralCode && pending === gameState.referralCode) {
-                    gameState.referrals += 1;
-                }
-                localStorage.removeItem('pendingRefCode');
-            }
-            calculateTotalPPH();
-        }
-        function processOfflineIncome() {
-            const now = Date.now();
-            let delta = (now - gameState.lastLogin)/1000;
-            if(delta<0) delta=0; if(delta>86400) delta=86400;
-            if(delta>0 && gameState.totalPPH>0) {
-                const earned = (gameState.totalPPH/3600)*delta;
-                gameState.balance += earned; return earned;
-            } return 0;
-        }
-        function restoreEnergy() {
-            const now = Date.now();
-            const delta = (now - gameState.lastEnergyUpdate)/1000;
-            if(delta>0) {
-                gameState.energy = Math.min(1000, gameState.energy + delta*2);
-                gameState.lastEnergyUpdate = now;
-            }
-        }
-        function updateDailyProgress() {
-            const today = new Date().toISOString().slice(0,10);
-            if(gameState.lastDailyRewardDate !== today) gameState.dailyRewardClaimed = false;
-            if(gameState.dailyComboDate !== today) {
-                gameState.dailyComboDate = today; gameState.dailyComboClaimed = false;
-                const cats = ['hardware','software','marketing'];
-                gameState.dailyComboCards = cats.map(cat=>{
-                    const pool = cardsData.filter(c=>c.category===cat);
-                    return pool[Math.floor(Math.random()*pool.length)].id;
-                });
-            }
-            if(gameState.specialCardsDate !== today) {
-                gameState.specialCardsDate = today; gameState.specialCardsPurchased = [];
-                generateSpecialCards();
-            }
-            // удаляем просроченные спецкарты
-            gameState.cards = gameState.cards.filter(c=>{
-                if(c.id.startsWith('sp_')) {
-                    const spec = specialCards.find(s=>s.id===c.id);
-                    return spec && gameState.specialCardsDate === today;
-                } return true;
-            });
-        }
-        function generateSpecialCards() {
-            specialCards = [
-                { id:'sp_0', name:'Интервью с Дуровым', category:'special', baseCost:50000, baseProfit:10000, expires:Date.now()+86400000 },
-                { id:'sp_1', name:'Листинг на Binance', category:'special', baseCost:80000, baseProfit:17000, expires:Date.now()+86400000 },
-                { id:'sp_2', name:'Коллаб с Vitalik', category:'special', baseCost:120000, baseProfit:25000, expires:Date.now()+86400000 }
-            ];
-        }
-        function getLeague(pph) {
-            if(pph>=100000) return {name:'💎 Genesis',color:'#b44dff'};
-            if(pph>=10000) return {name:'🥈 Validator',color:'#4facfe'};
-            if(pph>=1000) return {name:'🥉 Mainnet',color:'#f0b90b'};
-            return {name:'🔹 Testnet',color:'#aaa'};
-        }
-        function updateUI() {
-            balanceDisplay.textContent = formatNumber(gameState.balance);
-            pphDisplay.textContent = formatNumber(gameState.totalPPH);
-            energyFill.style.width = (gameState.energy/10)+'%';
-            energyText.textContent = Math.floor(gameState.energy)+'/1000';
-            const league = getLeague(gameState.totalPPH);
-            leagueDisplay.textContent = league.name;
-            leagueDisplay.style.color = league.color;
-            clickerBtn.style.boxShadow = `0 0 60px ${league.color}, 0 15px 30px black`;
-            refCountSpan.textContent = gameState.referrals;
-            secretFilterBtn.style.display = gameState.referrals >= 3 ? 'inline-block' : 'none';
-        }
+      // Стоимость улучшения (растёт с уровнем)
+      const cost = getUpgradeCost();
+      upgradeCostSpan.textContent = cost;
+    }
 
-        // ==================== РЕНДЕРИНГ МАГАЗИНА ====================
-        function renderShop(cat='all') {
-            let all = [...cardsData];
-            if(cat==='secret') all = [...secretCards];
-            else if(cat==='special') all = [...specialCards];
-            else if(cat!=='all') all = cardsData.filter(c=>c.category===cat);
-            else all = [...cardsData, ...specialCards, ...(gameState.referrals>=3?secretCards:[])];
-            cardsContainer.innerHTML = all.map(card=>{
-                const pc = getPlayerCard(card.id); const lvl = pc?pc.level:0;
-                const profit = getCardProfit(card.id, lvl); const cost = getUpgradeCost(card.id, lvl);
-                const can = gameState.balance >= cost;
-                const tmr = card.expires ? `<div class="special-timer">До конца: ${new Date(card.expires).toLocaleTimeString()}</div>` : '';
-                return `<div class="card-item"><strong>${card.name}</strong> ${tmr}
-                    <div>Прибыль: +${formatNumber(profit)}/ч</div>
-                    <button class="upgrade-btn" data-id="${card.id}" ${!can?'disabled':''}>
-                        ${lvl===0?'Купить':'Апгрейд'} (${formatNumber(cost)})</button></div>`;
-            }).join('');
-            document.querySelectorAll('.upgrade-btn').forEach(b=>{
-                b.addEventListener('click', (e)=> buyUpgrade(e.target.dataset.id));
-            });
-        }
-        function buyUpgrade(cardId) {
-            const pc = getPlayerCard(cardId); const lvl = pc?pc.level:0;
-            const cost = getUpgradeCost(cardId, lvl);
-            if(gameState.balance < cost) return;
-            const card = getCardData(cardId);
-            if(card?.category==='special' && gameState.specialCardsDate !== new Date().toISOString().slice(0,10)) {
-                alert('Срок действия истёк!'); return;
-            }
-            gameState.balance -= cost;
-            if(!pc) gameState.cards.push({id:cardId, level:1});
-            else pc.level++;
-            calculateTotalPPH(); saveGame(); updateUI();
-            const activeCat = document.querySelector('.filter-btn.active')?.dataset.category || 'all';
-            renderShop(activeCat);
-        }
+    function getUpgradeCost() {
+      // Формула: базовая стоимость * уровень (линейный рост)
+      return upgradeBaseCost * clickLevel;
+    }
 
-        // ==================== ДЕЙЛИКИ ====================
-        function renderDailyReward() {
-            const rewards = [50,150,400,1000,3000,8000,25000];
-            const today = new Date().toISOString().slice(0,10);
-            const claimed = gameState.dailyRewardClaimed && gameState.lastDailyRewardDate===today;
-            let html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px;">';
-            for(let i=0;i<7;i++) {
-                let cls = 'day-cell';
-                if(i<gameState.dailyRewardDay || (i===gameState.dailyRewardDay && claimed)) cls += ' claimed';
-                if(i===gameState.dailyRewardDay && !claimed) cls += ' today';
-                html += `<div class="${cls}"><span>День${i+1}</span><span>${formatNumber(rewards[i])}</span></div>`;
-            }
-            html += '</div><button class="claim-daily-btn" '+ (claimed?'disabled':'') +'>'+ (claimed?'Получено':'Забрать') +'</button>';
-            document.getElementById('dailyRewardBlock').innerHTML = html;
-            document.querySelector('.claim-daily-btn')?.addEventListener('click', ()=>{
-                if(gameState.dailyRewardClaimed) return;
-                const r = rewards[gameState.dailyRewardDay];
-                gameState.balance += r;
-                gameState.dailyRewardClaimed = true;
-                gameState.lastDailyRewardDate = new Date().toISOString().slice(0,10);
-                gameState.dailyRewardDay = (gameState.dailyRewardDay+1)%7;
-                saveGame(); updateUI(); renderDailyReward();
-            });
+    // ---------- Механика клика по утке ----------
+    function handleDuckClick(e) {
+      // Проверяем, хватает ли энергии (минимум 1 единица для клика)
+      if (energy < 1) {
+        // Визуальная обратная связь: показываем, что энергии нет
+        duckButton.style.transform = 'scale(0.98)';
+        setTimeout(() => { duckButton.style.transform = ''; }, 120);
+        if (tg?.HapticFeedback) {
+          tg.HapticFeedback.notificationOccurred('error');
         }
-        function renderCombo() {
-            const combo = gameState.dailyComboCards;
-            let html = '<h4>🔥 Комбо дня</h4><div style="display:flex;gap:8px;margin:10px 0;">';
-            combo.forEach(id=>{
-                const card = getCardData(id); const has = getPlayerCard(id)?.level>=1;
-                html += `<div class="combo-card ${has?'completed':''}">${card?.name||id}</div>`;
-            });
-            html += '</div>';
-            const completed = combo.every(id=> getPlayerCard(id)?.level>=1);
-            html += `<button class="claim-combo-btn" ${(!completed||gameState.dailyComboClaimed)?'disabled':''}>${gameState.dailyComboClaimed?'Получено':'Забрать 50K'}</button>`;
-            document.getElementById('comboBlock').innerHTML = html;
-            document.querySelector('.claim-combo-btn')?.addEventListener('click', ()=>{
-                if(!completed || gameState.dailyComboClaimed) return;
-                gameState.balance += 50000; gameState.dailyComboClaimed = true;
-                saveGame(); updateUI(); renderCombo();
-            });
+        return;
+      }
+
+      // Тратим 1 энергию за клик
+      energy = Math.max(0, energy - 1);
+      // Начисляем монеты согласно уровню улучшения
+      coins += clickLevel;
+
+      // Визуальный и тактильный отклик
+      if (tg?.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('light');
+      }
+
+      // Небольшая анимация уже через CSS :active, добавим быстрое восстановление стиля
+      updateUI();
+      saveGame();
+    }
+
+    // ---------- Восстановление энергии со временем ----------
+    function regenerateEnergy(now) {
+      if (lastTimestamp === 0) {
+        lastTimestamp = now;
+        return;
+      }
+      const deltaSeconds = (now - lastTimestamp) / 1000;
+      if (deltaSeconds > 0 && energy < MAX_ENERGY) {
+        const regenAmount = deltaSeconds * ENERGY_REGEN_PER_SECOND;
+        energy = Math.min(MAX_ENERGY, energy + regenAmount);
+        updateUI();
+        saveGame();
+      }
+      lastTimestamp = now;
+    }
+
+    // Игровой цикл для регенерации
+    function gameLoop() {
+      const now = Date.now();
+      regenerateEnergy(now);
+      requestAnimationFrame(gameLoop);
+    }
+
+    // ---------- Магазин: покупка улучшения ----------
+    function buyUpgrade() {
+      const cost = getUpgradeCost();
+      if (coins < cost) {
+        if (tg?.HapticFeedback) {
+          tg.HapticFeedback.notificationOccurred('error');
         }
+        alert('🦆 Не хватает монет! Кликай утку активнее.');
+        return;
+      }
 
-        // ==================== СКВАДЫ ====================
-        function renderSquad() {
-            if(gameState.squadName) squadInfo.innerHTML = `Сквад: <strong>${gameState.squadName}</strong><br>Ваш PPH: ${formatNumber(gameState.totalPPH)}`;
-            else squadInfo.innerHTML = 'Вы не в скваде';
-            const squads = [
-                {name:'Crypto Whales', pph:500000+Math.random()*200000},
-                {name:'Node Warriors', pph:300000+Math.random()*150000},
-                {name:'Mainnet Kings', pph:200000+Math.random()*100000},
-                {name: gameState.squadName||'Ваш сквад', pph: gameState.totalPPH+Math.random()*50000}
-            ];
-            squads.sort((a,b)=>b.pph-a.pph);
-            squadLeaderboard.innerHTML = squads.map((s,i)=>`${i+1}. ${s.name} — ${formatNumber(s.pph)} PPH`).join('<br>');
-        }
-        joinSquadBtn.addEventListener('click', ()=>{
-            const n = squadNameInput.value.trim(); if(!n) return;
-            gameState.squadName = n; saveGame(); renderSquad();
-        });
+      coins -= cost;
+      clickLevel += 1;
 
-        // ==================== РЕФЕРАЛЫ ====================
-        generateRefLinkBtn.addEventListener('click', ()=>{
-            const bot = botUsernameInput.value.trim() || 'YourBot';
-            gameState.referralCode = 'REF'+Math.random().toString(36).substring(2,8).toUpperCase();
-            const link = `https://t.me/${bot}?start=${gameState.referralCode}`;
-            refLinkDisplay.textContent = link;
-            saveGame();
-        });
-        applyRefCodeBtn.addEventListener('click', ()=>{
-            const code = refCodeInput.value.trim(); if(!code) return;
-            // Для демо: любой код увеличивает счётчик (кроме своего)
-            if(code === gameState.referralCode) { alert('Нельзя использовать свой код!'); return; }
-            gameState.referrals += 1;
-            calculateTotalPPH(); saveGame(); updateUI(); renderShop();
-            refCodeInput.value = '';
-            alert('Код принят! +1 реферал');
-        });
+      if (tg?.HapticFeedback) {
+        tg.HapticFeedback.notificationOccurred('success');
+      }
 
-        // ==================== АДМИН-ПАНЕЛЬ ====================
-        if(isAdmin) {
-            document.getElementById('adminAddBalance').addEventListener('click', ()=>{
-                gameState.balance += 100000; saveGame(); updateUI();
-            });
-            document.getElementById('adminReset').addEventListener('click', ()=>{
-                gameState = JSON.parse(JSON.stringify(DEFAULT_STATE));
-                saveGame(); updateUI(); renderShop(); renderDailyReward(); renderCombo(); renderSquad();
-            });
-            document.getElementById('adminSetPPH').addEventListener('click', ()=>{
-                // убираем все карты, добавляем одну мощную
-                gameState.cards = [{id:'hw15', level:10}];
-                calculateTotalPPH(); saveGame(); updateUI(); renderShop();
-            });
-            document.getElementById('adminUnlockAll').addEventListener('click', ()=>{
-                cardsData.forEach(c=>{
-                    const exist = getPlayerCard(c.id);
-                    if(exist) exist.level = 1;
-                    else gameState.cards.push({id:c.id, level:1});
-                });
-                calculateTotalPPH(); saveGame(); updateUI(); renderShop();
-            });
-        }
+      updateUI();
+      saveGame();
+    }
 
-        // ==================== КЛИКЕР ====================
-        clickerBtn.addEventListener('click', ()=>{
-            if(gameState.energy<1) return;
-            gameState.energy--; gameState.totalClicks++;
-            const val = 1 + (gameState.totalPPH/3600)*10;
-            gameState.balance += val;
-            saveGame(); updateUI();
-            const r = clickerBtn.getBoundingClientRect();
-            const p = document.createElement('div');
-            p.style.cssText=`position:fixed;left:${r.left+r.width/2-20}px;top:${r.top}px;color:#f0b90b;font-weight:bold;pointer-events:none;animation:floatUp 1s forwards;z-index:999;`;
-            p.textContent = '+'+formatNumber(val);
-            document.body.appendChild(p);
-            setTimeout(()=>p.remove(),1000);
-        });
+    // ---------- Управление модальным окном ----------
+    function openShop() {
+      shopModal.classList.add('active');
+      updateUI();
+    }
 
-        // ==================== НАВИГАЦИЯ ====================
-        document.querySelectorAll('.nav-btn').forEach(btn=>{
-            btn.addEventListener('click', ()=>{
-                document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-                document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-                const tabId = btn.dataset.tab;
-                document.getElementById(tabId).classList.add('active');
-                btn.classList.add('active');
-                if(tabId==='shopTab') renderShop();
-                if(tabId==='comboTab') { renderDailyReward(); renderCombo(); }
-                if(tabId==='squadTab') renderSquad();
-            });
-        });
-        document.querySelectorAll('.filter-btn').forEach(btn=>{
-            btn.addEventListener('click', ()=>{
-                document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-                btn.classList.add('active');
-                renderShop(btn.dataset.category);
-            });
-        });
+    function closeShop() {
+      shopModal.classList.remove('active');
+    }
 
-        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
-        function init() {
-            loadGame();
-            restoreEnergy();
-            const offlineEarned = processOfflineIncome();
-            gameState.lastLogin = Date.now();
-            updateDailyProgress();
-            calculateTotalPPH();
-            saveGame();
-            updateUI();
-            renderShop();
-            renderDailyReward();
-            renderCombo();
-            renderSquad();
-            if(offlineEarned > 0) {
-                // можно показать модалку, но пока просто алерт
-                alert(`Пока вас не было, заработано ${formatNumber(offlineEarned)} $NODE`);
-            }
-            setInterval(()=>{ restoreEnergy(); updateUI(); }, 1000);
-        }
-        init();
-    })();
+    // ---------- Поделиться (Telegram / соцсети) ----------
+    function shareGame() {
+      const shareText = `🦆 Утиный кликер! Заработай монеты и прокачай утку. Присоединяйся!`;
+      const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(shareText)}`;
+
+      if (tg) {
+        // Пытаемся открыть через Telegram (в Mini App может работать ограниченно, но ссылка откроется)
+        tg.openLink(shareUrl);
+      } else {
+        // Фолбэк для браузера
+        window.open(shareUrl, '_blank');
+      }
+    }
+
+    // ---------- Привязка событий ----------
+    duckButton.addEventListener('click', handleDuckClick);
+    // Также поддерживаем touch для мобильных (не дублирует клик)
+    duckButton.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // чтобы не было двойного срабатывания на некоторых устройствах
+      handleDuckClick(e);
+    });
+
+    shopOpenBtn.addEventListener('click', openShop);
+    closeShopBtn.addEventListener('click', closeShop);
+    buyUpgradeBtn.addEventListener('click', buyUpgrade);
+
+    // Закрытие магазина при клике вне модального контента
+    shopModal.addEventListener('click', function(e) {
+      if (e.target === shopModal) {
+        closeShop();
+      }
+    });
+
+    tgShareBtn.addEventListener('click', shareGame);
+
+    // ---------- Старт игры ----------
+    loadGame();
+    updateUI();
+    lastTimestamp = Date.now();
+    requestAnimationFrame(gameLoop);
+
+    // Дополнительно: синхронизация с Telegram, если нужно показать MainButton (опционально)
+    if (tg?.MainButton) {
+      // Можно не показывать, но если нужно - раскомментируй:
+      // tg.MainButton.setText('🦆 Играть').show().onClick(() => window.scrollTo(0,0));
+    }
+
+    // Предотвращение случайного релоада при свайпах вниз (оставим как есть)
+    console.log('🦆 Утиный кликер запущен! Telegram Mini App готов.');
+  })();
 </script>
 </body>
 </html>
